@@ -78,17 +78,6 @@ function showWelcome(){
 	var magic = new Magic(new Vector(70, 160), resourceLoader.resources.saint, Magic.ANIM_TYPE.VERTICAL, 56, new Vector(20, 0));
 	var magic2 = new Magic(new Vector(70, 260), resourceLoader.resources.soldier, Magic.ANIM_TYPE.VERTICAL, 48, new Vector(20, 0));
 	
-	var copy = new TextEntityObject('Power BY: DK', new Vector(390, 230), {fillStyle: '#666', font: 'bold 14px 微软雅黑', 'textBaseline': 'top'}, 100, 20);
-	
-	MainApp.addEventListener(copy, 'mouseover', function(e){
-		this.setStyle({fillStyle: '#06c'});
-	});
-	MainApp.addEventListener(copy, 'mouseout', function(e){
-		this.setStyle({fillStyle: '#666'});
-	});
-	MainApp.addEventListener(copy, 'click', function(e){
-		window.open('http://www.dklogs.net');
-	});
 	ScreenObjPool.add(logo);
 	ScreenObjPool.add(welcome);
 	ScreenObjPool.add(magic);
@@ -100,6 +89,7 @@ var SCORE = 0;
 function startGame(){
 	var road = new ImageEntityObject(resourceLoader.get('road'), new Vector(0, 0), 640, 480);
 	ScreenObjPool.add(road);
+
 
 	var images = [];
 	images.push(resourceLoader.resources.car1);
@@ -118,9 +108,13 @@ function startGame(){
 	var tree = new Magic(new Vector(370, 0), resourceLoader.get('tree'), Magic.ANIM_TYPE.HORIZONTAL, 50);
 	ScreenObjPool.add(tree);
 	
+	var StaticTree = new ImageEntityObject(resourceLoader.get('tree'), new Vector(370, 0), 50, 480);
+
 	var bike = new Magic(new Vector(500, 0), resourceLoader.get('bike'), Magic.ANIM_TYPE.HORIZONTAL, 73);
 	ScreenObjPool.add(bike);
 	
+	var StaticBike = new ImageEntityObject(resourceLoader.get('tree'), new Vector(420, 0), 73, 480);
+
 	var leftC = new CollisionEntityObject(new Vector(0, 0), 30, 480);
 	var rightC = new CollisionEntityObject(new Vector(350, 0), 20, 480);
 	var topC = new CollisionEntityObject(new Vector(0, 0), 640, 40);
@@ -133,6 +127,7 @@ function startGame(){
 	
 	var myCar = new Car(new Vector(240, 390), window.util.randomColor(), resourceLoader.resources.car_p, new Vector(0, 0));
 	myCar.setCollisionMap(cMap);
+
 	MainApp.addEventListener(myCar, 'keyup', function(e){
 		var KEY = MainApp.INPUT.KEY;
 		switch(e.which){
@@ -158,6 +153,15 @@ function startGame(){
 				if(KEY_LOCK.RIGHT){
 					this.speed.remove(new Vector(200, 0));
 					KEY_LOCK.RIGHT = false;
+				}
+				break;
+			case KEY.SPACE:
+				if(KEY_LOCK.SPACE){
+					ScreenObjPool.add(tree);
+					ScreenObjPool.add(bike);
+					ScreenObjPool.remove(StaticBike);
+					ScreenObjPool.remove(StaticTree);
+					KEY_LOCK.SPACE = false;
 				}
 				break;
 		}
@@ -190,6 +194,15 @@ function startGame(){
 					KEY_LOCK.RIGHT = true;
 				}
 				break;
+		    case KEY.SPACE:
+				if(!KEY_LOCK.SPACE){
+					ScreenObjPool.remove(tree);
+					ScreenObjPool.remove(bike);
+					ScreenObjPool.add(StaticBike);
+					ScreenObjPool.add(StaticTree);
+					KEY_LOCK.SPACE = true;
+				}
+				break;
 		}
 		
 	});
@@ -206,15 +219,26 @@ function startGame(){
 		endGame(score.score);
 	});
 	ScreenObjPool.add(myCar);
-	
+
 	var scorePre = new TextEntityObject('Score: ', new Vector(50, 5), {fillStyle: '#fff', font: 'bold 32px 微软雅黑', 'textBaseline': 'top'}, 100, 35);
 	ScreenObjPool.add(scorePre);
-	//var score = new TextEntityObject('0', new Vector(160, 5), {fillStyle: '#fff', font: 'bold 32px 微软雅黑', 'textBaseline': 'top'}, 100, 35);
+
 	var score = new GameScore(0, new Vector(160, 5));
 	ScreenObjPool.add(score);
 	
 	
+	var speedUp = new TextEntityObject('speed up', new Vector(0, 400), {fillStyle: '#fff', font: 'bold 32px 微软雅黑', 'textBaseline': 'top'}, 120, 35);
+	// MainApp.addEventListener(speedUp, 'mouseover', function(e){
+	// 	ScreenObjPool.remove(tree);
+	// });
 	
+    MainApp.addEventListener(speedUp,'mousedown',function(e){
+		myCar.speed.add(new Vector(0, -200));
+    });
+     MainApp.addEventListener(speedUp,'mouseup',function(e){
+        myCar.speed.remove(new Vector(0, -200));
+    });
+    ScreenObjPool.add(speedUp);
 }
 
 
@@ -251,7 +275,8 @@ var KEY_LOCK = {
 	LEFT: false,
 	RIGHT: false,
 	UP: false,
-	DOWN: false
+	DOWN: false,
+	SPACE:false
 }
 
 </script>
