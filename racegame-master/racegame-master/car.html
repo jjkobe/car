@@ -56,6 +56,13 @@
 var screenObjects = [];
 var startTime = null;
 
+var forwardLight=true;
+var t=setTimeout(forwardChange,2000);
+function forwardChange()
+{
+	forwardLight=false;
+}
+
 var resources = [
 	{'name': 'caru', src: 'images/caru.png', type: 'images'},
 	{'name': 'card', src: 'images/card.png', type: 'images'},
@@ -194,7 +201,7 @@ function startGame(){
 					//this.speed.remove(new Vector(-100, 0));
 					//this.img=resourceLoader.resources.carl;
 					KEY_LOCK.LEFT = false;
-					this.rotate=false;
+					this.rotatel=false;
 					//console.log(this);
 				}
 				break;
@@ -202,6 +209,7 @@ function startGame(){
 				if(KEY_LOCK.RIGHT){
 					//this.speed.remove(new Vector(100, 0));
 					//this.img=resourceLoader.resources.carr;
+					this.rotater=false;
 					KEY_LOCK.RIGHT = false;
 				}
 				break;

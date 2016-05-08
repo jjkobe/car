@@ -18,6 +18,10 @@ var Car = function(v, style, img, speed){
 	RectEntityObject.call(this, v, this.width - 6, this.height - 6, {});
 
 	this._update = function(){
+		if(forwardLight==false)
+		{
+			this.speed=new Vector(0, 0);
+		}
 		var oldPos = this.position.clone();
 		var diffY = MainApp.diffTime * Math.cos(degree)*this.speed.y / 1000;
 		var diffX = MainApp.diffTime * Math.sin(degree)*this.speed.y / 1000;
@@ -29,8 +33,8 @@ var Car = function(v, style, img, speed){
 				this.position = oldPos;
 			}
 		}
-		//this.position.y += (MainApp.nowTime - MainApp.startTime) * this.speed.y / 1000;
-		//this.position.x += (MainApp.nowTime - MainApp.startTime) * this.speed.x / 1000;
+		////this.position.y += (MainApp.nowTime - MainApp.startTime) * this.speed.y / 1000;
+		////this.position.x += (MainApp.nowTime - MainApp.startTime) * this.speed.x / 1000;本身代码就没有用
 
 		// if(this.position.y > 480){
 		// 	this.position.y = window.util.random(-240, 0);
@@ -40,7 +44,7 @@ var Car = function(v, style, img, speed){
 
 	this._draw = function(context){
 		context.save();
-    context.translate(this.position.x + (this.width / 2), this.position.y + (this.height / 2));
+        context.translate(this.position.x + (this.width / 2), this.position.y + (this.height / 2));
     //context.rotate(this.angle;);
 
     //context.drawImage(img, this.x, this.y, this.width, this.height);
@@ -49,14 +53,12 @@ var Car = function(v, style, img, speed){
 		//console.log(degree);
 
 		if (this.rotatel) {
-			this.rotatel=false;
-			this.step-=0.1;
-			//console.log(degree);
+			//this.rotatel=false;
+			this.step-=0.02;
 		}
 		if (this.rotater) {
-			this.rotater=false;
-			this.step+=0.1;
-			//console.log(degree);
+			//this.rotater=false;
+			this.step+=0.02;
 		}
 
 		degree = this.step * 90 * Math.PI / 180;
