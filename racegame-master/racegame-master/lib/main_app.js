@@ -54,16 +54,14 @@ var MainApp = {
 			UP: 38,
 			DOWN: 40,
 			LEFT: 37,
-			RIGHT: 39,
-			SPACE: 32
+			RIGHT: 39
 		},
 		
 		KEY_LOCK: {
 			UP: false,
 			DOWN: false,
 			LEFT: false,
-			RIGHT: false,
-			SPACE: false
+			RIGHT: false
 		}
 	},
 	
@@ -108,8 +106,6 @@ var MainApp = {
 		click: [],
 		keypress: [],
 		mousemove: [],
-		mousedown:[],
-		mouseup:[],
 		mouseover: [],
 		mouseout: [],
 		collide: [],
@@ -123,8 +119,6 @@ var MainApp = {
 			click: [],
 			keypress: [],
 			mousemove: [],
-			mousedown:[],
-			mouseup:[],
 			mouseover: [],
 			mouseout: [],
 			collide: [],
@@ -185,32 +179,6 @@ var MainApp = {
 			}
 		};
 		
-        this.canvas.addEventListener('mousedown',function(e){
-			var scroll = util.getScroll();
-			e.relX = e.clientX - self.canvasPos.left + scroll.left;
-			e.relY = e.clientY - self.canvasPos.top + scroll.top;
-			var mPos = new Vector(e.relX, e.relY);
-			for(var i = 0, len = MainApp.eventsPool.mousedown.length; i < len; i++){
-				var event = MainApp.eventsPool.mousedown[i];
-				if(event.target.checkContain(mPos)){
-					event.callback.call(event.target, e);
-				}
-			}
-        },false);
-
-        this.canvas.addEventListener('mouseup',function(e){
-			var scroll = util.getScroll();
-			e.relX = e.clientX - self.canvasPos.left + scroll.left;
-			e.relY = e.clientY - self.canvasPos.top + scroll.top;
-			var mPos = new Vector(e.relX, e.relY);
-			for(var i = 0, len = MainApp.eventsPool.mouseup.length; i < len; i++){
-				var event = MainApp.eventsPool.mouseup[i];
-				if(event.target.checkContain(mPos)){
-					event.callback.call(event.target, e);
-				}
-			}
-        },false);
-
 		this.canvas.addEventListener('mousemove', function(e){
 			var scroll = util.getScroll();
 			e.relX = e.clientX - self.canvasPos.left + scroll.left;
@@ -251,7 +219,6 @@ var MainApp = {
 				}
 			}
 			
-
 		}, false);
 	},
 	
