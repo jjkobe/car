@@ -34,6 +34,9 @@ var ScreenObjPool = {
 			if(o.hitable){
 				MainApp.checkHit(o);
 			}
+			if(o.winable){
+				MainApp.checkWin(o);
+			}
 		}
 	}
 };
@@ -109,7 +112,8 @@ var MainApp = {
 		mouseover: [],
 		mouseout: [],
 		collide: [],
-		hit: []
+		hit: [],
+		win:[]
 	},
 	
 	emptyEventsPool: function(){
@@ -122,7 +126,8 @@ var MainApp = {
 			mouseover: [],
 			mouseout: [],
 			collide: [],
-			hit: []
+			hit: [],
+			win:[]
 		}
 	},
 	
@@ -230,6 +235,20 @@ var MainApp = {
 			}
 			
 			if(event.target.checkHit(target)){
+				event.callback.call(event.target, {relatedTarget: target});
+			}
+		}
+	},
+
+
+	checkWin: function(target){
+		for(var i = 0, len = MainApp.eventsPool.win.length; i < len; i++){
+			var event = MainApp.eventsPool.win[i];
+			if(event.target.guid === target.guid){
+				continue;
+			}
+			
+			if(event.target.checkWin(target)){
 				event.callback.call(event.target, {relatedTarget: target});
 			}
 		}

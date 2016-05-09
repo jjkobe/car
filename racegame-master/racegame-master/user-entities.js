@@ -17,11 +17,18 @@ var Car = function(v, style, img, speed){
 
 	RectEntityObject.call(this, v, this.width - 6, this.height - 6, {});
 
-	this._update = function(){
-		if(forwardLight==false)
-		{
-			this.speed=new Vector(0, 0);
+	this.checkWin = function(rect){
+		if((this.position.y + this.height / 2) < (rect.position.y - rect.height / 2)&&(Math.abs(degree)<0.1)&&(flag)&&(Math.abs(this.position.x-rect.position.x)<20)){
+			return true;
 		}
+		return false;
+	};
+
+	this._update = function(){
+		// if(forwardLight==false)
+		// {
+		// 	this.speed=new Vector(0, 0);
+		// }
 		var oldPos = this.position.clone();
 		var diffY = MainApp.diffTime * Math.cos(degree)*this.speed.y / 1000;
 		var diffX = MainApp.diffTime * Math.sin(degree)*this.speed.y / 1000;

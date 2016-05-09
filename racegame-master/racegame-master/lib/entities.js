@@ -21,7 +21,6 @@ var Rect = function(v, width, height){
 	this.position = v;
 	this.width = width;
 	this.height = height;
-	
 	this.checkHit = function(rect){
 		if(Math.abs((this.position.x + this.width / 2) - (rect.position.x + rect.width / 2)) < (this.width + rect.width) / 2 && Math.abs((this.position.y + this.height / 2) - (rect.position.y + rect.height / 2)) < (this.height + rect.height) / 2){
 			return true;
@@ -29,6 +28,8 @@ var Rect = function(v, width, height){
 		return false;
 	};
 	
+
+
 	this.checkContain = function(v){
 		if(v.x > this.position.x && v.y > this.position.y && v.x < this.position.x + this.width && v.y < this.position.y + this.height){
 			return true;
@@ -43,6 +44,7 @@ var EntityObject = function(){
 	
 	this.clickable = false;
 	this.hitable = false;
+	this.winable=false;
 	
 	this.collisionMap = null;
 	

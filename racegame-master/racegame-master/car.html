@@ -56,11 +56,11 @@
 var screenObjects = [];
 var startTime = null;
 
-var forwardLight=true;
-var t=setTimeout(forwardChange,2000);
+var flag=false;
+var t=setTimeout(forwardChange,5000);
 function forwardChange()
 {
-	forwardLight=false;
+	flag=true;
 }
 
 var resources = [
@@ -159,13 +159,21 @@ function startGame(){
 	// 	ScreenObjPool.add(newCar);
 	// }
 
-	//  var tree = new Magic(new Vector(1000, 0), resourceLoader.get('tree'), Magic.ANIM_TYPE.HORIZONTAL, 50);
-	//  ScreenObjPool.add(tree);
+	 var tree = new Magic(new Vector(1000, 0), resourceLoader.get('tree'), Magic.ANIM_TYPE.HORIZONTAL, 50);
+	 ScreenObjPool.add(tree);
+	 var treea = new Magic(new Vector(633, 0), resourceLoader.get('tree'), Magic.ANIM_TYPE.HORIZONTAL, 50);
+	 ScreenObjPool.add(treea);
 	//  var tree1 = new Magic(new Vector(600, 0), resourceLoader.get('tree'), Magic.ANIM_TYPE.HORIZONTAL, 50);
 	//  ScreenObjPool.add(tree1);
 
 	// var bike = new Magic(new Vector(500, 0), resourceLoader.get('bike'), Magic.ANIM_TYPE.HORIZONTAL, 73);
 	// ScreenObjPool.add(bike);
+
+    var aiCar = new Car(new Vector(240, 200), window.util.randomColor(), resourceLoader.resources.car_p, new Vector(0, 0)); 
+    aiCar.winable=true;
+    aiCar.hitable=true;
+    ScreenObjPool.add(aiCar);
+
 
 	var leftC = new CollisionEntityObject(new Vector(0, 0), 30, 480);
 	var rightC = new CollisionEntityObject(new Vector(1800, 0), 20, 480);
@@ -256,15 +264,26 @@ function startGame(){
 	});
 
 	MainApp.addEventListener(myCar, 'hit', function(e){
-		// ScreenObjPool.empty();
-		// MainApp.emptyEventsPool();
-		// KEY_LOCK = {
-		// 	LEFT: false,
-		// 	RIGHT: false,
-		// 	UP: false,
-		// 	DOWN: false
-		// }
-		//endGame(score.score);
+		ScreenObjPool.empty();
+		MainApp.emptyEventsPool();
+		KEY_LOCK = {
+			LEFT: false,
+			RIGHT: false,
+			UP: false,
+			DOWN: false
+		}
+		endGame();
+	});
+	MainApp.addEventListener(myCar, 'win', function(e){
+		ScreenObjPool.empty();
+		MainApp.emptyEventsPool();
+		KEY_LOCK = {
+			LEFT: false,
+			RIGHT: false,
+			UP: false,
+			DOWN: false
+		}
+		endGame();
 	});
 	ScreenObjPool.add(myCar);
 
@@ -279,14 +298,14 @@ function startGame(){
 }
 
 
-function endGame(score){
+function endGame(){
 
 	var end = new TextEntityObject('GAME OVER', new Vector(120, 150), {fillStyle: '#900', font: 'bold 64px 微软雅黑', 'textBaseline': 'top'}, 100, 35);
 
 	ScreenObjPool.add(end);
 
-	var score = new TextEntityObject('Score: ' + ~~score, new Vector(240,240), {fillStyle: '#000', font: 'bold 32px 微软雅黑', 'textBaseline': 'top'}, 100, 35);
-	ScreenObjPool.add(score);
+	// var score = new TextEntityObject('Score: ' + ~~score, new Vector(240,240), {fillStyle: '#000', font: 'bold 32px 微软雅黑', 'textBaseline': 'top'}, 100, 35);
+	// ScreenObjPool.add(score);
 
 	var restart = new TextEntityObject('重新开始', new Vector(267, 310), {fillStyle: '#333', font: 'bold 24px 微软雅黑', 'textBaseline': 'top'}, 100, 35);
 	MainApp.addEventListener(restart, 'mouseover', function(e){
