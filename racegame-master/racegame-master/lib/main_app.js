@@ -1,5 +1,6 @@
 (function(window, util){
 
+var flag=false;
 var ScreenObjPool = {
 	objects: {},
 	objectsIds: [],
@@ -29,13 +30,19 @@ var ScreenObjPool = {
 		var objects = this.objects, objectsIds = this.objectsIds;
 		for(var i = 0, len = objectsIds.length; i < len; i++){
 			var o = objects[objectsIds[i]];
+			console.log(o);
 			o.draw(context);
-			
 			if(o.hitable){
 				MainApp.checkHit(o);
 			}
-			if(o.winable){
-				MainApp.checkWin(o);
+			if(o.coinable){
+				if(MainApp.checkCoin(o)){
+					console.log(o);
+					console.log(objects);
+					ScreenObjPool.remove(o);
+					console.log(objects);
+					len--;
+				}
 			}
 		}
 	}
@@ -113,7 +120,7 @@ var MainApp = {
 		mouseout: [],
 		collide: [],
 		hit: [],
-		win:[]
+		coin:[]
 	},
 	
 	emptyEventsPool: function(){
@@ -127,7 +134,7 @@ var MainApp = {
 			mouseout: [],
 			collide: [],
 			hit: [],
-			win:[]
+			coin:[]
 		}
 	},
 	
@@ -239,19 +246,18 @@ var MainApp = {
 			}
 		}
 	},
-
-
-	checkWin: function(target){
-		for(var i = 0, len = MainApp.eventsPool.win.length; i < len; i++){
-			var event = MainApp.eventsPool.win[i];
+	checkCoin: function(target){
+		for(var i = 0, len = MainApp.eventsPool.coin.length; i < len; i++){
+			var event = MainApp.eventsPool.coin[i];
 			if(event.target.guid === target.guid){
 				continue;
 			}
-			
-			if(event.target.checkWin(target)){
+			if(event.target.checkCoin(target)){
 				event.callback.call(event.target, {relatedTarget: target});
+				return true;
 			}
 		}
+		return false;
 	},
 	
 	startRun: function(){
