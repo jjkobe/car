@@ -31,7 +31,7 @@ var Car = function(v, style, img, speed){
 			this.position.y = window.util.random(-240, 0);
 			this.speed = new Vector(0, Math.ceil(window.util.random(80, 180)));
 		}
-	};
+	 };
 	
 	this._draw = function(context){
 		
@@ -41,11 +41,120 @@ var Car = function(v, style, img, speed){
 	
 };
 
-
 var Coin = function(v, style, img, speed){
 	this.width = 20;
 	this.height = 20;
 	this.img = img;
+	this.width = img.width;
+	this.height = img.height;
+	if(speed){
+		this.speed = speed;
+	}else{
+		this.speed = new Vector(0, Math.ceil(window.util.random(80, 180)));
+	}
+	
+	RectEntityObject.call(this, v, this.width - 6, this.height - 6, {});
+
+	
+	this._update = function(){
+		var oldPos = this.position.clone();
+		var diffY = MainApp.diffTime * this.speed.y / 1000;
+		var diffX = MainApp.diffTime * this.speed.x / 1000;		
+		this.position.x += diffX;
+		this.position.y += diffY;
+		
+		if(this.collisionMap){
+			if(this.collisionMap.checkCollide(this)){
+				this.position = oldPos;
+			}
+		}	
+	};
+	
+	this._draw = function(context){
+	//if(this.drawable){
+		context.drawImage(this.img, this.position.x - 3, this.position.y - 3);
+	//}
+	};
+};
+
+var Question = function(v, style, img, speed){
+	this.width = 20;
+	this.height = 20;
+	this.img = img;
+	this.width = img.width;
+	this.height = img.height;
+	if(speed){
+		this.speed = speed;
+	}else{
+		this.speed = new Vector(0, Math.ceil(window.util.random(80, 180)));
+	}
+	
+	RectEntityObject.call(this, v, this.width - 6, this.height - 6, {});
+
+	
+	this._update = function(){
+		var oldPos = this.position.clone();
+		var diffY = MainApp.diffTime * this.speed.y / 1000;
+		var diffX = MainApp.diffTime * this.speed.x / 1000;		
+		this.position.x += diffX;
+		this.position.y += diffY;
+		
+		if(this.collisionMap){
+			if(this.collisionMap.checkCollide(this)){
+				this.position = oldPos;
+			}
+		}	
+	};
+	
+	this._draw = function(context){
+	//if(this.drawable){
+		context.drawImage(this.img, this.position.x - 3, this.position.y - 3);
+	//}
+	};
+};
+
+var Condition = function(v, style, img, speed){
+	this.width = 20;
+	this.height = 20;
+	this.img = img;
+	this.width = img.width;
+	this.height = img.height;
+	if(speed){
+		this.speed = speed;
+	}else{
+		this.speed = new Vector(0, Math.ceil(window.util.random(80, 180)));
+	}
+	
+	RectEntityObject.call(this, v, this.width - 6, this.height - 6, {});
+
+	
+	this._update = function(){
+		var oldPos = this.position.clone();
+		var diffY = MainApp.diffTime * this.speed.y / 1000;
+		var diffX = MainApp.diffTime * this.speed.x / 1000;		
+		this.position.x += diffX;
+		this.position.y += diffY;
+		
+		if(this.collisionMap){
+			if(this.collisionMap.checkCollide(this)){
+				this.position = oldPos;
+			}
+		}	
+	};
+	
+	this._draw = function(context){
+	//if(this.drawable){
+		context.drawImage(this.img, this.position.x - 3, this.position.y - 3);
+	//}
+	};
+};
+
+var Deadline = function(v, style, img, speed){
+	this.width = 20;
+	this.height = 20;
+	this.img = img;
+	this.width = img.width;
+	this.height = img.height;
 	if(speed){
 		this.speed = speed;
 	}else{

@@ -31,7 +31,26 @@ var Rect = function(v, width, height){
 
 	this.checkCoin = function(rect){
 		if(Math.abs((this.position.x + this.width / 2) - (rect.position.x + rect.width / 2)) < (this.width + rect.width) / 2 && Math.abs((this.position.y + this.height / 2) - (rect.position.y + rect.height / 2)) < (this.height + rect.height) / 2){
-			//this.drawable=false;
+			return true;
+		}
+		return false;
+	};
+
+	this.checkQuestion = function(rect){
+		if(Math.abs((this.position.x + this.width / 2) - (rect.position.x + rect.width / 2)) < (this.width + rect.width) / 2 && Math.abs((this.position.y + this.height / 2) - (rect.position.y + rect.height / 2)) < (this.height + rect.height) / 2){
+			return true;
+		}
+		return false;
+	};
+
+	this.checkCondition = function(rect){
+		if(Math.abs((this.position.x + this.width / 2) - (rect.position.x + rect.width / 2)) < (this.width + rect.width) / 2 && Math.abs((this.position.y + this.height / 2) - (rect.position.y + rect.height / 2)) < (this.height + rect.height) / 2){
+			return true;
+		}
+		return false;
+	};
+	this.checkDeadline = function(rect){
+		if(Math.abs((this.position.x + this.width / 2) - (rect.position.x + rect.width / 2)) < (this.width + rect.width) / 2 && Math.abs((this.position.y + this.height / 2) - (rect.position.y + rect.height / 2)) < (this.height + rect.height) / 2){
 			return true;
 		}
 		return false;
@@ -52,6 +71,9 @@ var EntityObject = function(){
 	this.clickable = false;
 	this.hitable = false;
 	this.coinable=false;
+	this.question=false;
+	this.condition=false;
+	this.deadline=false;
 	this.drawable=true;
 	
 	this.collisionMap = null;

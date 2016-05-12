@@ -30,17 +30,31 @@ var ScreenObjPool = {
 		var objects = this.objects, objectsIds = this.objectsIds;
 		for(var i = 0, len = objectsIds.length; i < len; i++){
 			var o = objects[objectsIds[i]];
-			console.log(o);
 			o.draw(context);
 			if(o.hitable){
 				MainApp.checkHit(o);
 			}
 			if(o.coinable){
 				if(MainApp.checkCoin(o)){
-					console.log(o);
-					console.log(objects);
 					ScreenObjPool.remove(o);
-					console.log(objects);
+					len--;
+				}
+			}
+			if(o.question){
+				if(MainApp.checkQuestion(o)){
+					ScreenObjPool.remove(o);
+					len--;
+				}
+			}
+			if(o.condition){
+				if(MainApp.checkCondition(o)){
+					ScreenObjPool.remove(o);
+					len--;
+				}
+			}
+			if(o.deadline){
+				if(MainApp.checkDeadline(o)){
+					ScreenObjPool.remove(o);
 					len--;
 				}
 			}
@@ -120,7 +134,10 @@ var MainApp = {
 		mouseout: [],
 		collide: [],
 		hit: [],
-		coin:[]
+		coin:[],
+		question:[],
+		condition:[],
+		deadline:[]
 	},
 	
 	emptyEventsPool: function(){
@@ -134,7 +151,10 @@ var MainApp = {
 			mouseout: [],
 			collide: [],
 			hit: [],
-			coin:[]
+			coin:[],
+			question:[],
+			condition:[],
+			deadline:[]
 		}
 	},
 	
@@ -259,6 +279,48 @@ var MainApp = {
 		}
 		return false;
 	},
+
+	checkQuestion: function(target){
+		for(var i = 0, len = MainApp.eventsPool.question.length; i < len; i++){
+			var event = MainApp.eventsPool.question[i];
+			if(event.target.guid === target.guid){
+				continue;
+			}
+			if(event.target.checkQuestion(target)){
+				event.callback.call(event.target, {relatedTarget: target});
+				return true;
+			}
+		}
+		return false;
+	},
+
+	checkCondition: function(target){
+		for(var i = 0, len = MainApp.eventsPool.condition.length; i < len; i++){
+			var event = MainApp.eventsPool.condition[i];
+			if(event.target.guid === target.guid){
+				continue;
+			}
+			if(event.target.checkCondition(target)){
+				event.callback.call(event.target, {relatedTarget: target});
+				return true;
+			}
+		}
+		return false;
+	},
+
+	checkDeadline: function(target){
+		for(var i = 0, len = MainApp.eventsPool.deadline.length; i < len; i++){
+			var event = MainApp.eventsPool.deadline[i];
+			if(event.target.guid === target.guid){
+				continue;
+			}
+			if(event.target.checkDeadline(target)){
+				event.callback.call(event.target, {relatedTarget: target});
+				return true;
+			}
+		}
+		return false;
+	},
 	
 	startRun: function(){
 		this.startTime = new Date().getTime();
@@ -277,6 +339,18 @@ var MainApp = {
 		this.nowTime = new Date().getTime();
 		this.context.clearRect(0, 0, 640, 480);
 		this.diffTime = this.nowTime - this.startTime;
+	// 	var temp=util.random(1, 5);
+	// 	for(var i = 0; i < temp; i++){
+	// 	var img =  images[util.random(0, images.length - 1)];
+	// 	console.log(images);
+	// 	var newCar = new Car(new Vector(i * 60 + 50, window.util.random(-480, -80)), window.util.randomColor(), img);
+	// 	newCar.hitable = true;
+	// 	ScreenObjPool.add(newCar);
+	// }
+	// if(images!=null)
+	// {
+	// 	console.log(images);
+	// }
 		ScreenObjPool.foreach(this.context);
 		
 		this.startTime = this.nowTime;
