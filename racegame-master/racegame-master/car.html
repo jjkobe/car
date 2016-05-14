@@ -64,7 +64,9 @@ var resources = [
 	{'name': 'road', src: 'images/road.png', type: 'images'},
 	{'name': 'coin', src: 'images/coin.jpg', type: 'images'},
 	{'name': 'bike', src: 'images/bike.png', type: 'images'},
-	{'name': 'ask' , src: 'images/ask.jpeg', type: 'images'}
+	{'name': 'ask' , src: 'images/ask.jpeg', type: 'images'},
+	{'name': 'road1',src: 'images/road1.png',type: 'images'},
+	{'name': 'back' ,src: 'images/back.jpg' ,type: 'images'}
 ];
 resourceLoader.onProgress = function(e){
 	loadScreen.setProgress(e.loadedCount / e.totalCount);
@@ -260,10 +262,20 @@ function startGame(){
 	MainApp.addEventListener(myCar, 'coin', function(e){
 		play_coin_music();
         score.addCoin();
+		// ScreenObjPool.empty();
+		// MainApp.emptyEventsPool();
+		// KEY_LOCK = {
+		// 	LEFT: false,
+		// 	RIGHT: false,
+		// 	UP: false,
+		// 	DOWN: false
+		// }
+		// endGame(score.score);
 	});
 	MainApp.addEventListener(myCar, 'question', function(e){
-				MainApp.stopRun();
-        alert("question");
+				game1();
+				//MainApp.stopRun();
+        //alert("question");
 	});
 	MainApp.addEventListener(myCar, 'condition', function(e){
         //alert("condition");
@@ -273,6 +285,11 @@ function startGame(){
 	});
 	ScreenObjPool.add(myCar);
 }
+
+
+
+
+
 
 function stop_coin_music(){
 	$('#coin_play audio').get(0).pause();
@@ -317,6 +334,8 @@ function endGame(score){
 	});
 
 }
+
+
 var KEY_LOCK = {
 	LEFT: false,
 	RIGHT: false,
@@ -356,5 +375,6 @@ function just_play(id){
         }
     }
 </script>
+<script src="gameCtrl.js"></script>
 </body>
 </html>
