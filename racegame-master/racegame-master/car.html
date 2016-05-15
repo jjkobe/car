@@ -22,13 +22,80 @@
     #musicControl a.stop { background-position:left bottom;}
     #musicControl a.on { background-position:0px 1px;-webkit-animation: reverseRotataZ 1.2s linear infinite;}
 	</style>
+	<style media="screen">
+	.mask {
+z-index: 9998;
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:#000;
+opacity:0.4;
+filter:alpha(opacity=40);
+display:none
+}
+.onmask {
+z-index:9999;
+position:fixed;
+top:30%;
+left:40%;
+width:200px;
+height:120px;
+margin:0 auto;
+border-radius:5px;
+border:solid 2px #666;
+background-color:#fff;
+display:none;
+box-shadow: 0 0 10px #666;
+}
+	</style>
+	<!-- /*<style type="text/css">
+	/*Stylesheet*/
+BODY, HTML
+{
+		-webkit-tap-highlight-color: rgba(0,0,0,0);
+		-webkit-touch-callout: none;
+		-webkit-text-size-adjust: none;
+		-webkit-user-select: none;
+	margin: 			0;
+	padding: 			0;
+	font-family: 		Arial, Verdana, sans-serif;
+	font-size: 			12px;
+	font-weight:		normal;
+	color: 				#ccc;
+	background-color:	white;
+	overflow-x:hidden;
+  overflow-y:hidden;
+}
+
+#sence {
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	text-align:center;
+
+		display: block !important;
+}
+	</style>*/ -->
 </head>
 <body>
+	<div class="mask" id="mask">
+
+	</div>
+	<div class="onmask" id="safe">
+		<h3>开车时一定要系安全带</h3>
+	</div>
+	<div class="onmask" id="phone">
+		<h3>老板来电话了！</h3>
+		<h4><a id="jie">接</a><a id="bujie" style="margin-left:100px">不接</a></h4>
+		<h4><a id="text"></a></h4>
+	</div>
 <div class="mainbox">
-	<h1>TEST</h1>
+
 	<canvas id="sence" width="640" height="480"></canvas>
 </div>
-<span id="musicControl">
+<span id="musicControl" style="display:none">
     <a id="mc_play" class="stop on" onclick="play_music();">
         <audio id="bgmusic" loop="loop" autoplay="autoplay">
             <source src="http://resources-user-audio.vxue360.com/778f8723e176c828c280f7c9b7eb6e00.mp3" type="audio/mpeg">
@@ -47,7 +114,7 @@
 <script src="lib/main_app.js"></script>
 <script src="lib/jquery.js"></script>
 <script type="text/javascript">
-
+var runWithOther=true;
 var screenObjects = [];
 var startTime = null;
 
@@ -98,7 +165,7 @@ function showWelcome(){
 	});
 
 	MainApp.addEventListener(welcome, 'click', function(e){
-		startGame();
+		gameJieshao();
 
 		ScreenObjPool.remove(logo);
 		ScreenObjPool.remove(welcome);
@@ -284,6 +351,11 @@ function startGame(){
         alert("deadline");
 	});
 	ScreenObjPool.add(myCar);
+
+
+	if (runWithOther) {
+		runWithOther();
+	}
 }
 
 

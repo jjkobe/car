@@ -212,3 +212,89 @@ function game2() {
 		game1();
 	});
 }
+
+function gameJieshao() {
+  var title = new TextEntityObject('背景介绍', new Vector(120, 150), {fillStyle: '#900', font: 'bold 34px 微软雅黑', 'textBaseline': 'top'}, 100, 35);
+
+	ScreenObjPool.add(title);
+
+  var text = new TextEntityObject('此处应有文字', new Vector(120, 250), {fillStyle: '#900', font: 'bold 24px 微软雅黑', 'textBaseline': 'top'}, 100, 35);
+
+	ScreenObjPool.add(text);
+
+  setTimeout(function() {
+    ScreenObjPool.empty();
+		MainApp.emptyEventsPool();
+		KEY_LOCK = {
+			LEFT: false,
+			RIGHT: false,
+			UP: false,
+			DOWN: false
+		};
+    gameSafe();
+  },2000);
+
+}
+
+function gameSafe() {
+  var title = new TextEntityObject('是否系安全带', new Vector(120, 150), {fillStyle: '#900', font: 'bold 34px 微软雅黑', 'textBaseline': 'top'}, 100, 35);
+
+	ScreenObjPool.add(title);
+
+  var yep= new TextEntityObject('是', new Vector(60, 350), {fillStyle: '#900', font: 'bold 34px 微软雅黑', 'textBaseline': 'top'}, 100, 35);
+
+	ScreenObjPool.add(yep);
+
+  var no = new TextEntityObject('否', new Vector(180, 350), {fillStyle: '#900', font: 'bold 34px 微软雅黑', 'textBaseline': 'top'}, 100, 35);
+
+	ScreenObjPool.add(no);
+
+  MainApp.addEventListener(yep, 'mouseover', function(e){
+		yep.setStyle({fillStyle: '#999'});
+	});
+
+
+	MainApp.addEventListener(yep, 'mouseout', function(e){
+		yep.setStyle({fillStyle: '#333'});
+	});
+
+
+
+	MainApp.addEventListener(yep, 'click', function(e){
+
+    $('.mask').fadeIn(100);
+    $('#safe').slideDown(200);
+    setTimeout(function() {
+      $('.mask').fadeOut(100);
+      $('#safe').slideUp(200);
+      setTimeout(function() {
+        ScreenObjPool.empty();
+        MainApp.emptyEventsPool();
+        KEY_LOCK = {
+          LEFT: false,
+          RIGHT: false,
+          UP: false,
+          DOWN: false
+        };
+        startGame();
+      },1000);
+    },1000);
+
+	});
+}
+function runWithOther() {
+  setTimeout(function() {
+    MainApp.stopRun();
+    $('.mask').fadeIn(100);
+    $('#phone').slideDown(200);
+    $('#jie').on('click',function() {
+      $('#text').text('开车时不能接电话');
+    });
+    $('#bujie').on('click',function(){
+      MainApp.startRun();
+    });
+  },5000);
+
+  runWithOther=false;
+
+}
