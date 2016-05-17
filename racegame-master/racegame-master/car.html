@@ -135,7 +135,6 @@ var resources = [
 	{'name': 'soldier', src: 'images/soldier.png', type: 'images'},
 	{'name': 'tree', src: 'images/tree.png', type: 'images'},
 	{'name': 'road', src: 'images/road.png', type: 'images'},
-	{'name': 'coin', src: 'images/coin.jpg', type: 'images'},
 	{'name': 'bike', src: 'images/bike.png', type: 'images'},
 	{'name': 'ask' , src: 'images/ask.jpeg', type: 'images'},
 	{'name': 'road1',src: 'images/road1.png',type: 'images'},
@@ -152,10 +151,10 @@ resourceLoader.onProgress = function(e){
 
 resourceLoader.onComplete = function(){
 	ScreenObjPool.remove(loadScreen);
-	//showWelcome();
+	showWelcome();
 	//lineGame();
 	//avoidGame();
-	background1();
+	//background1();
 };
 var loadScreen = new LoadScreen();
 
@@ -209,7 +208,7 @@ function showWelcome(){
 }
 var SCORE = 0;
 function startGame(){
-	var road = new ImageEntityObject(resourceLoader.get('road'), new Vector(0, 0), 640, 480);
+    var road = new ImageEntityObject(resourceLoader.get('roadG1'), new Vector(0, -480), 640, 480, new Vector(0,100));
 	ScreenObjPool.add(road);
 
 	var images = [];
@@ -227,22 +226,14 @@ function startGame(){
 	// 	ScreenObjPool.add(newCar);
 	// }
 
-	for(var i = 0; i < 11; i++){
-		var img =  resourceLoader.resources.coin;
-		var newCoin = new Coin(new Vector(i * 24 + 50, window.util.random(-5000, -80)), window.util.randomColor(), img);
-		newCoin.coinable = true;
-		ScreenObjPool.add(newCoin);
-	}
-	for(var i = 0; i < 11; i++){
-		var img =  resourceLoader.resources.ask;
-		var newAsk = new Question(new Vector(i * 24 + 50, window.util.random(-5000, -80)), window.util.randomColor(), img);
-		newAsk.question = true;
-		ScreenObjPool.add(newAsk);
-	}
-	// var img =  resourceLoader.resources.coin;
-	// var newQ = new Condition(new Vector(3 * 24 + 50, window.util.random(-480, -80)), window.util.randomColor(), img);
-	// newQ.condition=true;
-	// ScreenObjPool.add(newQ);
+
+	// for(var i = 0; i < 11; i++){
+	// 	var img =  resourceLoader.resources.ask;
+	// 	var newAsk = new Question(new Vector(i * 24 + 50, window.util.random(-5000, -80)), window.util.randomColor(), img);
+	// 	newAsk.question = true;
+	// 	ScreenObjPool.add(newAsk);
+	// }
+
 
 	var scorePre = new TextEntityObject('Score: ', new Vector(50, 5), {fillStyle: '#fff', font: 'bold 32px 微软雅黑', 'textBaseline': 'top'}, 100, 35);
 	ScreenObjPool.add(scorePre);
@@ -250,14 +241,14 @@ function startGame(){
 	var score = new GameScore(0, new Vector(160, 5));
 	ScreenObjPool.add(score);
 
-	var tree = new Magic(new Vector(370, 0), resourceLoader.get('tree'), Magic.ANIM_TYPE.HORIZONTAL, 50);
-	ScreenObjPool.add(tree);
+	// var tree = new Magic(new Vector(370, 0), resourceLoader.get('tree'), Magic.ANIM_TYPE.HORIZONTAL, 50);
+	// ScreenObjPool.add(tree);
 
-	var bike = new Magic(new Vector(500, 0), resourceLoader.get('bike'), Magic.ANIM_TYPE.HORIZONTAL, 73);
-	ScreenObjPool.add(bike);
+	// var bike = new Magic(new Vector(500, 0), resourceLoader.get('bike'), Magic.ANIM_TYPE.HORIZONTAL, 73);
+	// ScreenObjPool.add(bike);
 
 	var leftC = new CollisionEntityObject(new Vector(0, 0), 30, 480);
-	var rightC = new CollisionEntityObject(new Vector(350, 0), 20, 480);
+	var rightC = new CollisionEntityObject(new Vector(640, 0), 20, 480);
 	var topC = new CollisionEntityObject(new Vector(0, 0), 640, 40);
 	var bottomC = new CollisionEntityObject(new Vector(0, 480), 640, 10);
 	var cMap = new CollistionMap();
@@ -339,27 +330,6 @@ function startGame(){
 			DOWN: false
 		}
 		endGame(score.score);
-	});
-	MainApp.addEventListener(myCar, 'coin', function(e){
-		play_coin_music();
-        score.addCoin();
-		// ScreenObjPool.empty();
-		// MainApp.emptyEventsPool();
-		// KEY_LOCK = {
-		// 	LEFT: false,
-		// 	RIGHT: false,
-		// 	UP: false,
-		// 	DOWN: false
-		// }
-		// endGame(score.score);
-	});
-	MainApp.addEventListener(myCar, 'question', function(e){
-				game1();
-				//MainApp.stopRun();
-        //alert("question");
-	});
-	MainApp.addEventListener(myCar, 'condition', function(e){
-        //alert("condition");
 	});
 	MainApp.addEventListener(myCar, 'deadline', function(e){
         alert("deadline");
