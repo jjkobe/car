@@ -139,7 +139,12 @@ var resources = [
 	{'name': 'bike', src: 'images/bike.png', type: 'images'},
 	{'name': 'ask' , src: 'images/ask.jpeg', type: 'images'},
 	{'name': 'road1',src: 'images/road1.png',type: 'images'},
-	{'name': 'back' ,src: 'images/back.jpg' ,type: 'images'}
+	{'name': 'back' ,src: 'images/back.jpg' ,type: 'images'},
+	{'name': 'schoolBus', src: 'images/2.png', type: 'images'},
+	{'name': 'roadD', src: 'images/5.png', type: 'images'},
+	{'name': 'roadG1', src: 'images/9.png', type: 'images'},
+	{'name': 'roadG', src: 'images/11.png', type: 'images'},
+	{'name': 'pai', src: 'images/7.png', type: 'images'}
 ];
 resourceLoader.onProgress = function(e){
 	loadScreen.setProgress(e.loadedCount / e.totalCount);
@@ -147,7 +152,10 @@ resourceLoader.onProgress = function(e){
 
 resourceLoader.onComplete = function(){
 	ScreenObjPool.remove(loadScreen);
-	showWelcome();
+	//showWelcome();
+	//lineGame();
+	//avoidGame();
+	background1();
 };
 var loadScreen = new LoadScreen();
 
@@ -363,9 +371,287 @@ function startGame(){
 		runWithOther();
 	}
 }
-
-
-
+//最后一个的逻辑，小车排队不能变道
+function lineGame(){
+	var road = new ImageEntityObject(resourceLoader.get('road'), new Vector(0, 0), 640, 480);
+	ScreenObjPool.add(road);
+	var img =  resourceLoader.resources.car1;
+	var newCar = new Car(new Vector(240, 20), window.util.randomColor(), img, new Vector(0,-20));
+	newCar.hitable = true;
+	ScreenObjPool.add(newCar);
+	var img =  resourceLoader.resources.car2;
+	var newCar = new Car(new Vector(240, 120), window.util.randomColor(), img, new Vector(0,-20));
+	newCar.hitable = true;
+	ScreenObjPool.add(newCar);
+	var img =  resourceLoader.resources.car3;
+	var newCar = new Car(new Vector(240, 220), window.util.randomColor(), img, new Vector(0,-20));
+	newCar.hitable = true;
+	ScreenObjPool.add(newCar);
+	// var img =  resourceLoader.resources.car4;
+	// var newCar = new Car(new Vector(240, 320), window.util.randomColor(), img, new Vector(0,-20));
+	// newCar.hitable = true;
+	// ScreenObjPool.add(newCar);
+	var tree = new Magic(new Vector(370, 0), resourceLoader.get('tree'), Magic.ANIM_TYPE.HORIZONTAL, 50);
+	ScreenObjPool.add(tree);
+	
+	var bike = new Magic(new Vector(500, 0), resourceLoader.get('bike'), Magic.ANIM_TYPE.HORIZONTAL, 73);
+	ScreenObjPool.add(bike);
+	
+	var leftC = new CollisionEntityObject(new Vector(0, 0), 30, 480);
+	var rightC = new CollisionEntityObject(new Vector(350, 0), 20, 480);
+	var topC = new CollisionEntityObject(new Vector(0, 0), 640, 0);
+	var bottomC = new CollisionEntityObject(new Vector(0, 480), 640, 10);
+	var cMap = new CollistionMap();
+	cMap.add(leftC);
+	cMap.add(rightC);
+	cMap.add(topC);
+	cMap.add(bottomC);
+	
+	var myCar = new Car(new Vector(240, 390), window.util.randomColor(), resourceLoader.resources.car_p, new Vector(0, 0));
+	myCar.setCollisionMap(cMap);
+	MainApp.addEventListener(myCar, 'keyup', function(e){
+		var KEY = MainApp.INPUT.KEY;
+		switch(e.which){
+			case KEY.UP:
+				if(KEY_LOCK.UP){
+					this.speed.remove(new Vector(0, -200));
+					KEY_LOCK.UP = false;
+				}
+				break;
+			case KEY.DOWN:
+				if(KEY_LOCK.DOWN){
+					this.speed.remove(new Vector(0, 200));
+					KEY_LOCK.DOWN = false;
+				}
+				break;
+			case KEY.LEFT:
+				if(KEY_LOCK.LEFT){
+					this.speed.remove(new Vector(-200, 0));
+					KEY_LOCK.LEFT = false;
+				}
+				break;
+			case KEY.RIGHT:
+				if(KEY_LOCK.RIGHT){
+					this.speed.remove(new Vector(200, 0));
+					KEY_LOCK.RIGHT = false;
+				}
+				break;
+		}
+	});
+	
+	MainApp.addEventListener(myCar, 'keydown', function(e){
+		var KEY = MainApp.INPUT.KEY;
+		switch(e.which){
+			case KEY.UP:
+				if(!KEY_LOCK.UP){
+					myCar.speed.add(new Vector(0, -200));
+					KEY_LOCK.UP = true;
+				}
+				break;
+			case KEY.DOWN:
+				if(!KEY_LOCK.DOWN){
+					myCar.speed.add(new Vector(0, 200));
+					KEY_LOCK.DOWN = true;
+				}
+				break;
+			case KEY.LEFT:
+				if(!KEY_LOCK.LEFT){
+					myCar.speed.add(new Vector(-200, 0));
+					KEY_LOCK.LEFT = true;
+				}
+				break;
+			case KEY.RIGHT:
+				if(!KEY_LOCK.RIGHT){
+					myCar.speed.add(new Vector(200, 0));
+					KEY_LOCK.RIGHT = true;
+				}
+				break;
+		}
+	});
+	MainApp.addEventListener(myCar, 'hit', function(e){
+		ScreenObjPool.empty();
+		MainApp.emptyEventsPool();
+		KEY_LOCK = {
+			LEFT: false,
+			RIGHT: false,
+			UP: false,
+			DOWN: false
+		}
+		//endGame(score.score);
+	});
+	myCar.lineable=true;
+	MainApp.addEventListener(myCar, 'line', function(e){
+		ScreenObjPool.empty();
+		MainApp.emptyEventsPool();
+		KEY_LOCK = {
+			LEFT: false,
+			RIGHT: false,
+			UP: false,
+			DOWN: false
+		}
+		//endGame(score.score);
+	});
+	myCar.end=true;
+	MainApp.addEventListener(myCar, 'end', function(e){
+		alert("end");
+		ScreenObjPool.empty();
+		MainApp.emptyEventsPool();
+		KEY_LOCK = {
+			LEFT: false,
+			RIGHT: false,
+			UP: false,
+			DOWN: false
+		}
+		//endGame(score.score);
+	});
+	myCar.addcar=true;
+	MainApp.addEventListener(myCar, 'addcar', function(e){
+        myCar.addcar=false;
+		var img =  resourceLoader.resources.car5;
+		var newCar = new Car(new Vector(240, 460), window.util.randomColor(), img, new Vector(0,-20));
+		newCar.hitable = true;
+		ScreenObjPool.add(newCar);
+	});
+	ScreenObjPool.add(myCar);
+}
+//倒数第二个逻辑，避让行人
+function avoidGame(){
+	var road = new ImageEntityObject(resourceLoader.get('road'), new Vector(0, 0), 640, 480);
+	ScreenObjPool.add(road);
+	var img =  resourceLoader.resources.car1;
+	var newCar = new Car(new Vector(320, 100), window.util.randomColor(), img, new Vector(-10,20));
+	newCar.hitable = true;
+	newCar.avoid=true;
+	ScreenObjPool.add(newCar);
+	var tree = new Magic(new Vector(370, 0), resourceLoader.get('car1'), Magic.ANIM_TYPE.HORIZONTAL, 50);
+	ScreenObjPool.add(tree);
+	
+	var bike = new Magic(new Vector(500, 0), resourceLoader.get('bike'), Magic.ANIM_TYPE.HORIZONTAL, 73);
+	ScreenObjPool.add(bike);
+	
+	var leftC = new CollisionEntityObject(new Vector(0, 0), 30, 480);
+	var rightC = new CollisionEntityObject(new Vector(350, 0), 20, 480);
+	var topC = new CollisionEntityObject(new Vector(0, 0), 640, 0);
+	var bottomC = new CollisionEntityObject(new Vector(0, 480), 640, 10);
+	var cMap = new CollistionMap();
+	cMap.add(leftC);
+	cMap.add(rightC);
+	cMap.add(topC);
+	cMap.add(bottomC);
+	
+	var myCar = new Car(new Vector(240, 390), window.util.randomColor(), resourceLoader.resources.car_p, new Vector(0, 0));
+	myCar.setCollisionMap(cMap);
+	MainApp.addEventListener(myCar, 'keyup', function(e){
+		var KEY = MainApp.INPUT.KEY;
+		switch(e.which){
+			case KEY.UP:
+				if(KEY_LOCK.UP){
+					this.speed.remove(new Vector(0, -200));
+					KEY_LOCK.UP = false;
+				}
+				break;
+			case KEY.DOWN:
+				if(KEY_LOCK.DOWN){
+					this.speed.remove(new Vector(0, 200));
+					KEY_LOCK.DOWN = false;
+				}
+				break;
+			case KEY.LEFT:
+				if(KEY_LOCK.LEFT){
+					this.speed.remove(new Vector(-200, 0));
+					KEY_LOCK.LEFT = false;
+				}
+				break;
+			case KEY.RIGHT:
+				if(KEY_LOCK.RIGHT){
+					this.speed.remove(new Vector(200, 0));
+					KEY_LOCK.RIGHT = false;
+				}
+				break;
+		}
+	});
+	
+	MainApp.addEventListener(myCar, 'keydown', function(e){
+		var KEY = MainApp.INPUT.KEY;
+		switch(e.which){
+			case KEY.UP:
+				if(!KEY_LOCK.UP){
+					myCar.speed.add(new Vector(0, -200));
+					KEY_LOCK.UP = true;
+				}
+				break;
+			case KEY.DOWN:
+				if(!KEY_LOCK.DOWN){
+					myCar.speed.add(new Vector(0, 200));
+					KEY_LOCK.DOWN = true;
+				}
+				break;
+			case KEY.LEFT:
+				if(!KEY_LOCK.LEFT){
+					myCar.speed.add(new Vector(-200, 0));
+					KEY_LOCK.LEFT = true;
+				}
+				break;
+			case KEY.RIGHT:
+				if(!KEY_LOCK.RIGHT){
+					myCar.speed.add(new Vector(200, 0));
+					KEY_LOCK.RIGHT = true;
+				}
+				break;
+		}
+	});
+	MainApp.addEventListener(myCar, 'hit', function(e){
+		ScreenObjPool.empty();
+		MainApp.emptyEventsPool();
+		KEY_LOCK = {
+			LEFT: false,
+			RIGHT: false,
+			UP: false,
+			DOWN: false
+		}
+		//endGame(score.score);
+	});
+	MainApp.addEventListener(myCar, 'avoid', function(e){
+		alert("avoid");
+		ScreenObjPool.empty();
+		MainApp.emptyEventsPool();
+		KEY_LOCK = {
+			LEFT: false,
+			RIGHT: false,
+			UP: false,
+			DOWN: false
+		}
+		//endGame(score.score);
+	});
+	ScreenObjPool.add(myCar);
+}
+//在高架上时的背景车道，只是要变道逻辑时
+function background(){
+	var road = new ImageEntityObject(resourceLoader.get('roadG'), new Vector(0, -1920), 640, 480, new Vector(0,100));
+	road.miss=true;
+	MainApp.addEventListener(road, 'miss', function(e){
+		alert("miss");
+		ScreenObjPool.empty();
+		MainApp.emptyEventsPool();
+		KEY_LOCK = {
+			LEFT: false,
+			RIGHT: false,
+			UP: false,
+			DOWN: false
+		}
+		//endGame(score.score);
+	});
+	ScreenObjPool.add(road);
+	console.log(road.position);
+	// var img =  resourceLoader.resources.pai;
+	// var lupai = new Car(new Vector(523, 0), window.util.randomColor(), img, new Vector(0,100));
+	//ScreenObjPool.add(lupai);
+}
+//在高架上随便开车时的背景
+function background1(){
+	var road = new ImageEntityObject(resourceLoader.get('roadG1'), new Vector(0, -480), 640, 480, new Vector(0,100));
+	ScreenObjPool.add(road);
+}
 
 
 

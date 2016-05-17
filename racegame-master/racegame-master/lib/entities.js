@@ -29,22 +29,36 @@ var Rect = function(v, width, height){
 		return false;
 	};
 
-	this.checkCoin = function(rect){
-		if(Math.abs((this.position.x + this.width / 2) - (rect.position.x + rect.width / 2)) < (this.width + rect.width) / 2 && Math.abs((this.position.y + this.height / 2) - (rect.position.y + rect.height / 2)) < (this.height + rect.height) / 2){
+	this.checkAvoid = function(rect){
+		if((this.position.y + this.height / 2) < (rect.position.y - rect.height/2)){
 			return true;
 		}
 		return false;
 	};
 
-	this.checkQuestion = function(rect){
-		if(Math.abs((this.position.x + this.width / 2) - (rect.position.x + rect.width / 2)) < (this.width + rect.width) / 2 && Math.abs((this.position.y + this.height / 2) - (rect.position.y + rect.height / 2)) < (this.height + rect.height) / 2){
+	this.checkLine = function(){
+		if(((this.position.x + this.width / 2) > 300)  || ((this.position.x - this.width / 2)  < 200)){
 			return true;
 		}
 		return false;
 	};
 
-	this.checkCondition = function(rect){
-		if(Math.abs((this.position.x + this.width / 2) - (rect.position.x + rect.width / 2)) < (this.width + rect.width) / 2 && Math.abs((this.position.y + this.height / 2) - (rect.position.y + rect.height / 2)) < (this.height + rect.height) / 2){
+	this.checkMiss = function(){
+		if(this.position.y  > -300){
+			return true;
+		}
+		return false;
+	};
+
+	this.checkEnd = function(){
+		if((this.position.y - this.height / 2)  < 0){
+			return true;
+		}
+		return false;
+	};
+
+	this.checkAddcar = function(rect){
+		if((this.position.y - this.height / 2)  < 200){
 			return true;
 		}
 		return false;
@@ -70,9 +84,11 @@ var EntityObject = function(){
 	
 	this.clickable = false;
 	this.hitable = false;
-	this.coinable=false;
-	this.question=false;
-	this.condition=false;
+	this.avoid=false;
+	this.lineable=false;
+	this.miss=false;
+	this.end=false;
+	this.addcar=false;
 	this.deadline=false;
 	this.drawable=true;
 	
@@ -148,12 +164,38 @@ var TextEntityObject = function(content, v, styles, width, height){
 }
 
 
-var ImageEntityObject = function(img, v, width, height){
+var ImageEntityObject = function(img, v, width, height,speed){
+	this.img=img;
+	this.nextImg=img;
 	EntityObject.call(this);
 	Rect.call(this, v, width, height);
-	
+	if(speed){
+		this.speed = speed;
+	}else{
+		this.speed = new Vector(0, 20);
+	}
+
+    this._update = function(){
+		var oldPos = this.position.clone();
+		var diffY = MainApp.diffTime * this.speed.y / 1000;
+		var diffX = MainApp.diffTime * this.speed.x / 1000;		
+		this.position.x += diffX;
+		this.position.y += diffY;
+		
+		if(this.collisionMap){
+			if(this.collisionMap.checkCollide(this)){
+				this.position = oldPos;
+			}
+		}
+		if(this.position.y > 0){
+            console.log(this.position);
+			this.img=this.nextImg;
+			this.position = new Vector(0,-480);
+		}
+	 };
+
 	this._draw = function(context){
-		context.drawImage(img, this.position.x, this.position.y);
+		context.drawImage(this.img, this.position.x, this.position.y);
 	};
 };
 
