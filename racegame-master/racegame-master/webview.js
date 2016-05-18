@@ -2,11 +2,15 @@ function setHtmlSize(){
 
   var windowWidth = document.documentElement.clientWidth;
   var windowHeight=document.documentElement.clientHeight;
-  console.log(windowWidth,windowHeight);
+  //console.log(windowWidth,windowHeight);
   document.getElementById('safe').style.width=0.8*windowWidth+'px';
   document.getElementById('safe').style.height=0.3*windowWidth+'px';
   document.getElementById('phone').style.height=0.3*windowWidth+'px';
-
+  //console.log(welcome);
+  if (welcome) {
+    console.log(welcome.position.x,welcome.position.y)
+    console.log(welcome.x,welcome.y);
+  }
   document.getElementById('phone').style.width=0.8*windowWidth+'px';
   document.getElementById('main').style.height=windowHeight+'px';
   if(windowWidth > 800){

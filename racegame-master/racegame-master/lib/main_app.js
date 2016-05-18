@@ -20,12 +20,12 @@ var ScreenObjPool = {
 			}
 		}
 	},
-	
+
 	empty: function(){
 		this.objects = {};
 		this.objectsIds = [];
 	},
-	
+
 	foreach: function(context){
 		var objects = this.objects, objectsIds = this.objectsIds;
 		for(var i = 0, len = objectsIds.length; i < len; i++){
@@ -77,7 +77,7 @@ var MainApp = {
 			LEFT: 37,
 			RIGHT: 39
 		},
-		
+
 		KEY_LOCK: {
 			UP: false,
 			DOWN: false,
@@ -85,16 +85,16 @@ var MainApp = {
 			RIGHT: false
 		}
 	},
-	
+
 	init: function(config){
 		for(var attr in config){
 			this[attr] = config[attr];
 		}
 		this.canvas = util.g(this.canvasId);
 		this.context = this.canvas.getContext('2d');
-		
+
 		this.canvasPos = util.getPosInDoc(this.canvas);
-		
+
 		this.initEvent();
 	},
 	/**
@@ -120,7 +120,7 @@ var MainApp = {
 			}
 		};
 	})(),
-	
+
 	eventsPool: {
 		keydown: [],
 		keyup: [],
@@ -138,7 +138,7 @@ var MainApp = {
 		addcar:[],
 		deadline:[]
 	},
-	
+
 	emptyEventsPool: function(){
 		this.eventsPool = {
 			keydown: [],
@@ -158,21 +158,21 @@ var MainApp = {
 			deadline:[]
 		}
 	},
-	
+
 	addEventListener: function(target, eventType, callback){
 		var event = {
-			target: target, 
+			target: target,
 			callback: callback,
 			init: false
-		};	
-		
+		};
+
 		if(eventType == 'mouseover' || eventType == 'mouseout'){
 			event.target.mouseover = false;
 		}
-		
+
 		this.eventsPool[eventType].push(event);
 	},
-	
+
 	initEvent: function(){
 		var self = this;
 		var KEY = this.INPUT.KEY;
@@ -181,28 +181,30 @@ var MainApp = {
 			switch(e.which){
 				case KEY.UP:
 					if(!LOCK.UP){
-						
+
 					}
 			}
-		
+
 			for(var i = 0, len = MainApp.eventsPool.keydown.length; i < len; i++){
 				var event = MainApp.eventsPool.keydown[i];
 				event.callback.call(event.target, e);
 			}
 		};
-	
+
 		document.onkeyup = function(e){
 			for(var i = 0, len = MainApp.eventsPool.keyup.length; i < len; i++){
 				var event = MainApp.eventsPool.keyup[i];
 				event.callback.call(event.target, e);
 			}
 		};
-		
-		
+
+
 		document.onclick = function(e){
 			var scroll = util.getScroll();
 			e.relX = e.clientX - self.canvasPos.left + scroll.left;
 			e.relY = e.clientY - self.canvasPos.top + scroll.top;
+			// e.relX=e.clientX*320/gnfx;
+			// e.relY=e.clientY*400/gnfy;
 			var mPos = new Vector(e.relX, e.relY);
 			for(var i = 0, len = MainApp.eventsPool.click.length; i < len; i++){
 				var event = MainApp.eventsPool.click[i];
@@ -211,20 +213,22 @@ var MainApp = {
 				}
 			}
 		};
-		
+
 		this.canvas.addEventListener('mousemove', function(e){
 			var scroll = util.getScroll();
 			e.relX = e.clientX - self.canvasPos.left + scroll.left;
 			e.relY = e.clientY - self.canvasPos.top + scroll.top;
+			// e.relX=e.clientX*320/gnfx;
+			// e.relY=e.clientY*400/gnfy;
 			var mPos = new Vector(e.relX, e.relY);
-			
+
 			for(var i = 0, len = MainApp.eventsPool.mouseover.length; i < len; i++){
 				var event = MainApp.eventsPool.mouseover[i];
 				var status = event.target.checkContain(mPos);
-				
+
 				if(event.target.mouseStatus === undefined){
 					event.target.mouseStatus = status;
-					
+
 					status && event.callback.call(event.target, e);
 				}else{
 					if(!event.target.mouseStatus){
@@ -233,17 +237,17 @@ var MainApp = {
 					}
 				}
 			}
-			
+
 			for(var i = 0, len = MainApp.eventsPool.mouseout.length; i < len; i++){
 				var event = MainApp.eventsPool.mouseout[i];
 				var status = event.target.checkContain(mPos);
-				
+
 				if(event.target.mouseStatus === undefined){
 					event.target.mouseStatus = status;
 					if(!status){
 						event.callback.call(event.target, e);
 					}
-					
+
 				}else{
 					if(event.target.mouseStatus){
 						status || event.callback.call(event.target, e);
@@ -251,17 +255,17 @@ var MainApp = {
 					}
 				}
 			}
-			
+
 		}, false);
 	},
-	
+
 	checkHit: function(target){
 		for(var i = 0, len = MainApp.eventsPool.hit.length; i < len; i++){
 			var event = MainApp.eventsPool.hit[i];
 			if(event.target.guid === target.guid){
 				continue;
 			}
-			
+
 			if(event.target.checkHit(target)){
 				event.callback.call(event.target, {relatedTarget: target});
 			}
@@ -273,7 +277,7 @@ var MainApp = {
 			if(event.target.guid === target.guid){
 				continue;
 			}
-			
+
 			if(event.target.checkAvoid(target)){
 				event.callback.call(event.target, {relatedTarget: target});
 			}
@@ -337,7 +341,7 @@ var MainApp = {
 		}
 		return false;
 	},
-	
+
 	startRun: function(){
 		this.startTime = new Date().getTime();
 		var self = this;
@@ -345,11 +349,11 @@ var MainApp = {
 			self.renderFrame();
 		});
 	},
-	
+
 	stopRun: function(){
 		this.runStatus = false;
 	},
-	
+
 	renderFrame: function(){
 		var self = this;
 		this.nowTime = new Date().getTime();
@@ -368,9 +372,9 @@ var MainApp = {
 	// 	console.log(images);
 	// }
 		ScreenObjPool.foreach(this.context);
-		
+
 		this.startTime = this.nowTime;
-		
+
 		if(self.runStatus)
 			window.requestAnimFrame(function(){
 				self.renderFrame();
@@ -402,17 +406,17 @@ var resourceLoader = {
 					self.onComplete();
 				}
 			};
-			
+
 			img.onerror = function(){
 				console.log('Error on: ' + this.dataName);
 			};
-			
+
 			img.src = resources[i].src;
 		};
 	},
-	
+
 	onProgress: function(){},
-	
+
 	onComplete: function(){}
 };
 window.resourceLoader = resourceLoader;

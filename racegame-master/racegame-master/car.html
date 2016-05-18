@@ -102,7 +102,7 @@ BODY, HTML
 	</div>
 <div class="mainbox" id="main">
 
-	<canvas id="sence" width="640" height="480"></canvas>
+	<canvas id="sence" width="320" height="400"></canvas>
 </div>
 <span id="musicControl" style="display:none">
     <a id="mc_play" class="stop on" onclick="play_music();">
@@ -117,7 +117,6 @@ BODY, HTML
     </a>
 </span>
 <script src="lib/jquery.js"></script>
-<script src="webview.js" charset="utf-8"></script>
 <script src="lib/util.js"></script>
 <script src="lib/entities.js"></script>
 <script src="user-entities.js"></script>
@@ -128,7 +127,7 @@ BODY, HTML
 var runWithOther=true;
 var screenObjects = [];
 var startTime = null;
-
+var welcome;
 var resources = [
 	{'name': 'car1', src: 'images/car1.png', type: 'images'},
 	{'name': 'car2', src: 'images/car2.png', type: 'images'},
@@ -156,11 +155,11 @@ resourceLoader.onProgress = function(e){
 
 resourceLoader.onComplete = function(){
 	ScreenObjPool.remove(loadScreen);
-	//showWelcome();
+	showWelcome();
 	//lineGame();
 	//avoidGame();
 	//background1();
-	gameSafe();
+	//gameSafe();
 	//runWithOther();
 };
 var loadScreen = new LoadScreen();
@@ -172,10 +171,15 @@ MainApp.startRun();
 ScreenObjPool.add(loadScreen);
 
 resourceLoader.load(resources);
+var gnfx=document.body.clientWidth;
+var gnfy=document.body.clientHeight;
+document.getElementById("sence").width=gnfx;
+document.getElementById("sence").height=gnfy;
+console.log(gnfx,gnfy);
 function showWelcome(){
 	var logo = new TextEntityObject('CAR RACE', new Vector(160, 150), {fillStyle: '#900', font: 'bold 64px 微软雅黑', 'textBaseline': 'top'}, 100, 35);
 
-	var welcome = new TextEntityObject('点击开始', new Vector(267, 310), {fillStyle: '#333', font: 'bold 24px 微软雅黑', 'textBaseline': 'top'}, 100, 35);
+	welcome = new TextEntityObject('点击开始', new Vector(167*gnfx/640, 110*gnfy/480), {fillStyle: '#333', font: 'bold '+24*gnfx/640+'px 微软雅黑', 'textBaseline': 'top'}, 100, 35);
 	MainApp.addEventListener(welcome, 'mouseover', function(e){
 		welcome.setStyle({fillStyle: '#999'});
 	});
@@ -717,5 +721,7 @@ function just_play(id){
     }
 </script>
 <script src="gameCtrl.js"></script>
+<script src="webview.js" charset="utf-8"></script>
+
 </body>
 </html>
