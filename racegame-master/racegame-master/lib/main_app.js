@@ -357,7 +357,7 @@ var MainApp = {
 	renderFrame: function(){
 		var self = this;
 		this.nowTime = new Date().getTime();
-		this.context.clearRect(0, 0, 640, 480);
+		this.context.clearRect(0, 0, gnfx, gnfy);
 		this.diffTime = this.nowTime - this.startTime;
 	// 	var temp=util.random(1, 5);
 	// 	for(var i = 0; i < temp; i++){

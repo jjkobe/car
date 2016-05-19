@@ -129,6 +129,8 @@ BODY, HTML
 <script src="lib/main_app.js"></script>
 
 <script type="text/javascript">
+var gnfx=document.documentElement.clientWidth;
+var gnfy=document.documentElement.clientHeight;
 var runWithOther=true;
 var screenObjects = [];
 var startTime = null;
@@ -176,8 +178,7 @@ MainApp.startRun();
 ScreenObjPool.add(loadScreen);
 
 resourceLoader.load(resources);
-var gnfx=document.documentElement.clientWidth;
-var gnfy=document.documentElement.clientHeight;
+
 document.getElementById("sence").width=gnfx;
 document.getElementById("sence").height=gnfy;
 console.log(gnfx,gnfy);
