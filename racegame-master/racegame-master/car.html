@@ -176,15 +176,15 @@ MainApp.startRun();
 ScreenObjPool.add(loadScreen);
 
 resourceLoader.load(resources);
-var gnfx=document.body.clientWidth;
-var gnfy=document.body.clientHeight;
+var gnfx=document.documentElement.clientWidth;
+var gnfy=document.documentElement.clientHeight;
 document.getElementById("sence").width=gnfx;
 document.getElementById("sence").height=gnfy;
 console.log(gnfx,gnfy);
 function showWelcome(){
-	var logo = new TextEntityObject('CAR RACE', new Vector(160, 150), {fillStyle: '#900', font: 'bold 64px MatrixCode', 'textBaseline': 'top'}, 100, 35);
+	var logo = new TextEntityObject('CAR RACE', new Vector(160*gnfx/320, 150*gnfy/400), {fillStyle: '#900', font: 'bold '+64*gnfx/320+'px 微软雅黑', 'textBaseline': 'top'}, 100*gnfx/320, 35*gnfy/400);
 
-	welcome = new TextEntityObject('点击开始', new Vector(167*gnfx/320, 110*gnfy/400), {fillStyle: '#333', font: 'bold '+24+'px 微软雅黑', 'textBaseline': 'top'}, 100, 35);
+	welcome = new TextEntityObject('点击开始', new Vector(167*gnfx/320, 110*gnfy/400), {fillStyle: '#333', font: 'bold '+24*gnfx/320+'px 微软雅黑', 'textBaseline': 'top'}, 100*gnfx/320, 35*gnfy/400);
 	MainApp.addEventListener(welcome, 'mouseover', function(e){
 		welcome.setStyle({fillStyle: '#999'});
 	});

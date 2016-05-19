@@ -214,6 +214,7 @@ function game2() {
 }
 
 function gameJieshao() {
+	console.log(ScreenObjPool);
   var title = new TextEntityObject('背景介绍', new Vector(120, 150), {fillStyle: '#900', font: 'bold 34px 微软雅黑', 'textBaseline': 'top'}, 100, 35);
 
 	ScreenObjPool.add(title);

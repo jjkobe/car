@@ -157,7 +157,7 @@ var TextEntityObject = function(content, v, styles, width, height){
 			context[attr] = styles[attr];
 		}
 		
-		context.fillText(this.content, v.x, v.y);
+		context.fillText(this.content, v.x, v.y,width,height);
 		
 		//context.strokeRect(v.x, v.y, this.width, this.height);
 	}
