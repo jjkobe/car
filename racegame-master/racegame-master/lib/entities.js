@@ -1,17 +1,17 @@
 var Vector = function(x, y){
 	this.x = x;
 	this.y = y;
-	
+
 	this.add = function(v){
 		this.x += v.x;
 		this.y += v.y;
 	};
-	
+
 	this.remove = function(v){
 		this.x -= v.x;
 		this.y -= v.y;
 	};
-	
+
 	this.clone = function(){
 		return new Vector(this.x, this.y);
 	};
@@ -21,7 +21,7 @@ var Rect = function(v, width, height){
 	this.position = v;
 	this.width = width;
 	this.height = height;
-	
+
 	this.checkHit = function(rect){
 		if(Math.abs((this.position.x + this.width / 2) - (rect.position.x + rect.width / 2)) < (this.width + rect.width) / 2 && Math.abs((this.position.y + this.height / 2) - (rect.position.y + rect.height / 2)) < (this.height + rect.height) / 2){
 			return true;
@@ -37,7 +37,7 @@ var Rect = function(v, width, height){
 	};
 
 	this.checkLine = function(){
-		if(((this.position.x + this.width / 2) > 300)  || ((this.position.x - this.width / 2)  < 200)){
+		if(((this.position.x + this.width / 2) < 190*gnfx/400)  || ((this.position.x - this.width / 2)  > 220*gnfx/400)){
 			return true;
 		}
 		return false;
@@ -58,7 +58,7 @@ var Rect = function(v, width, height){
 	};
 
 	this.checkAddcar = function(rect){
-		if((this.position.y - this.height / 2)  < 200){
+		if((this.position.y - this.height / 2)  < 450*gnfy/710){
 			return true;
 		}
 		return false;
@@ -69,7 +69,7 @@ var Rect = function(v, width, height){
 		}
 		return false;
 	};
-	
+
 	this.checkContain = function(v){
 		if(v.x > this.position.x && v.y > this.position.y && v.x < this.position.x + this.width && v.y < this.position.y + this.height){
 			return true;
@@ -81,7 +81,7 @@ var Rect = function(v, width, height){
 
 var EntityObject = function(){
 	this.guid = EntityObject.guid++;
-	
+
 	this.clickable = false;
 	this.hitable = false;
 	this.avoid=false;
@@ -91,19 +91,20 @@ var EntityObject = function(){
 	this.addcar=false;
 	this.deadline=false;
 	this.drawable=true;
-	
+
+
 	this.collisionMap = null;
-	
+
 	this._events = {};
-	
+
 	this._draw = function(context){};
 	this._update = function(){};
 	this.draw = function(context){
 		this._update();
 		this._draw(context);
 	};
-	
-	
+
+
 	this.setCollisionMap = function(map){
 		this.collisionMap = map;
 	};
@@ -114,7 +115,7 @@ EntityObject.guid = 1;
 var RectEntityObject = function(v, width, height, styles){
 	Rect.call(this, v, width, height);
 	EntityObject.call(this);
-	
+
 	this._draw = function(context){
 		if(!styles){
 			return false;
@@ -124,7 +125,7 @@ var RectEntityObject = function(v, width, height, styles){
 			context.lineWidth = styles.border.width;
 			context.strokeRect(this.position.x, this.position.y, this.width, this.height);
 		}
-		
+
 		if(styles.fill){
 			context.fillStyle = styles.fill;
 			context.fillRect(this.position.x, this.position.y, this.width, this.height);
@@ -134,31 +135,31 @@ var RectEntityObject = function(v, width, height, styles){
 
 
 var TextEntityObject = function(content, v, styles, width, height){
-	
+
 	this.content = content;
 	!!width || (width = 0);
 	!!height || (height = 0);
-	
+
 	EntityObject.call(this);
 	Rect.call(this, v, width, height);
-	
+
 	this.setContent = function(content){
 		this.content = content;
 	};
-	
+
 	this.setStyle = function(s){
 		for(var attr in s){
 			styles[attr] = s[attr];
 		}
 	};
-	
+
 	this._draw = function(context){
 		for(var attr in styles){
 			context[attr] = styles[attr];
 		}
-		
+
 		context.fillText(this.content, v.x, v.y,width,height);
-		
+
 		//context.strokeRect(v.x, v.y, this.width, this.height);
 	}
 }
@@ -172,30 +173,40 @@ var ImageEntityObject = function(img, v, width, height,speed){
 	if(speed){
 		this.speed = speed;
 	}else{
-		this.speed = new Vector(0, 20);
+		this.speed = new Vector(0, 0);
 	}
 
     this._update = function(){
 		var oldPos = this.position.clone();
 		var diffY = MainApp.diffTime * this.speed.y / 1000;
-		var diffX = MainApp.diffTime * this.speed.x / 1000;		
+		var diffX = MainApp.diffTime * this.speed.x / 1000;
 		this.position.x += diffX;
 		this.position.y += diffY;
-		
+
 		if(this.collisionMap){
 			if(this.collisionMap.checkCollide(this)){
 				this.position = oldPos;
 			}
 		}
 		if(this.position.y > 0){
-            console.log(this.position);
 			this.img=this.nextImg;
-			this.position = new Vector(0,-480);
+			this.position = new Vector(0,-710*gnfy/710);
 		}
 	 };
 
 	this._draw = function(context){
-		context.drawImage(this.img, this.position.x, this.position.y);
+		context.drawImage(this.img, this.position.x, this.position.y,width,height);
+	};
+};
+
+
+
+var staticImg = function(img, v, width, height){
+	EntityObject.call(this);
+	Rect.call(this, v, width, height);
+
+	this._draw = function(context){
+		context.drawImage(img, this.position.x, this.position.y,width,height);
 	};
 };
 
@@ -212,7 +223,7 @@ var LoadScreen = function(){
 		forgroundRect.draw(context);
 		text.draw(context);
 	}
-	
+
 	this.setProgress = function(percent){
 		forgroundRect.width = 100 * percent;
 	}
@@ -226,27 +237,27 @@ var CollisionEntityObject = function(pos, width, height){
 var CollistionMap = function(){
 	var objectsIds = [];
 	var objects = {};
-	
+
 	this.add = function(o){
 		objectsIds.push(o.guid);
 		objects[o.guid] = o;
 	};
-	
+
 	this.remove = function(o){
 		var index = objectsIds.indexOf(o.guid);
 		delete objects[o.guid];
 		objectsIds.splice(index, 1);
 	};
-	
+
 	this.checkCollide = function(rect){
 		for(var i = 0, len = objectsIds.length; i < len; i++){
 			var co = objects[objectsIds[i]];
-			
+
 			if(co.checkHit(rect)){
 				return true;
 			}
 		}
-		
+
 		return false;
 	};
 };

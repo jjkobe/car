@@ -215,11 +215,11 @@ function game2() {
 
 function gameJieshao() {
 	console.log(ScreenObjPool);
-  var title = new TextEntityObject('背景介绍', new Vector(120, 150), {fillStyle: '#900', font: 'bold 34px 微软雅黑', 'textBaseline': 'top'}, 100, 35);
+  var title = new TextEntityObject('背景介绍', new Vector(120*gnfx/400, 150*gnfy/710), {fillStyle: '#900', font: 'bold '+60*gnfx/400+'px 微软雅黑', 'textBaseline': 'top'}, 140*gnfx/400, 35*gnfy/710);
 
 	ScreenObjPool.add(title);
 
-  var text = new TextEntityObject('此处应有文字', new Vector(120, 250), {fillStyle: '#900', font: 'bold 24px 微软雅黑', 'textBaseline': 'top'}, 100, 35);
+  var text = new TextEntityObject('此处应有文字', new Vector(140*gnfx/400, 250*gnfy/710), {fillStyle: '#900', font: 'bold '+24*gnfx/400+'px 微软雅黑', 'textBaseline': 'top'}, 100*gnfx/400, 35*gnfy/710);
 
 	ScreenObjPool.add(text);
 
@@ -238,25 +238,22 @@ function gameJieshao() {
 }
 
 function gameSafe() {
-  var title = new TextEntityObject('是否系安全带', new Vector(120, 150), {fillStyle: '#900', font: 'bold 34px 微软雅黑', 'textBaseline': 'top'}, 100, 35);
+  var title = new TextEntityObject('是否系安全带', new Vector(105*gnfx/400, 150*gnfy/710), {fillStyle: '#900', font: 'bold '+34*gnfx/400+'px 微软雅黑', 'textBaseline': 'top'}, 200*gnfx/400, 35*gnfy/710);
 
 	ScreenObjPool.add(title);
 
-  var yep= new TextEntityObject('是', new Vector(60, 350), {fillStyle: '#900', font: 'bold 34px 微软雅黑', 'textBaseline': 'top'}, 100, 35);
-
-	ScreenObjPool.add(yep);
-
-  var no = new TextEntityObject('否', new Vector(180, 350), {fillStyle: '#900', font: 'bold 34px 微软雅黑', 'textBaseline': 'top'}, 100, 35);
-
+  var yep = new staticImg(resourceLoader.get('yes'), new Vector(60*gnfx/400, 400*gnfy/710), 100*gnfx/400, 40*gnfy/710);
+  ScreenObjPool.add(yep);
+  var no =new staticImg(resourceLoader.get('no'),new Vector(230*gnfx/400,400*gnfy/710),100*gnfx/400,40*gnfy/710);
 	ScreenObjPool.add(no);
 
-  MainApp.addEventListener(yep, 'mouseover', function(e){
-		yep.setStyle({fillStyle: '#999'});
-	});
+  // MainApp.addEventListener(yep, 'mouseover', function(e){
+	// 	yep.setStyle({fillStyle: '#999'});
+	// });
 
 
 	MainApp.addEventListener(yep, 'mouseout', function(e){
-		yep.setStyle({fillStyle: '#333'});
+		//yep.setStyle({fillStyle: '#333'});
 	});
 
 
