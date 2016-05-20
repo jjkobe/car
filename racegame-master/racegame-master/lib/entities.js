@@ -43,8 +43,24 @@ var Rect = function(v, width, height){
 		return false;
 	};
 
-	this.checkMiss = function(){
-		if(this.position.y  > -300){
+	this.checkCline = function(rect){
+		if((rect.position.y < -2130*gnfy/710)  && ((this.position.x - this.width / 2)  > 220*gnfx/400)){
+			return true;
+		}
+		return false;
+	};
+
+	this.checkMiss = function(rect){
+		console.log(this.position);
+		if((rect.position.y  > -600*gnfy/710) && ((this.position.x-this.width/2<220*gnfx/400) || (this.position.y-this.width/2<120*gnfy/710))){
+			return true;
+		}
+		return false;
+	};
+
+	this.checkChange = function(rect){
+		console.log(this.position);
+		if((rect.position.y  > -600*gnfy/710) && (this.position.x-this.width/2>220*gnfx/400) && (this.position.y-this.width/2>120*gnfy/710)){
 			return true;
 		}
 		return false;
@@ -59,12 +75,6 @@ var Rect = function(v, width, height){
 
 	this.checkAddcar = function(rect){
 		if((this.position.y - this.height / 2)  < 450*gnfy/710){
-			return true;
-		}
-		return false;
-	};
-	this.checkDeadline = function(rect){
-		if(Math.abs((this.position.x + this.width / 2) - (rect.position.x + rect.width / 2)) < (this.width + rect.width) / 2 && Math.abs((this.position.y + this.height / 2) - (rect.position.y + rect.height / 2)) < (this.height + rect.height) / 2){
 			return true;
 		}
 		return false;
@@ -86,10 +96,11 @@ var EntityObject = function(){
 	this.hitable = false;
 	this.avoid=false;
 	this.lineable=false;
+	this.cline=false;
 	this.miss=false;
+	this.change=false;
 	this.end=false;
 	this.addcar=false;
-	this.deadline=false;
 	this.drawable=true;
 
 

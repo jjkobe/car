@@ -172,9 +172,9 @@ resourceLoader.onComplete = function(){
 	ScreenObjPool.remove(loadScreen);
 	//showWelcome();
 	//gameJieshao();
-	lineGame();
+	//lineGame();
 	//avoidGame();
-	//background1();
+	background();
 	//gameSafe();
 	//runWithOther();
 	//startGame();
@@ -311,7 +311,7 @@ function startGame(){
 
 	});
 
-	MainApp.addEventListener(myCar, 'hit', function(e){
+	MainApp.addEventListener(myCar, 'hit', function(e){//弹框  不能撞击其他车辆
 		ScreenObjPool.empty();
 		MainApp.emptyEventsPool();
 		KEY_LOCK = {
@@ -322,10 +322,8 @@ function startGame(){
 		}
 		endGame(score.score);
 	});
-	MainApp.addEventListener(myCar, 'deadline', function(e){
-        alert("deadline");
-	});
-	ScreenObjPool.add(myCar);
+
+
 
 
 	// if (runWithOther) {
@@ -335,7 +333,7 @@ function startGame(){
 //最后一个的逻辑，小车排队不能变道
 function lineGame(){
 	var road = new ImageEntityObject(resourceLoader.get('roadD'), new Vector(0, -710*gnfy/710), 400*gnfx/400, 1420*gnfy/710, new Vector(0,100));
-  ScreenObjPool.add(road);
+    ScreenObjPool.add(road);
 	var img =  resourceLoader.resources.car5;
 	var newCar = new Car(new Vector(200*gnfx/400, 0*gnfy/710), window.util.randomColor(), img, new Vector(0, -20*gnfy/710));
 	newCar.hitable = true;
@@ -433,7 +431,7 @@ function lineGame(){
 				break;
 		}
 	});
-	MainApp.addEventListener(myCar, 'hit', function(e){
+	MainApp.addEventListener(myCar, 'hit', function(e){//弹框不能撞击其他车辆
 		ScreenObjPool.empty();
 		MainApp.emptyEventsPool();
 		KEY_LOCK = {
@@ -445,7 +443,7 @@ function lineGame(){
 		//endGame(score.score);
 	});
 	myCar.lineable=true;
-	MainApp.addEventListener(myCar, 'line', function(e){
+	MainApp.addEventListener(myCar, 'line', function(e){//不能向公交车专用道或者对向车道变道
 		alert("line");
 		ScreenObjPool.empty();
 		MainApp.emptyEventsPool();
@@ -457,7 +455,7 @@ function lineGame(){
 		}
 	});
 	myCar.end=true;
-	MainApp.addEventListener(myCar, 'end', function(e){
+	MainApp.addEventListener(myCar, 'end', function(e){//全屏幕，游戏结束（最后做）
 		alert("end");
 		ScreenObjPool.empty();
 		MainApp.emptyEventsPool();
@@ -568,7 +566,7 @@ function avoidGame(){
 				break;
 		}
 	});
-	MainApp.addEventListener(myCar, 'hit', function(e){
+	MainApp.addEventListener(myCar, 'hit', function(e){//弹框，不能撞击行人
 		ScreenObjPool.empty();
 		MainApp.emptyEventsPool();
 		KEY_LOCK = {
@@ -579,7 +577,7 @@ function avoidGame(){
 		}
 		//endGame(score.score);
 	});
-	MainApp.addEventListener(myCar, 'avoid', function(e){
+	MainApp.addEventListener(myCar, 'avoid', function(e){//全屏幕，成功避让行人，下一关
 		alert("avoid");
 		ScreenObjPool.empty();
 		MainApp.emptyEventsPool();
@@ -595,9 +593,128 @@ function avoidGame(){
 }
 //在高架上时的背景车道，只是要变道逻辑时
 function background(){
-	var road = new ImageEntityObject(resourceLoader.get('roadG'), new Vector(0, -1920), 640, 480, new Vector(0,100));
+	var road = new ImageEntityObject(resourceLoader.get('roadG'), new Vector(0, -2840*gnfy/710), 400*gnfx/400, 3550*gnfy/710, new Vector(0,100));
 	road.miss=true;
-	MainApp.addEventListener(road, 'miss', function(e){
+	road.change=true;
+	road.cline=true;
+	ScreenObjPool.add(road);
+	var images = [];
+	images.push(resourceLoader.resources.car1);
+	images.push(resourceLoader.resources.car2);
+	images.push(resourceLoader.resources.car3);
+	images.push(resourceLoader.resources.car4);
+	images.push(resourceLoader.resources.car5);
+	for(var i = 0; i < 3; i++){
+		var img =  images[util.random(0, images.length - 1)];
+		var temp=util.random(0,2);
+		var newCar = new Car(new Vector((temp * 74 + 55)*gnfx/400, window.util.random(-480, -80)*gnfy/710), window.util.randomColor(), img,new Vector(0, 130),2);
+		newCar.hitable = true;
+		ScreenObjPool.add(newCar);
+	}
+	var scorePre = new TextEntityObject('Score: ', new Vector(50, 5), {fillStyle: '#fff', font: 'bold 32px 微软雅黑', 'textBaseline': 'top'}, 100, 35);
+	ScreenObjPool.add(scorePre);
+	//var score = new TextEntityObject('0', new Vector(160, 5), {fillStyle: '#fff', font: 'bold 32px 微软雅黑', 'textBaseline': 'top'}, 100, 35);
+	var score = new GameScore(0, new Vector(160, 5));
+	ScreenObjPool.add(score);
+
+	var leftC = new CollisionEntityObject(new Vector(0, 0), 40*gnfx/400, 710*gnfy/710);
+	var rightC = new CollisionEntityObject(new Vector(325*gnfx/400, 0), 75*gnfx/400, 710*gnfy/710);
+	var topC = new CollisionEntityObject(new Vector(0, 0), 400*gnfx/400, 20*gnfy/710);
+	var bottomC = new CollisionEntityObject(new Vector(0, 710*gnfy/710), 400*gnfx/400, 10);
+	var cMap = new CollistionMap();
+	cMap.add(leftC);
+	cMap.add(rightC);
+	cMap.add(topC);
+	cMap.add(bottomC);
+
+	var myCar = new Car(new Vector(200*gnfx/400, 600*gnfy/710), window.util.randomColor(), resourceLoader.resources.car_p, new Vector(0, 0));
+	myCar.setCollisionMap(cMap);
+	MainApp.addEventListener(myCar, 'keyup', function(e){
+		var KEY = MainApp.INPUT.KEY;
+		switch(e.which){
+			case KEY.UP:
+				if(KEY_LOCK.UP){
+					this.speed.remove(new Vector(0, -40));
+					KEY_LOCK.UP = false;
+				}
+				break;
+			case KEY.DOWN:
+				if(KEY_LOCK.DOWN){
+					this.speed.remove(new Vector(0, 40));
+					KEY_LOCK.DOWN = false;
+				}
+				break;
+			case KEY.LEFT:
+				if(KEY_LOCK.LEFT){
+					this.speed.remove(new Vector(-40, 0));
+					KEY_LOCK.LEFT = false;
+				}
+				break;
+			case KEY.RIGHT:
+				if(KEY_LOCK.RIGHT){
+					this.speed.remove(new Vector(40, 0));
+					KEY_LOCK.RIGHT = false;
+				}
+				break;
+		}
+	});
+
+	MainApp.addEventListener(myCar, 'keydown', function(e){
+		var KEY = MainApp.INPUT.KEY;
+		switch(e.which){
+			case KEY.UP:
+				if(!KEY_LOCK.UP){
+					myCar.speed.add(new Vector(0, -40));
+					console.log(myCar.speed);
+					KEY_LOCK.UP = true;
+				}
+				break;
+			case KEY.DOWN:
+				if(!KEY_LOCK.DOWN){
+					myCar.speed.add(new Vector(0, 40));
+					KEY_LOCK.DOWN = true;
+				}
+				break;
+			case KEY.LEFT:
+				if(!KEY_LOCK.LEFT){
+					myCar.speed.add(new Vector(-40, 0));
+					KEY_LOCK.LEFT = true;
+				}
+				break;
+			case KEY.RIGHT:
+				if(!KEY_LOCK.RIGHT){
+					myCar.speed.add(new Vector(40, 0));
+					KEY_LOCK.RIGHT = true;
+				}
+				break;
+		}
+
+	});
+
+	MainApp.addEventListener(myCar, 'hit', function(e){
+		ScreenObjPool.empty();
+		MainApp.emptyEventsPool();
+		KEY_LOCK = {
+			LEFT: false,
+			RIGHT: false,
+			UP: false,
+			DOWN: false
+		}
+		endGame(score.score);
+	});
+	MainApp.addEventListener(myCar, 'cline', function(e){//弹框实现不能变道
+		alert("cline");
+		ScreenObjPool.empty();
+		MainApp.emptyEventsPool();
+		KEY_LOCK = {
+			LEFT: false,
+			RIGHT: false,
+			UP: false,
+			DOWN: false
+		}
+		endGame(score.score);
+	});
+	MainApp.addEventListener(myCar, 'miss', function(e){//弹框，错过了下高架
 		alert("miss");
 		ScreenObjPool.empty();
 		MainApp.emptyEventsPool();
@@ -609,19 +726,20 @@ function background(){
 		}
 		//endGame(score.score);
 	});
-	ScreenObjPool.add(road);
-	console.log(road.position);
-	// var img =  resourceLoader.resources.pai;
-	// var lupai = new Car(new Vector(523, 0), window.util.randomColor(), img, new Vector(0,100));
-	//ScreenObjPool.add(lupai);
+	MainApp.addEventListener(myCar, 'change', function(e){//全屏幕，正确下高架，经行下一关
+		alert("change");
+		ScreenObjPool.empty();
+		MainApp.emptyEventsPool();
+		KEY_LOCK = {
+			LEFT: false,
+			RIGHT: false,
+			UP: false,
+			DOWN: false
+		}
+		//endGame(score.score);
+	});
+	ScreenObjPool.add(myCar);
 }
-//在高架上随便开车时的背景
-function background1(){
-	var road = new ImageEntityObject(resourceLoader.get('roadG1'), new Vector(0, -480), 640, 480, new Vector(0,100));
-	ScreenObjPool.add(road);
-}
-
-
 
 function stop_coin_music(){
 	$('#coin_play audio').get(0).pause();

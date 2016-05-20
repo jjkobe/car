@@ -1,4 +1,4 @@
-var Car = function(v, style, img, speed){
+var Car = function(v, style, img, speed,road){
 	this.img = img;
 	this.width = img.width*gnfx/400;
 	this.height = img.height*gnfy/710;
@@ -6,6 +6,11 @@ var Car = function(v, style, img, speed){
 		this.speed = speed;
 	}else{
 		this.speed = new Vector(0, 130);
+	}
+	if(road){
+		this.road = road;
+	}else{
+		this.road = 3;
 	}
 
 	RectEntityObject.call(this, v, this.width - 6, this.height - 6, {});
@@ -26,7 +31,7 @@ var Car = function(v, style, img, speed){
 		//this.position.x += (MainApp.nowTime - MainApp.startTime) * this.speed.x / 1000;
 
 		if(this.position.y > 710*gnfy/710){
-			var temp=util.random(0,3);
+			var temp=util.random(0,this.road);
 			this.position.x=temp * 74*gnfx/400 + 51;
 			this.position.y = window.util.random(-710*gnfy/710, 0);
 			this.speed = new Vector(0, 80);
@@ -83,41 +88,7 @@ var ConverseCar = function(v, style, img, speed){
 };
 
 
-var Deadline = function(v, style, img, speed){
-	this.width = 20;
-	this.height = 20;
-	this.img = img;
-	this.width = img.width;
-	this.height = img.height;
-	if(speed){
-		this.speed = speed;
-	}else{
-		this.speed = new Vector(0, Math.ceil(window.util.random(80, 180)));
-	}
 
-	RectEntityObject.call(this, v, this.width - 6, this.height - 6, {});
-
-
-	this._update = function(){
-		var oldPos = this.position.clone();
-		var diffY = MainApp.diffTime * this.speed.y / 1000;
-		var diffX = MainApp.diffTime * this.speed.x / 1000;
-		this.position.x += diffX;
-		this.position.y += diffY;
-
-		if(this.collisionMap){
-			if(this.collisionMap.checkCollide(this)){
-				this.position = oldPos;
-			}
-		}
-	};
-
-	this._draw = function(context){
-	//if(this.drawable){
-		context.drawImage(this.img, this.position.x - 3, this.position.y - 3);
-	//}
-	};
-};
 
 var Magic = function(v, img, animType, split, speed){
 

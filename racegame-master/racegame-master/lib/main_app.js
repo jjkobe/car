@@ -40,20 +40,20 @@ var ScreenObjPool = {
 			if(o.lineable){
 				MainApp.checkLine(o);
 			}
+			if(o.cline){
+				MainApp.checkCline(o);
+			}
 			if(o.miss){
 				MainApp.checkMiss(o);
+			}
+			if(o.change){
+				MainApp.checkChange(o);
 			}
 			if(o.end){
 				MainApp.checkEnd(o)
 			}
 			if(o.addcar){
 				MainApp.checkAddcar(o)
-			}
-			if(o.deadline){
-				if(MainApp.checkDeadline(o)){
-					ScreenObjPool.remove(o);
-					len--;
-				}
 			}
 		}
 	}
@@ -133,10 +133,11 @@ var MainApp = {
 		hit: [],
 		avoid:[],
 		line:[],
+		cline:[],
 		miss:[],
+		change:[],
 		end:[],
-		addcar:[],
-		deadline:[]
+		addcar:[]
 	},
 
 	emptyEventsPool: function(){
@@ -152,10 +153,11 @@ var MainApp = {
 			hit: [],
 			avoid:[],
 			line:[],
+			cline:[],
 			miss:[],
+			change:[],
 			end:[],
-			addcar:[],
-			deadline:[]
+			addcar:[]
 		}
 	},
 
@@ -294,13 +296,41 @@ var MainApp = {
 		}
 	},
 
+	checkCline: function(target){
+		for(var i = 0, len = MainApp.eventsPool.cline.length; i < len; i++){
+			var event = MainApp.eventsPool.cline[i];
+			if(event.target.guid === target.guid){
+				continue;
+			}
+
+			if(event.target.checkCline(target)){
+				event.callback.call(event.target, {relatedTarget: target});
+			}
+		}
+	},
+
 	checkMiss: function(target){
 		for(var i = 0, len = MainApp.eventsPool.miss.length; i < len; i++){
 			var event = MainApp.eventsPool.miss[i];
 			if(event.target.guid === target.guid){
-				if(event.target.checkMiss()){
+				continue;
+			}
+
+			if(event.target.checkMiss(target)){
 				event.callback.call(event.target, {relatedTarget: target});
 			}
+		}
+	},
+
+	checkChange: function(target){
+		for(var i = 0, len = MainApp.eventsPool.change.length; i < len; i++){
+			var event = MainApp.eventsPool.change[i];
+			if(event.target.guid === target.guid){
+				continue;
+			}
+
+			if(event.target.checkChange(target)){
+				event.callback.call(event.target, {relatedTarget: target});
 			}
 		}
 	},
@@ -328,19 +358,6 @@ var MainApp = {
 		}
 	},
 
-	checkDeadline: function(target){
-		for(var i = 0, len = MainApp.eventsPool.deadline.length; i < len; i++){
-			var event = MainApp.eventsPool.deadline[i];
-			if(event.target.guid === target.guid){
-				continue;
-			}
-			if(event.target.checkDeadline(target)){
-				event.callback.call(event.target, {relatedTarget: target});
-				return true;
-			}
-		}
-		return false;
-	},
 
 	startRun: function(){
 		this.startTime = new Date().getTime();
