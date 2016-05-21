@@ -15,6 +15,7 @@ var Car = function(v, style, img, speed,road){
 
 	RectEntityObject.call(this, v, this.width - 6, this.height - 6, {});
 
+	this.checkBus=false;
 	this._update = function(){
 		var oldPos = this.position.clone();
 		var diffY = MainApp.diffTime * this.speed.y / 1000;
@@ -39,7 +40,10 @@ var Car = function(v, style, img, speed,road){
 	 };
 
 	this._draw = function(context){
-
+		if (this.checkBus&&this.position.x>260*gnfx/400) {
+			MainApp.stopRun();
+			//alert('sss');
+		}
 		//context.strokeRect(this.position.x, this.position.y, this.width, this.height);
 		context.drawImage(this.img, this.position.x - 3, this.position.y - 3,this.width,this.height);
 	};
@@ -81,6 +85,7 @@ var ConverseCar = function(v, style, img, speed){
 
 
 	this._draw = function(context){
+
 
 		//context.strokeRect(this.position.x, this.position.y, this.width, this.height);
 		context.drawImage(this.img, this.position.x - 3, this.position.y - 3,this.width,this.height);

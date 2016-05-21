@@ -1,3 +1,4 @@
+
 (function(window, util){
 
 var flag=false;
@@ -399,6 +400,11 @@ var MainApp = {
 
 	stopRun: function(){
 		this.runStatus = false;
+	},
+
+	keepRun:function() {
+		this.runStatus=true;
+		this.renderFrame();
 	},
 
 	renderFrame: function(){

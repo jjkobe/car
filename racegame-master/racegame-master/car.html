@@ -51,13 +51,14 @@ margin: 0 auto;
 /*position:fixed;*/
 top:30%;
 left:10%;
-width:200px;
+/*width:200px;*/
 height:120px;
 margin:0 auto;
 border-radius:5px;
 border:solid 2px #666;
 /*background-color:blue;*/
-color: white;
+/*color: white;*/
+color: black;
 text-align: center;
 display:none;
 box-shadow: 0 0 10px #666;
@@ -76,7 +77,7 @@ BODY, HTML
 	font-family: 		Arial, Verdana, sans-serif;
 	font-size: 			12px;
 	font-weight:		normal;
-	color: 				#ccc;
+	/*color: 				#ccc;*/
 	background-color:	white;
 	overflow-x:hidden;
   overflow-y:hidden;
@@ -97,17 +98,44 @@ BODY, HTML
 	<div class="mask" id="mask">
 
 	</div>
-	<div class="onmask" id="safe">
+	<div class="onmask" id="safe" style="background-color:white">
 		<h1>开车时一定要系安全带</h1>
 	</div>
-	<div class="onmask" id="phone">
+
+	<div class="onmask" id="pai" style="background-color:white">
+		<!-- <div style="margin:0 auto"> -->
+			<h1>前方下高架需要变道</h1>
+		<!-- </div> -->
+
+	</div>
+	<div class="onmask" id="phone" style="background-color:white">
 		<div class="" style="float:left;width:20%">
 			<img src="images/phone.png" width="50%" alt="" />
 		</div>
-		<div class="">
+		<div class="" >
 			<h1>老板来电话了！</h1>
 			<h2><a id="jie">接</a><a id="bujie" style="margin-left:100px">不接</a></h2>
 			<h2><a id="text"></a></h2>
+		</div>
+
+	</div>
+	<div class="onmask" id="tipcline" style="background-color:white">
+		<div class="" style="float:left;width:20%">
+			<img src="images/tip.png" width="50%" alt="" />
+		</div>
+		<div class="" >
+
+			<h2>cline</h2>
+		</div>
+
+	</div>
+	<div class="onmask" id="tipmiss" style="background-color:white">
+		<div class="" style="float:left;width:20%">
+			<img src="images/tip.png" width="50%" alt="" />
+		</div>
+		<div class="" >
+
+			<h2>miss</h2>
 		</div>
 
 	</div>
@@ -137,6 +165,7 @@ BODY, HTML
 <script type="text/javascript">
 var gnfx=document.documentElement.clientWidth;
 var gnfy=document.documentElement.clientHeight;
+//$('.onmask').attr('width',0.8*gnfx+'px');
 var runWithOther=true;
 var screenObjects = [];
 var startTime = null;
@@ -157,22 +186,29 @@ var resources = [
 	{'name': 'pai', src: 'images/7.png', type: 'images'},
 	{'name':'yes',src:'images/yes.png',type:'images'},
 	{'name':'person',src:'images/person.png',type:'images'},
-	{'name':'no',src:'images/no.png',type:'images'}
+	{'name':'no',src:'images/no.png',type:'images'},
+	{'name':'up',src:'images/up.png',type:'images'},
+	{'name':'down',src:'images/down.png',type:'images'},
+	{'name':'left',src:'images/left.png',type:'images'},
+	{'name':'right',src:'images/right.png',type:'images'},
+
 ];
 resourceLoader.onProgress = function(e){
 	loadScreen.setProgress(e.loadedCount / e.totalCount);
 };
 
 resourceLoader.onComplete = function(){
-	ScreenObjPool.remove(loadScreen);
+	//ScreenObjPool.remove(loadScreen);
 	//showWelcome();
 	//gameJieshao();
 	//lineGame();
-	avoidGame();
+	//avoidGame();
 	//background();
 	//gameSafe();
 	//runWithOther();
 	//startGame();
+	schoolCar();
+	//biandao();
 };
 var loadScreen = new LoadScreen();
 
@@ -315,7 +351,7 @@ function startGame(){
 			UP: false,
 			DOWN: false
 		}
-		endGame(score.score);
+		//endGame(score.score);
 	});
 	ScreenObjPool.add(myCar);
 	var speedUp = new TextEntityObject('上', new Vector(365*gnfx/400, 500*gnfy/710), {fillStyle: '#fff', font: 'bold '+32*gnfx/400+'px 微软雅黑', 'textBaseline': 'top'}, 35*gnfx/400, 35*gnfy/400);
@@ -357,9 +393,9 @@ function startGame(){
 
 
 
-	// if (runWithOther) {
-	// 	runWithOther();
-	// }
+	if (runWithOther) {
+		runWithOther();
+	}
 
 }
 //最后一个的逻辑，小车排队不能变道
@@ -722,13 +758,13 @@ function background(){
 	images.push(resourceLoader.resources.car3);
 	images.push(resourceLoader.resources.car4);
 	images.push(resourceLoader.resources.car5);
-	for(var i = 0; i < 3; i++){
-		var img =  images[util.random(0, images.length - 1)];
-		var temp=util.random(0,2);
-		var newCar = new Car(new Vector((temp * 74 + 55)*gnfx/400, window.util.random(-480, -80)*gnfy/710), window.util.randomColor(), img,new Vector(0, 130),2);
-		newCar.hitable = true;
-		ScreenObjPool.add(newCar);
-	}
+	// for(var i = 0; i < 3; i++){
+	// 	var img =  images[util.random(0, images.length - 1)];
+	// 	var temp=util.random(0,2);
+	// 	var newCar = new Car(new Vector((temp * 74 + 55)*gnfx/400, window.util.random(-480, -80)*gnfy/710), window.util.randomColor(), img,new Vector(0, 130),2);
+	// 	newCar.hitable = true;
+	// 	ScreenObjPool.add(newCar);
+	// }
 	var scorePre = new TextEntityObject('Score: ', new Vector(50, 5), {fillStyle: '#fff', font: 'bold 32px 微软雅黑', 'textBaseline': 'top'}, 100, 35);
 	ScreenObjPool.add(scorePre);
 	//var score = new TextEntityObject('0', new Vector(160, 5), {fillStyle: '#fff', font: 'bold 32px 微软雅黑', 'textBaseline': 'top'}, 100, 35);
@@ -821,31 +857,41 @@ function background(){
 		endGame(score.score);
 	});
 	MainApp.addEventListener(myCar, 'cline', function(e){//弹框实现不能变道
-		alert("cline");
-		ScreenObjPool.empty();
-		MainApp.emptyEventsPool();
-		KEY_LOCK = {
-			LEFT: false,
-			RIGHT: false,
-			UP: false,
-			DOWN: false
-		}
-		endGame(score.score);
+		$('#tipcline').fadeIn(100);
+		setTimeout(function() {
+
+			$('#tipcline').fadeOut(100);
+			ScreenObjPool.empty();
+			MainApp.emptyEventsPool();
+			KEY_LOCK = {
+				LEFT: false,
+				RIGHT: false,
+				UP: false,
+				DOWN: false
+			}
+			background();
+		},2000);
+
 	});
 	MainApp.addEventListener(myCar, 'miss', function(e){//弹框，错过了下高架
-		alert("miss");
-		ScreenObjPool.empty();
-		MainApp.emptyEventsPool();
-		KEY_LOCK = {
-			LEFT: false,
-			RIGHT: false,
-			UP: false,
-			DOWN: false
-		}
+		$('#tipmiss').fadeIn(100);
+		setTimeout(function() {
+
+			$('#tipmiss').fadeOut(100);
+			ScreenObjPool.empty();
+			MainApp.emptyEventsPool();
+			KEY_LOCK = {
+				LEFT: false,
+				RIGHT: false,
+				UP: false,
+				DOWN: false
+			}
+			background();
+		},2000);
 		//endGame(score.score);
 	});
 	MainApp.addEventListener(myCar, 'change', function(e){//全屏幕，正确下高架，经行下一关
-		alert("change");
+
 		ScreenObjPool.empty();
 		MainApp.emptyEventsPool();
 		KEY_LOCK = {
@@ -853,7 +899,8 @@ function background(){
 			RIGHT: false,
 			UP: false,
 			DOWN: false
-		}
+		};
+		schoolCar();
 		//endGame(score.score);
 	});
 	ScreenObjPool.add(myCar);

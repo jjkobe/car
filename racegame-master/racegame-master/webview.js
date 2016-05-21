@@ -6,6 +6,7 @@ function setHtmlSize(){
   document.getElementById('safe').style.width=0.8*windowWidth+'px';
   document.getElementById('safe').style.height=0.3*windowWidth+'px';
   document.getElementById('phone').style.height=0.3*windowWidth+'px';
+  document.getElementById('pai').style.width=0.8*windowWidth+'px';
   //console.log(welcome);
   if (welcome) {
     console.log(welcome.position.x,welcome.position.y)

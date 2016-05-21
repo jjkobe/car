@@ -289,10 +289,173 @@ function runWithOther() {
       $('#text').text('开车时不能接电话');
     });
     $('#bujie').on('click',function(){
-      MainApp.startRun();
+
+      $('.mask').fadeOut(100);
+      $('#phone').slideUp(200);
+      ScreenObjPool.empty();
+  		MainApp.emptyEventsPool();
+  		KEY_LOCK = {
+  			LEFT: false,
+  			RIGHT: false,
+  			UP: false,
+  			DOWN: false
+  		};
+      MainApp.keepRun();
+      biandao();
     });
   },5000);
 
   runWithOther=false;
 
+}
+function schoolCar() {
+  var schoolBus = new Car(new Vector(200*gnfx/400, 700*gnfy/710), window.util.randomColor(), resourceLoader.resources.schoolBus, new Vector(0, 0));
+  schoolBus.checkBus=true;
+  schoolBus.hitable=true;
+
+  var road = new ImageEntityObject(resourceLoader.get('roadG1'), new Vector(0, -710*gnfy/710), 400*gnfx/400, 1420*gnfy/710, new Vector(0,100));
+  ScreenObjPool.add(road);
+
+  var myCar = new Car(new Vector(275*gnfx/400, 600*gnfy/710), window.util.randomColor(), resourceLoader.resources.car_p, new Vector(0, 0));
+  var cMap = new CollistionMap();
+  myCar.setCollisionMap(cMap);
+  MainApp.addEventListener(myCar, 'hit', function(e){//弹框  不能撞击其他车辆
+		ScreenObjPool.empty();
+		MainApp.emptyEventsPool();
+		KEY_LOCK = {
+			LEFT: false,
+			RIGHT: false,
+			UP: false,
+			DOWN: false
+		}
+		//endGame(score.score);
+	});
+  //图片点击
+  // var speedUp = new TextEntityObject('上', new Vector(365*gnfx/400, 500*gnfy/710), {fillStyle: '#fff', font: 'bold '+32*gnfx/400+'px 微软雅黑', 'textBaseline': 'top'}, 35*gnfx/400, 35*gnfy/400);
+  // var speedDown = new TextEntityObject('下', new Vector(365*gnfx/400, 600*gnfy/710), {fillStyle: '#fff', font: 'bold '+32*gnfx/400+'px 微软雅黑', 'textBaseline': 'top'}, 35*gnfx/400, 35*gnfy/400);
+  // var speedLeft = new TextEntityObject('左', new Vector(0, 500*gnfy/710), {fillStyle: '#fff', font: 'bold '+32*gnfx/400+'px 微软雅黑', 'textBaseline': 'top'}, 35*gnfx/400, 35*gnfy/400);
+  // var speedRight = new TextEntityObject('右', new Vector(0, 600*gnfy/710), {fillStyle: '#fff', font: 'bold '+32*gnfx/400+'px 微软雅黑', 'textBaseline': 'top'}, 35*gnfx/400, 35*gnfy/400);
+  var speedUp = new staticImg(resourceLoader.get('up'), new Vector(365*gnfx/400, 500*gnfy/710), 30*gnfx/400, 45*gnfy/710);
+  var speedDown = new staticImg(resourceLoader.get('down'), new Vector(365*gnfx/400, 600*gnfy/710), 30*gnfx/400, 45*gnfy/710);
+  var speedRight = new staticImg(resourceLoader.get('right'), new Vector(3*gnfx/400, 600*gnfy/710), 30*gnfx/400, 45*gnfy/710);
+  var speedLeft = new staticImg(resourceLoader.get('left'), new Vector(3*gnfx/400, 500*gnfy/710), 30*gnfx/400, 45*gnfy/710);
+  ScreenObjPool.add(speedUp);
+  ScreenObjPool.add(speedDown);
+  ScreenObjPool.add(speedLeft);
+  ScreenObjPool.add(speedRight);
+  MainApp.addEventListener(speedUp,'mousedown',function(e){
+  myCar.speed.add(new Vector(0, -20));
+  //console.log(myCar.speed);
+  });
+   MainApp.addEventListener(speedUp,'mouseup',function(e){
+      myCar.speed.remove(new Vector(0, -20));
+  });
+  MainApp.addEventListener(speedDown,'mousedown',function(e){
+  myCar.speed.add(new Vector(0, 20));
+  schoolBus.speed.add(new Vector(15,0));
+  //console.log(myCar.speed);
+  });
+   MainApp.addEventListener(speedDown,'mouseup',function(e){
+      myCar.speed.remove(new Vector(0, 20));
+
+      schoolBus.speed.remove(new Vector(15,0));
+  });
+  MainApp.addEventListener(speedLeft,'mousedown',function(e){
+  //myCar.speed.add(new Vector(-20, 0));
+  myCar.position.x-=71*gnfx/400;
+  //console.log(myCar.speed);
+  });
+   MainApp.addEventListener(speedLeft,'mouseup',function(e){
+      //myCar.speed.remove(new Vector(-20, 0));
+
+  });
+  MainApp.addEventListener(speedRight,'mousedown',function(e){
+  //myCar.speed.add(new Vector(20, 0));
+    myCar.position.x+=71*gnfx/400;
+  //console.log(myCar.speed);
+  });
+   MainApp.addEventListener(speedRight,'mouseup',function(e){
+      //myCar.speed.remove(new Vector(20, 0));
+  });
+
+
+  //图片点击
+
+  ScreenObjPool.add(myCar);
+
+  setTimeout(function functionName() {
+    ScreenObjPool.add(schoolBus);
+    schoolBus.speed.add(new Vector(0, -25));
+    myCar.speed.add(new Vector(0, -15));
+  },3000);
+}
+
+
+function biandao() {
+  var lupai = new Car(new Vector(280*gnfx/400, -200*gnfy/710), window.util.randomColor(), resourceLoader.get('pai'), new Vector(0, 100));
+  var myCar = new Car(new Vector(275*gnfx/400, 600*gnfy/710), window.util.randomColor(), resourceLoader.resources.car_p, new Vector(0, 0));
+  var speedUp = new staticImg(resourceLoader.get('up'), new Vector(365*gnfx/400, 500*gnfy/710), 30*gnfx/400, 45*gnfy/710);
+  var speedDown = new staticImg(resourceLoader.get('down'), new Vector(365*gnfx/400, 600*gnfy/710), 30*gnfx/400, 45*gnfy/710);
+  var speedRight = new staticImg(resourceLoader.get('right'), new Vector(3*gnfx/400, 600*gnfy/710), 30*gnfx/400, 45*gnfy/710);
+  var speedLeft = new staticImg(resourceLoader.get('left'), new Vector(3*gnfx/400, 500*gnfy/710), 30*gnfx/400, 45*gnfy/710);
+  ScreenObjPool.add(speedUp);
+  ScreenObjPool.add(speedDown);
+  ScreenObjPool.add(speedLeft);
+  ScreenObjPool.add(speedRight);
+  MainApp.addEventListener(speedUp,'mousedown',function(e){
+  myCar.speed.add(new Vector(0, -20));
+  //console.log(myCar.speed);
+  });
+   MainApp.addEventListener(speedUp,'mouseup',function(e){
+      myCar.speed.remove(new Vector(0, -20));
+  });
+  MainApp.addEventListener(speedDown,'mousedown',function(e){
+  myCar.speed.add(new Vector(0, 20));
+  schoolBus.speed.add(new Vector(15,0));
+  //console.log(myCar.speed);
+  });
+   MainApp.addEventListener(speedDown,'mouseup',function(e){
+      myCar.speed.remove(new Vector(0, 20));
+
+      schoolBus.speed.remove(new Vector(15,0));
+  });
+  MainApp.addEventListener(speedLeft,'mousedown',function(e){
+  myCar.speed.add(new Vector(-20, 0));
+  //console.log(myCar.speed);
+  });
+   MainApp.addEventListener(speedLeft,'mouseup',function(e){
+      myCar.speed.remove(new Vector(-20, 0));
+  });
+  MainApp.addEventListener(speedRight,'mousedown',function(e){
+  myCar.speed.add(new Vector(20, 0));
+  //console.log(myCar.speed);
+  });
+   MainApp.addEventListener(speedRight,'mouseup',function(e){
+      myCar.speed.remove(new Vector(20, 0));
+  });
+  var road = new ImageEntityObject(resourceLoader.get('roadG1'), new Vector(0, -710*gnfy/710), 400*gnfx/400, 1420*gnfy/710, new Vector(0,100));
+  ScreenObjPool.add(road);
+  ScreenObjPool.add(lupai);
+  ScreenObjPool.add(myCar);
+
+  setTimeout(function() {
+    MainApp.stopRun();
+    $('.mask').fadeIn(100);
+    $('#pai').slideDown(200);
+    setTimeout(function () {
+      $('.mask').fadeOut(100);
+      $('#pai').slideUp(200);
+      ScreenObjPool.empty();
+  		MainApp.emptyEventsPool();
+  		KEY_LOCK = {
+  			LEFT: false,
+  			RIGHT: false,
+  			UP: false,
+  			DOWN: false
+  		};
+      background();
+      MainApp.keepRun();
+
+    },2000);
+  },5000);
 }
