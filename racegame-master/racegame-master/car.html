@@ -52,7 +52,7 @@ margin: 0 auto;
 top:30%;
 left:10%;
 /*width:200px;*/
-height:120px;
+height:60px;
 margin:0 auto;
 border-radius:5px;
 border:solid 2px #666;
@@ -94,23 +94,50 @@ BODY, HTML
 	</style>
 </head>
 
+
 <body>
 	<div class="mask" id="mask">
 
 	</div>
 	<div class="onmask" id="safe" style="background-color:white">
-		<h1>开车时一定要系安全带</h1>
+		<h1>驾驶员和副驾驶都必须系好安全带，驾驶员也有提醒、督促副驾驶系安全带的义务哦！</h1>
 	</div>
 
 	<div class="onmask" id="pai" style="background-color:white">
 		<!-- <div style="margin:0 auto"> -->
-			<h1>前方下高架需要变道</h1>
+			<h1>前方下高架需要变道,注意要在车道变成虚线时变道哦</h1>
 		<!-- </div> -->
 
 	</div>
+	<div class="onmask" id="hitTip" style="background-color:white">
+		<div class="" style="float:left;width:20%">
+			<img src="images/tip.png" width="50%" alt="" style="margin-left:25%;margin-top:20%"/>
+		</div>
+		<div class="" >
+
+			<h2>汽车在路面上行驶追尾前车的话，一般是追尾着全责哦！</h2>
+		</div>
+
+		<center>
+			<button type="button" name="button" id='know'>我知道了，重新开始</button>
+		</center>
+	</div>
+	<div class="onmask" id="hitschool" style="background-color:white">
+		<div class="" style="float:left;width:20%">
+			<img src="images/tip.png" width="50%" alt="" style="margin-left:25%;margin-top:20%"/>
+		</div>
+		<div class="" >
+
+			<h2>为了进一步确保校车出行安全，社会车辆不避让校车将会被依法处罚款并扣分哦！</h2>
+		</div>
+
+		<center>
+			<button type="button" name="button" id='schoolknow'>我知道了，重新开始</button>
+		</center>
+	</div>
 	<div class="onmask" id="phone" style="background-color:white">
 		<div class="" style="float:left;width:20%">
-			<img src="images/phone.png" width="50%" alt="" />
+			<img src="images/phone.png" width="50%" style="margin-left:25%;margin-top:20%" alt="" />
 		</div>
 		<div class="" >
 			<h1>老板来电话了！</h1>
@@ -119,25 +146,35 @@ BODY, HTML
 		</div>
 
 	</div>
+
+	<div class="onmask" id="tipline" style="background-color:white">
+		<div class="" style="float:left;width:20%">
+			<img src="images/tip.png" width="50%" alt="" style="margin-left:25%;margin-top:20%"/>
+		</div>
+		<div class="" >
+			<h2>驾驶机动车不按规定超车、让行的，或者逆向行驶的，或是在规定时间内驶入公交车道的，将被处以扣分并罚款哦！</h2>
+		</div>
+			<center><button type="button" id="linekonw" name="button">我知道了，重新开始</button></center>
+	</div>
 	<div class="onmask" id="tipcline" style="background-color:white">
 		<div class="" style="float:left;width:20%">
-			<img src="images/tip.png" width="50%" alt="" />
+			<img src="images/tip.png" width="50%" alt="" style="margin-left:25%;margin-top:20%"/>
 		</div>
 		<div class="" >
 
-			<h2>cline</h2>
+			<h2>公路中划的道线有实线与虚线之分，按规定，一般在不影响其他车辆正常行驶的情况下可以在虚线变道，但实线是不能变化车道的哦！</h2>
 		</div>
-
+			<center><button type="button" id="clinekonw" name="button">我知道了，重新开始</button></center>
 	</div>
 	<div class="onmask" id="tipmiss" style="background-color:white">
 		<div class="" style="float:left;width:20%">
-			<img src="images/tip.png" width="50%" alt="" />
+			<img src="images/tip.png" width="50%" alt="" style="margin-left:25%;margin-top:20%"/>
 		</div>
 		<div class="" >
 
-			<h2>miss</h2>
+			<h2>你错过了正确的高架出口</h2>
 		</div>
-
+		<center><button type="button" id="misskonw" name="button">我知道了，重新开始</button></center>
 	</div>
 <div class="mainbox" id="main">
 
@@ -166,10 +203,11 @@ BODY, HTML
 var gnfx=document.documentElement.clientWidth;
 var gnfy=document.documentElement.clientHeight;
 //$('.onmask').attr('width',0.8*gnfx+'px');
-var runWithOther=true;
+var rwo=true;
 var screenObjects = [];
 var startTime = null;
 var welcome;
+var noHit=true;
 var resources = [
 	{'name': 'car1', src: 'images/car1.png', type: 'images'},
 	{'name': 'car2', src: 'images/car2.png', type: 'images'},
@@ -198,8 +236,8 @@ resourceLoader.onProgress = function(e){
 };
 
 resourceLoader.onComplete = function(){
-	//ScreenObjPool.remove(loadScreen);
-	//showWelcome();
+	ScreenObjPool.remove(loadScreen);
+	showWelcome();
 	//gameJieshao();
 	//lineGame();
 	//avoidGame();
@@ -207,7 +245,7 @@ resourceLoader.onComplete = function(){
 	//gameSafe();
 	//runWithOther();
 	//startGame();
-	schoolCar();
+	//schoolCar();
 	//biandao();
 };
 var loadScreen = new LoadScreen();
@@ -246,6 +284,7 @@ function showWelcome(){
 }
 var SCORE = 0;
 function startGame(){
+	noHit=true;
     var road = new ImageEntityObject(resourceLoader.get('roadG1'), new Vector(0, -710*gnfy/710), 400*gnfx/400, 1420*gnfy/710, new Vector(0,100));
 	ScreenObjPool.add(road);
 
@@ -343,57 +382,74 @@ function startGame(){
 	});
 
 	MainApp.addEventListener(myCar, 'hit', function(e){//弹框  不能撞击其他车辆
-		ScreenObjPool.empty();
-		MainApp.emptyEventsPool();
-		KEY_LOCK = {
-			LEFT: false,
-			RIGHT: false,
-			UP: false,
-			DOWN: false
-		}
+		clearTimeout(stoRwo);
+		MainApp.stopRun();
+		hitTip(function() {
+			console.log("388");
+			ScreenObjPool.empty();
+			MainApp.emptyEventsPool();
+			KEY_LOCK = {
+				LEFT: false,
+				RIGHT: false,
+				UP: false,
+				DOWN: false
+			};
+
+			console.log('keepRun');
+			MainApp.keepRun();
+			startGame();
+		});
+
 		//endGame(score.score);
 	});
 	ScreenObjPool.add(myCar);
-	var speedUp = new TextEntityObject('上', new Vector(365*gnfx/400, 500*gnfy/710), {fillStyle: '#fff', font: 'bold '+32*gnfx/400+'px 微软雅黑', 'textBaseline': 'top'}, 35*gnfx/400, 35*gnfy/400);
-	var speedDown = new TextEntityObject('下', new Vector(365*gnfx/400, 600*gnfy/710), {fillStyle: '#fff', font: 'bold '+32*gnfx/400+'px 微软雅黑', 'textBaseline': 'top'}, 35*gnfx/400, 35*gnfy/400);
-	var speedLeft = new TextEntityObject('左', new Vector(0, 500*gnfy/710), {fillStyle: '#fff', font: 'bold '+32*gnfx/400+'px 微软雅黑', 'textBaseline': 'top'}, 35*gnfx/400, 35*gnfy/400);
-	var speedRight = new TextEntityObject('右', new Vector(0, 600*gnfy/710), {fillStyle: '#fff', font: 'bold '+32*gnfx/400+'px 微软雅黑', 'textBaseline': 'top'}, 35*gnfx/400, 35*gnfy/400);
-    MainApp.addEventListener(speedUp,'mousedown',function(e){
-		myCar.speed.add(new Vector(0, -20));
-		console.log(myCar.speed);
-    });
-     MainApp.addEventListener(speedUp,'mouseup',function(e){
-        myCar.speed.remove(new Vector(0, -20));
-    });
-    MainApp.addEventListener(speedDown,'mousedown',function(e){
-		myCar.speed.add(new Vector(0, 20));
-		console.log(myCar.speed);
-    });
-     MainApp.addEventListener(speedDown,'mouseup',function(e){
-        myCar.speed.remove(new Vector(0, 20));
-    });
-    MainApp.addEventListener(speedLeft,'mousedown',function(e){
-		myCar.speed.add(new Vector(-20, 0));
-		console.log(myCar.speed);
-    });
-     MainApp.addEventListener(speedLeft,'mouseup',function(e){
-        myCar.speed.remove(new Vector(-20, 0));
-    });
-    MainApp.addEventListener(speedRight,'mousedown',function(e){
-		myCar.speed.add(new Vector(20, 0));
-		console.log(myCar.speed);
-    });
-     MainApp.addEventListener(speedRight,'mouseup',function(e){
-        myCar.speed.remove(new Vector(20, 0));
-    });
+	var speedUp = new staticImg(resourceLoader.get('up'), new Vector(365*gnfx/400, 500*gnfy/710), 30*gnfx/400, 45*gnfy/710);
+  var speedDown = new staticImg(resourceLoader.get('down'), new Vector(365*gnfx/400, 600*gnfy/710), 30*gnfx/400, 45*gnfy/710);
+  var speedRight = new staticImg(resourceLoader.get('right'), new Vector(3*gnfx/400, 600*gnfy/710), 30*gnfx/400, 45*gnfy/710);
+  var speedLeft = new staticImg(resourceLoader.get('left'), new Vector(3*gnfx/400, 500*gnfy/710), 30*gnfx/400, 45*gnfy/710);
+  MainApp.addEventListener(speedUp,'mousedown',function(e){
+      myCar.speed.add(new Vector(0, -20));
+  });
+   MainApp.addEventListener(speedUp,'mouseup',function(e){
+      myCar.speed.remove(new Vector(0, -20));
+  });
+  MainApp.addEventListener(speedDown,'mousedown',function(e){
+      myCar.speed.add(new Vector(0, 20));
+      //schoolBus.speed.add(new Vector(15,0));
+  });
+   MainApp.addEventListener(speedDown,'mouseup',function(e){
+      myCar.speed.remove(new Vector(0, 20));
+      //schoolBus.speed.remove(new Vector(15,0));
+  });
+  MainApp.addEventListener(speedLeft,'mousedown',function(e){
+      myCar.position.x-=71*gnfx/400;
+  });
+   MainApp.addEventListener(speedLeft,'mouseup',function(e){
+  });
+  MainApp.addEventListener(speedRight,'mousedown',function(e){
+    myCar.position.x+=71*gnfx/400;
+  });
+   MainApp.addEventListener(speedRight,'mouseup',function(e){
+  });
+
+	MainApp.addEventListener(speedUp,'touchstart',function(e){
+			myCar.speed.add(new Vector(0, -20));
+	});
+	MainApp.addEventListener(speedDown,'touchstart',function(e){
+			myCar.speed.add(new Vector(0, 20));
+			//schoolBus.speed.add(new Vector(15,0));
+	});
+	MainApp.addEventListener(speedLeft,'touchstart',function(e){
+			myCar.position.x-=71*gnfx/400;
+	});
+	MainApp.addEventListener(speedRight,'touchstart',function(e){
+		myCar.position.x+=71*gnfx/400;
+	});
 	ScreenObjPool.add(speedUp);
-	ScreenObjPool.add(speedDown);
-	ScreenObjPool.add(speedLeft);
-	ScreenObjPool.add(speedRight);
-
-
-
-	if (runWithOther) {
+  ScreenObjPool.add(speedDown);
+  ScreenObjPool.add(speedLeft);
+  ScreenObjPool.add(speedRight);
+	if (rwo) {
 		runWithOther();
 	}
 
@@ -500,31 +556,46 @@ function lineGame(){
 		}
 	});
 	MainApp.addEventListener(myCar, 'hit', function(e){//弹框不能撞击其他车辆
-		ScreenObjPool.empty();
-		MainApp.emptyEventsPool();
-		KEY_LOCK = {
-			LEFT: false,
-			RIGHT: false,
-			UP: false,
-			DOWN: false
-		}
+		MainApp.stopRun();
+    hitTip(function() {
+			console.log("561");
+      ScreenObjPool.empty();
+  		MainApp.emptyEventsPool();
+  		KEY_LOCK = {
+  			LEFT: false,
+  			RIGHT: false,
+  			UP: false,
+  			DOWN: false
+  		};
+      MainApp.keepRun();
+      lineGame();
+    });
 		//endGame(score.score);
 	});
 	myCar.lineable=true;
 	MainApp.addEventListener(myCar, 'line', function(e){//不能向公交车专用道或者对向车道变道
-		alert("line");
-		ScreenObjPool.empty();
-		MainApp.emptyEventsPool();
-		KEY_LOCK = {
-			LEFT: false,
-			RIGHT: false,
-			UP: false,
-			DOWN: false
-		}
+		MainApp.stopRun();
+		$('.mask').fadeIn(100);
+		$('#tipline').fadeIn(100);
+		$('#linekonw').on('click',function() {
+			$('.mask').fadeOut(100);
+			$('#tipline').fadeOut(100);
+			ScreenObjPool.empty();
+			MainApp.emptyEventsPool();
+			KEY_LOCK = {
+				LEFT: false,
+				RIGHT: false,
+				UP: false,
+				DOWN: false
+			}
+			MainApp.keepRun();
+			lineGame();
+		});
+
 	});
 	myCar.end=true;
 	MainApp.addEventListener(myCar, 'end', function(e){//全屏幕，游戏结束（最后做）
-		alert("end");
+		//alert("end");
 		ScreenObjPool.empty();
 		MainApp.emptyEventsPool();
 		KEY_LOCK = {
@@ -546,40 +617,43 @@ function lineGame(){
 		// newCar.hitable = true;
 		// ScreenObjPool.add(newCar);
 	});
-	ScreenObjPool.add(myCar);
 		ScreenObjPool.add(myCar);
-	var speedUp = new TextEntityObject('上', new Vector(365*gnfx/400, 500*gnfy/710), {fillStyle: '#fff', font: 'bold '+32*gnfx/400+'px 微软雅黑', 'textBaseline': 'top'}, 35*gnfx/400, 35*gnfy/400);
-	var speedDown = new TextEntityObject('下', new Vector(365*gnfx/400, 600*gnfy/710), {fillStyle: '#fff', font: 'bold '+32*gnfx/400+'px 微软雅黑', 'textBaseline': 'top'}, 35*gnfx/400, 35*gnfy/400);
-	var speedLeft = new TextEntityObject('左', new Vector(0, 500*gnfy/710), {fillStyle: '#fff', font: 'bold '+32*gnfx/400+'px 微软雅黑', 'textBaseline': 'top'}, 35*gnfx/400, 35*gnfy/400);
-	var speedRight = new TextEntityObject('右', new Vector(0, 600*gnfy/710), {fillStyle: '#fff', font: 'bold '+32*gnfx/400+'px 微软雅黑', 'textBaseline': 'top'}, 35*gnfx/400, 35*gnfy/400);
+		var speedUp = new staticImg(resourceLoader.get('up'), new Vector(365*gnfx/400, 500*gnfy/710), 30*gnfx/400, 45*gnfy/710);
+	  var speedDown = new staticImg(resourceLoader.get('down'), new Vector(365*gnfx/400, 600*gnfy/710), 30*gnfx/400, 45*gnfy/710);
+	  var speedRight = new staticImg(resourceLoader.get('right'), new Vector(3*gnfx/400, 600*gnfy/710), 30*gnfx/400, 45*gnfy/710);
+	  var speedLeft = new staticImg(resourceLoader.get('left'), new Vector(3*gnfx/400, 500*gnfy/710), 30*gnfx/400, 45*gnfy/710);
     MainApp.addEventListener(speedUp,'mousedown',function(e){
-		myCar.speed.add(new Vector(0, -20));
-		console.log(myCar.speed);
+				myCar.speed.add(new Vector(0, -20));
     });
-     MainApp.addEventListener(speedUp,'mouseup',function(e){
+    MainApp.addEventListener(speedUp,'mouseup',function(e){
         myCar.speed.remove(new Vector(0, -20));
     });
     MainApp.addEventListener(speedDown,'mousedown',function(e){
-		myCar.speed.add(new Vector(0, 20));
-		console.log(myCar.speed);
+				myCar.speed.add(new Vector(0, 20));
     });
-     MainApp.addEventListener(speedDown,'mouseup',function(e){
+    MainApp.addEventListener(speedDown,'mouseup',function(e){
         myCar.speed.remove(new Vector(0, 20));
     });
     MainApp.addEventListener(speedLeft,'mousedown',function(e){
-		myCar.speed.add(new Vector(-20, 0));
-		console.log(myCar.speed);
-    });
-     MainApp.addEventListener(speedLeft,'mouseup',function(e){
-        myCar.speed.remove(new Vector(-20, 0));
+				myCar.position.x-=71*gnfx/400;
     });
     MainApp.addEventListener(speedRight,'mousedown',function(e){
-		myCar.speed.add(new Vector(20, 0));
-		console.log(myCar.speed);
+				myCar.position.x+=71*gnfx/400;
     });
-     MainApp.addEventListener(speedRight,'mouseup',function(e){
-        myCar.speed.remove(new Vector(20, 0));
-    });
+
+
+		MainApp.addEventListener(speedUp,'touchstart',function(e){
+				myCar.speed.add(new Vector(0, -20));
+		});
+		MainApp.addEventListener(speedDown,'touchstart',function(e){
+				myCar.speed.add(new Vector(0, 20));
+		});
+		MainApp.addEventListener(speedLeft,'touchstart',function(e){
+				myCar.position.x-=71*gnfx/400;
+		});
+		MainApp.addEventListener(speedRight,'touchstart',function(e){
+				myCar.position.x+=71*gnfx/400;
+		});
 	ScreenObjPool.add(speedUp);
 	ScreenObjPool.add(speedDown);
 	ScreenObjPool.add(speedLeft);
@@ -684,18 +758,25 @@ function avoidGame(){
 		}
 	});
 	MainApp.addEventListener(myCar, 'hit', function(e){//弹框，不能撞击行人
-		ScreenObjPool.empty();
-		MainApp.emptyEventsPool();
-		KEY_LOCK = {
-			LEFT: false,
-			RIGHT: false,
-			UP: false,
-			DOWN: false
-		}
+		MainApp.stopRun();
+    hitTip(function() {
+			console.log("763");
+      ScreenObjPool.empty();
+  		MainApp.emptyEventsPool();
+  		KEY_LOCK = {
+  			LEFT: false,
+  			RIGHT: false,
+  			UP: false,
+  			DOWN: false
+  		};
+      MainApp.keepRun();
+      avoidGame();
+    });
+
 		//endGame(score.score);
 	});
 	MainApp.addEventListener(myCar, 'avoid', function(e){//全屏幕，成功避让行人，下一关
-		alert("avoid");
+		// alert("avoid");
 		ScreenObjPool.empty();
 		MainApp.emptyEventsPool();
 		KEY_LOCK = {
@@ -704,42 +785,54 @@ function avoidGame(){
 			UP: false,
 			DOWN: false
 		}
+		next = new TextEntityObject('成功避让行人，下一关:', new Vector(80*gnfx/400, 200*gnfy/710), {fillStyle: '#900', font: 'bold '+40*gnfx/400+'px 微软雅黑', 'textBaseline': 'top'}, 200*gnfx/400, 35*gnfy/710);
+    next1 = new TextEntityObject('请不要占用公交车专用道和对向车道', new Vector(40*gnfx/400, 350*gnfy/710), {fillStyle: '#900', font: 'bold '+40*gnfx/400+'px 微软雅黑', 'textBaseline': 'top'}, 300*gnfx/400, 35*gnfy/710);
+		ScreenObjPool.add(next);
+		ScreenObjPool.add(next1);
+		setTimeout(function(){
+			ScreenObjPool.empty();
+			lineGame();
+		},2000);
+
 		//endGame(score.score);
 	});
-	ScreenObjPool.add(myCar);
 		ScreenObjPool.add(myCar);
-	var speedUp = new TextEntityObject('上', new Vector(365*gnfx/400, 500*gnfy/710), {fillStyle: '#fff', font: 'bold '+32*gnfx/400+'px 微软雅黑', 'textBaseline': 'top'}, 35*gnfx/400, 35*gnfy/400);
-	var speedDown = new TextEntityObject('下', new Vector(365*gnfx/400, 600*gnfy/710), {fillStyle: '#fff', font: 'bold '+32*gnfx/400+'px 微软雅黑', 'textBaseline': 'top'}, 35*gnfx/400, 35*gnfy/400);
-	var speedLeft = new TextEntityObject('左', new Vector(0, 500*gnfy/710), {fillStyle: '#fff', font: 'bold '+32*gnfx/400+'px 微软雅黑', 'textBaseline': 'top'}, 35*gnfx/400, 35*gnfy/400);
-	var speedRight = new TextEntityObject('右', new Vector(0, 600*gnfy/710), {fillStyle: '#fff', font: 'bold '+32*gnfx/400+'px 微软雅黑', 'textBaseline': 'top'}, 35*gnfx/400, 35*gnfy/400);
+		var speedUp = new staticImg(resourceLoader.get('up'), new Vector(365*gnfx/400, 500*gnfy/710), 30*gnfx/400, 45*gnfy/710);
+	  var speedDown = new staticImg(resourceLoader.get('down'), new Vector(365*gnfx/400, 600*gnfy/710), 30*gnfx/400, 45*gnfy/710);
+	  var speedRight = new staticImg(resourceLoader.get('right'), new Vector(3*gnfx/400, 600*gnfy/710), 30*gnfx/400, 45*gnfy/710);
+	  var speedLeft = new staticImg(resourceLoader.get('left'), new Vector(3*gnfx/400, 500*gnfy/710), 30*gnfx/400, 45*gnfy/710);
     MainApp.addEventListener(speedUp,'mousedown',function(e){
-		myCar.speed.add(new Vector(0, -20));
-		console.log(myCar.speed);
+				myCar.speed.add(new Vector(0, -20));
     });
      MainApp.addEventListener(speedUp,'mouseup',function(e){
         myCar.speed.remove(new Vector(0, -20));
     });
     MainApp.addEventListener(speedDown,'mousedown',function(e){
-		myCar.speed.add(new Vector(0, 20));
-		console.log(myCar.speed);
+				myCar.speed.add(new Vector(0, 20));
     });
      MainApp.addEventListener(speedDown,'mouseup',function(e){
         myCar.speed.remove(new Vector(0, 20));
     });
     MainApp.addEventListener(speedLeft,'mousedown',function(e){
-		myCar.speed.add(new Vector(-20, 0));
-		console.log(myCar.speed);
-    });
-     MainApp.addEventListener(speedLeft,'mouseup',function(e){
-        myCar.speed.remove(new Vector(-20, 0));
+				myCar.position.x-=71*gnfx/400;
     });
     MainApp.addEventListener(speedRight,'mousedown',function(e){
-		myCar.speed.add(new Vector(20, 0));
-		console.log(myCar.speed);
+				myCar.position.x+=71*gnfx/400;
     });
-     MainApp.addEventListener(speedRight,'mouseup',function(e){
-        myCar.speed.remove(new Vector(20, 0));
+
+		MainApp.addEventListener(speedUp,'touchstart',function(e){
+		myCar.speed.add(new Vector(0, -20));
     });
+    MainApp.addEventListener(speedDown,'touchstart',function(e){
+		myCar.speed.add(new Vector(0, 20));
+    });
+    MainApp.addEventListener(speedLeft,'touchstart',function(e){
+		myCar.position.x-=71*gnfx/400;
+    });
+    MainApp.addEventListener(speedRight,'touchstart',function(e){
+		myCar.position.x+=71*gnfx/400;
+    });
+
 	ScreenObjPool.add(speedUp);
 	ScreenObjPool.add(speedDown);
 	ScreenObjPool.add(speedLeft);
@@ -758,13 +851,13 @@ function background(){
 	images.push(resourceLoader.resources.car3);
 	images.push(resourceLoader.resources.car4);
 	images.push(resourceLoader.resources.car5);
-	// for(var i = 0; i < 3; i++){
-	// 	var img =  images[util.random(0, images.length - 1)];
-	// 	var temp=util.random(0,2);
-	// 	var newCar = new Car(new Vector((temp * 74 + 55)*gnfx/400, window.util.random(-480, -80)*gnfy/710), window.util.randomColor(), img,new Vector(0, 130),2);
-	// 	newCar.hitable = true;
-	// 	ScreenObjPool.add(newCar);
-	// }
+	for(var i = 0; i < 3; i++){
+		var img =  images[util.random(0, images.length - 1)];
+		var temp=util.random(0,1);
+		var newCar = new Car(new Vector((temp * 74 + 55)*gnfx/400, window.util.random(-480, -80)*gnfy/710), window.util.randomColor(), img,new Vector(0, 130),2);
+		newCar.hitable = true;
+		ScreenObjPool.add(newCar);
+	}
 	var scorePre = new TextEntityObject('Score: ', new Vector(50, 5), {fillStyle: '#fff', font: 'bold 32px 微软雅黑', 'textBaseline': 'top'}, 100, 35);
 	ScreenObjPool.add(scorePre);
 	//var score = new TextEntityObject('0', new Vector(160, 5), {fillStyle: '#fff', font: 'bold 32px 微软雅黑', 'textBaseline': 'top'}, 100, 35);
@@ -854,12 +947,20 @@ function background(){
 			UP: false,
 			DOWN: false
 		}
-		endGame(score.score);
+		MainApp.stopRun();
+		hitTip(function() {
+			console.log("952");
+			MainApp.keepRun();
+			background();
+		});
 	});
 	MainApp.addEventListener(myCar, 'cline', function(e){//弹框实现不能变道
-		$('#tipcline').fadeIn(100);
-		setTimeout(function() {
 
+		MainApp.stopRun();
+		$('.mask').fadeIn(100);
+		$('#tipcline').fadeIn(100);
+		$('#clinekonw').on('click',function() {
+			$('.mask').fadeOut(100);
 			$('#tipcline').fadeOut(100);
 			ScreenObjPool.empty();
 			MainApp.emptyEventsPool();
@@ -869,14 +970,16 @@ function background(){
 				UP: false,
 				DOWN: false
 			}
+			MainApp.keepRun();
 			background();
-		},2000);
-
+		});
 	});
 	MainApp.addEventListener(myCar, 'miss', function(e){//弹框，错过了下高架
+		MainApp.stopRun();
+		$('.mask').fadeIn(100);
 		$('#tipmiss').fadeIn(100);
-		setTimeout(function() {
-
+		$('#misskonw').on('click',function() {
+			$('.mask').fadeOut(100);
 			$('#tipmiss').fadeOut(100);
 			ScreenObjPool.empty();
 			MainApp.emptyEventsPool();
@@ -886,55 +989,69 @@ function background(){
 				UP: false,
 				DOWN: false
 			}
+			MainApp.keepRun();
 			background();
-		},2000);
+		});
+
 		//endGame(score.score);
 	});
 	MainApp.addEventListener(myCar, 'change', function(e){//全屏幕，正确下高架，经行下一关
 
 		ScreenObjPool.empty();
 		MainApp.emptyEventsPool();
+
 		KEY_LOCK = {
 			LEFT: false,
 			RIGHT: false,
 			UP: false,
 			DOWN: false
 		};
-		schoolCar();
+		next = new TextEntityObject('正确下高架，下一关:', new Vector(60*gnfx/400, 200*gnfy/710), {fillStyle: '#900', font: 'bold '+40*gnfx/400+'px 微软雅黑', 'textBaseline': 'top'}, 200*gnfx/400, 35*gnfy/710);
+		next1 = new TextEntityObject('请减速避让道路上的校车', new Vector(40*gnfx/400, 350*gnfy/710), {fillStyle: '#900', font: 'bold '+40*gnfx/400+'px 微软雅黑', 'textBaseline': 'top'}, 300*gnfx/400, 35*gnfy/710);
+		ScreenObjPool.add(next);
+		ScreenObjPool.add(next1);
+		setTimeout(function(){
+			ScreenObjPool.empty();
+			MainApp.emptyEventsPool();
+			schoolCar();
+		},2000);
 		//endGame(score.score);
 	});
 	ScreenObjPool.add(myCar);
-	var speedUp = new TextEntityObject('上', new Vector(365*gnfx/400, 500*gnfy/710), {fillStyle: '#fff', font: 'bold '+32*gnfx/400+'px 微软雅黑', 'textBaseline': 'top'}, 35*gnfx/400, 35*gnfy/400);
-	var speedDown = new TextEntityObject('下', new Vector(365*gnfx/400, 600*gnfy/710), {fillStyle: '#fff', font: 'bold '+32*gnfx/400+'px 微软雅黑', 'textBaseline': 'top'}, 35*gnfx/400, 35*gnfy/400);
-	var speedLeft = new TextEntityObject('左', new Vector(0, 500*gnfy/710), {fillStyle: '#fff', font: 'bold '+32*gnfx/400+'px 微软雅黑', 'textBaseline': 'top'}, 35*gnfx/400, 35*gnfy/400);
-	var speedRight = new TextEntityObject('右', new Vector(0, 600*gnfy/710), {fillStyle: '#fff', font: 'bold '+32*gnfx/400+'px 微软雅黑', 'textBaseline': 'top'}, 35*gnfx/400, 35*gnfy/400);
+	var speedUp = new staticImg(resourceLoader.get('up'), new Vector(365*gnfx/400, 500*gnfy/710), 30*gnfx/400, 45*gnfy/710);
+  var speedDown = new staticImg(resourceLoader.get('down'), new Vector(365*gnfx/400, 600*gnfy/710), 30*gnfx/400, 45*gnfy/710);
+  var speedRight = new staticImg(resourceLoader.get('right'), new Vector(3*gnfx/400, 600*gnfy/710), 30*gnfx/400, 45*gnfy/710);
+  var speedLeft = new staticImg(resourceLoader.get('left'), new Vector(3*gnfx/400, 500*gnfy/710), 30*gnfx/400, 45*gnfy/710);
     MainApp.addEventListener(speedUp,'mousedown',function(e){
-		myCar.speed.add(new Vector(0, -20));
-		console.log(myCar.speed);
+				myCar.speed.add(new Vector(0, -20));
     });
-     MainApp.addEventListener(speedUp,'mouseup',function(e){
+    MainApp.addEventListener(speedUp,'mouseup',function(e){
         myCar.speed.remove(new Vector(0, -20));
     });
     MainApp.addEventListener(speedDown,'mousedown',function(e){
-		myCar.speed.add(new Vector(0, 20));
-		console.log(myCar.speed);
+				myCar.speed.add(new Vector(0, 20));
     });
      MainApp.addEventListener(speedDown,'mouseup',function(e){
         myCar.speed.remove(new Vector(0, 20));
     });
     MainApp.addEventListener(speedLeft,'mousedown',function(e){
-		myCar.speed.add(new Vector(-20, 0));
-		console.log(myCar.speed);
-    });
-     MainApp.addEventListener(speedLeft,'mouseup',function(e){
-        myCar.speed.remove(new Vector(-20, 0));
+				myCar.position.x-=71*gnfx/400;
     });
     MainApp.addEventListener(speedRight,'mousedown',function(e){
-		myCar.speed.add(new Vector(20, 0));
-		console.log(myCar.speed);
+				myCar.position.x+=71*gnfx/400;
     });
-     MainApp.addEventListener(speedRight,'mouseup',function(e){
-        myCar.speed.remove(new Vector(20, 0));
+
+		MainApp.addEventListener(speedUp,'touchstart',function(e){
+				myCar.speed.add(new Vector(0, -20));
+    });
+    MainApp.addEventListener(speedDown,'touchstart',function(e){
+				myCar.speed.add(new Vector(0, 20));
+    });
+    MainApp.addEventListener(speedLeft,'touchstart',function(e){
+				myCar.position.x-=71*gnfx/400;
+    });
+    MainApp.addEventListener(speedRight,'touchstart',function(e){
+				myCar.position.x+=71*gnfx/400;
     });
 	ScreenObjPool.add(speedUp);
 	ScreenObjPool.add(speedDown);

@@ -41,7 +41,17 @@ var Car = function(v, style, img, speed,road){
 
 	this._draw = function(context){
 		if (this.checkBus&&this.position.x>260*gnfx/400) {
-			MainApp.stopRun();
+			ScreenObjPool.empty();
+  		MainApp.emptyEventsPool();
+  		KEY_LOCK = {
+  			LEFT: false,
+  			RIGHT: false,
+  			UP: false,
+  			DOWN: false
+  		};
+			busToAvoid();
+			
+			//MainApp.stopRun();
 			//alert('sss');
 		}
 		//context.strokeRect(this.position.x, this.position.y, this.width, this.height);

@@ -4,16 +4,22 @@ function setHtmlSize(){
   var windowHeight=document.documentElement.clientHeight;
   //console.log(windowWidth,windowHeight);
   document.getElementById('safe').style.width=0.8*windowWidth+'px';
-  document.getElementById('safe').style.height=0.3*windowWidth+'px';
+  document.getElementById('safe').style.height=0.25*windowWidth+'px';
   document.getElementById('phone').style.height=0.3*windowWidth+'px';
   document.getElementById('pai').style.width=0.8*windowWidth+'px';
-  //console.log(welcome);
-  if (welcome) {
-    console.log(welcome.position.x,welcome.position.y)
-    console.log(welcome.x,welcome.y);
-  }
+  document.getElementById('hitTip').style.height=0.25*windowWidth+'px';
+  document.getElementById('pai').style.height=0.25*windowWidth+'px';
+  document.getElementById('hitTip').style.width=0.8*windowWidth+'px';
   document.getElementById('phone').style.width=0.8*windowWidth+'px';
   document.getElementById('main').style.height=windowHeight+'px';
+  document.getElementById('tipmiss').style.width=0.8*windowWidth+'px';
+  document.getElementById('tipcline').style.width=0.8*windowWidth+'px';
+  document.getElementById('tipline').style.width=0.8*windowWidth+'px';
+  document.getElementById('tipmiss').style.height=0.25*windowWidth+'px';
+  document.getElementById('tipcline').style.height=0.25*windowWidth+'px';
+  document.getElementById('tipline').style.height=0.25*windowWidth+'px';
+  document.getElementById('hitschool').style.width=0.8*windowWidth+'px';
+  document.getElementById('hitschool').style.height=0.35*windowWidth+'px';
   if(windowWidth > 800){
 
     document.getElementsByTagName("html")[0].style.fontSize = 16 + "px";

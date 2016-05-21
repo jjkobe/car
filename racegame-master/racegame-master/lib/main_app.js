@@ -130,6 +130,7 @@ var MainApp = {
 		mousemove: [],
 		mouseover: [],
 		mousedown:[],
+		touchstart:[],
 		mouseup:[],
 		mouseout: [],
 		collide: [],
@@ -152,6 +153,7 @@ var MainApp = {
 			mousemove: [],
 			mouseover: [],
 			mousedown:[],
+			touchstart:[],
 			mouseup:[],
 			mouseout: [],
 			collide: [],
@@ -220,6 +222,19 @@ var MainApp = {
 				}
 			}
 		};
+
+		this.canvas.addEventListener('touchstart',function(e){
+	     var touch = e.touches[0];
+	     var relX = touch.pageX;
+	     var relY = touch.pageY;
+	     var mPos = new Vector(relX, relY);
+	     for(var i = 0, len = MainApp.eventsPool.touchstart.length; i < len; i++){
+		   var event = MainApp.eventsPool.touchstart[i];
+		   if(event.target.checkContain(mPos)){
+			 event.callback.call(event.target, e);
+		}
+	}
+		},false);
 
 		this.canvas.addEventListener('mousedown',function(e){
 			var scroll = util.getScroll();
