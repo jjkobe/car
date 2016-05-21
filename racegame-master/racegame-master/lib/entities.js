@@ -30,7 +30,7 @@ var Rect = function(v, width, height){
 	};
 
 	this.checkAvoid = function(rect){
-		if((this.position.y + this.height / 2) < (rect.position.y - rect.height/2)){
+		if(((this.position.y + this.height / 2) - (rect.position.y - rect.height/2))<-40*gnfy/710){
 			return true;
 		}
 		return false;
