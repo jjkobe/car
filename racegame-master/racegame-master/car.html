@@ -739,6 +739,42 @@ function background(){
 		//endGame(score.score);
 	});
 	ScreenObjPool.add(myCar);
+	var speedUp = new TextEntityObject('上', new Vector(365*gnfx/400, 500*gnfy/710), {fillStyle: '#fff', font: 'bold '+32*gnfx/400+'px 微软雅黑', 'textBaseline': 'top'}, 35*gnfx/400, 35*gnfy/400);
+	var speedDown = new TextEntityObject('下', new Vector(365*gnfx/400, 600*gnfy/710), {fillStyle: '#fff', font: 'bold '+32*gnfx/400+'px 微软雅黑', 'textBaseline': 'top'}, 35*gnfx/400, 35*gnfy/400);
+	var speedLeft = new TextEntityObject('左', new Vector(0, 500*gnfy/710), {fillStyle: '#fff', font: 'bold '+32*gnfx/400+'px 微软雅黑', 'textBaseline': 'top'}, 35*gnfx/400, 35*gnfy/400);
+	var speedRight = new TextEntityObject('右', new Vector(0, 600*gnfy/710), {fillStyle: '#fff', font: 'bold '+32*gnfx/400+'px 微软雅黑', 'textBaseline': 'top'}, 35*gnfx/400, 35*gnfy/400);
+    MainApp.addEventListener(speedUp,'mousedown',function(e){
+		myCar.speed.add(new Vector(0, -20));
+		console.log(myCar.speed);
+    });
+     MainApp.addEventListener(speedUp,'mouseup',function(e){
+        myCar.speed.remove(new Vector(0, -20));
+    });
+    MainApp.addEventListener(speedDown,'mousedown',function(e){
+		myCar.speed.add(new Vector(0, 20));
+		console.log(myCar.speed);
+    });
+     MainApp.addEventListener(speedDown,'mouseup',function(e){
+        myCar.speed.remove(new Vector(0, 20));
+    });
+    MainApp.addEventListener(speedLeft,'mousedown',function(e){
+		myCar.speed.add(new Vector(-20, 0));
+		console.log(myCar.speed);
+    });
+     MainApp.addEventListener(speedLeft,'mouseup',function(e){
+        myCar.speed.remove(new Vector(-20, 0));
+    });
+    MainApp.addEventListener(speedRight,'mousedown',function(e){
+		myCar.speed.add(new Vector(20, 0));
+		console.log(myCar.speed);
+    });
+     MainApp.addEventListener(speedRight,'mouseup',function(e){
+        myCar.speed.remove(new Vector(20, 0));
+    });
+	ScreenObjPool.add(speedUp);
+	ScreenObjPool.add(speedDown);
+	ScreenObjPool.add(speedLeft);
+	ScreenObjPool.add(speedRight);
 }
 
 function stop_coin_music(){
