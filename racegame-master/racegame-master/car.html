@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+	<!-- <meta http-equiv="content-type" content="text/html; charset=UTF-8" /> -->
+	<meta name="viewport" content="width=device-width, initial-scale=1" charset='UTF-8' />
 	<title>CAR GAME</title>
 	<style type="text/css">
 	 @font-face
@@ -32,6 +33,23 @@
     #musicControl a.on { background-position:0px 1px;-webkit-animation: reverseRotataZ 1.2s linear infinite;}
 	</style>
 	<style media="screen">
+	button {
+		border:1px solid #1e7db9;
+		box-shadow: 0 1px 2px #8fcaee inset,0 -1px 0 #497897 inset,0 -2px 3px #8fcaee inset;
+		background: -webkit-linear-gradient(top,#42a4e0,#2e88c0);
+		background: -moz-linear-gradient(top,#42a4e0,#2e88c0);
+		background: linear-gradient(top,#42a4e0,#2e88c0);
+		width: 140px;
+		line-height: 38px;
+		text-align: center;
+		font-weight: bold;
+		color: #fff;
+		text-shadow:1px 1px 1px #333;
+		border-radius: 5px;
+		margin:0 20px 20px 0;
+		position: relative;
+		overflow: hidden;
+}
 	.mask {
 z-index: 9998;
 position:fixed;
@@ -324,66 +342,7 @@ function startGame(){
 
 	var myCar = new Car(new Vector(200*gnfx/400, 600*gnfy/710), window.util.randomColor(), resourceLoader.resources.car_p, new Vector(0, 0));
 	myCar.setCollisionMap(cMap);
-	MainApp.addEventListener(myCar, 'keyup', function(e){
-		var KEY = MainApp.INPUT.KEY;
-		switch(e.which){
-			case KEY.UP:
-				if(KEY_LOCK.UP){
-					this.speed.remove(new Vector(0, -20));
-					KEY_LOCK.UP = false;
-				}
-				break;
-			case KEY.DOWN:
-				if(KEY_LOCK.DOWN){
-					this.speed.remove(new Vector(0, 20));
-					KEY_LOCK.DOWN = false;
-				}
-				break;
-			case KEY.LEFT:
-				if(KEY_LOCK.LEFT){
-					this.speed.remove(new Vector(-20, 0));
-					KEY_LOCK.LEFT = false;
-				}
-				break;
-			case KEY.RIGHT:
-				if(KEY_LOCK.RIGHT){
-					this.speed.remove(new Vector(20, 0));
-					KEY_LOCK.RIGHT = false;
-				}
-				break;
-		}
-	});
-
-	MainApp.addEventListener(myCar, 'keydown', function(e){
-		var KEY = MainApp.INPUT.KEY;
-		switch(e.which){
-			case KEY.UP:
-				if(!KEY_LOCK.UP){
-					myCar.speed.add(new Vector(0, -20));
-					KEY_LOCK.UP = true;
-				}
-				break;
-			case KEY.DOWN:
-				if(!KEY_LOCK.DOWN){
-					myCar.speed.add(new Vector(0, 20));
-					KEY_LOCK.DOWN = true;
-				}
-				break;
-			case KEY.LEFT:
-				if(!KEY_LOCK.LEFT){
-					myCar.speed.add(new Vector(-20, 0));
-					KEY_LOCK.LEFT = true;
-				}
-				break;
-			case KEY.RIGHT:
-				if(!KEY_LOCK.RIGHT){
-					myCar.speed.add(new Vector(20, 0));
-					KEY_LOCK.RIGHT = true;
-				}
-				break;
-		}
-
-	});
+	carKey(myCar);
 
 	MainApp.addEventListener(myCar, 'hit', function(e){//弹框  不能撞击其他车辆
 		clearTimeout(stoRwo);
@@ -404,36 +363,7 @@ function startGame(){
 		//endGame(score.score);
 	});
 	ScreenObjPool.add(myCar);
-	var speedUp = new staticImg(resourceLoader.get('up'), new Vector(365*gnfx/400, 500*gnfy/710), 30*gnfx/400, 45*gnfy/710);
-  var speedDown = new staticImg(resourceLoader.get('down'), new Vector(365*gnfx/400, 600*gnfy/710), 30*gnfx/400, 45*gnfy/710);
-  var speedRight = new staticImg(resourceLoader.get('right'), new Vector(3*gnfx/400, 600*gnfy/710), 30*gnfx/400, 45*gnfy/710);
-  var speedLeft = new staticImg(resourceLoader.get('left'), new Vector(3*gnfx/400, 500*gnfy/710), 30*gnfx/400, 45*gnfy/710);
 
-
-	MainApp.addEventListener(speedUp,'touchstart',function(e){
-			myCar.speed.add(new Vector(0, -20));
-	});
-	MainApp.addEventListener(speedDown,'touchstart',function(e){
-			myCar.speed.add(new Vector(0, 20));
-	});
-    MainApp.addEventListener(speedLeft,'touchstart',function(e){
-    	if(myCar.position.x<126*gnfx/400)
-    	{
-    		return;
-    	}
-		myCar.position.x-=71*gnfx/400;
-    });
-    MainApp.addEventListener(speedRight,'touchstart',function(e){
-    	if(myCar.position.x>268*gnfx/400)
-    	{
-    		return;
-    	}
-		myCar.position.x+=71*gnfx/400;
-    });
-	ScreenObjPool.add(speedUp);
-  ScreenObjPool.add(speedDown);
-  ScreenObjPool.add(speedLeft);
-  ScreenObjPool.add(speedRight);
 	if (rwo) {
 		runWithOther();
 	}
@@ -481,65 +411,7 @@ function lineGame(){
 
 	var myCar = new Car(new Vector(200*gnfx/400, 500*gnfy/710), window.util.randomColor(), resourceLoader.resources.car_p, new Vector(0, 0));
 	myCar.setCollisionMap(cMap);
-	MainApp.addEventListener(myCar, 'keyup', function(e){
-		var KEY = MainApp.INPUT.KEY;
-		switch(e.which){
-			case KEY.UP:
-				if(KEY_LOCK.UP){
-					this.speed.remove(new Vector(0, -40));
-					KEY_LOCK.UP = false;
-				}
-				break;
-			case KEY.DOWN:
-				if(KEY_LOCK.DOWN){
-					this.speed.remove(new Vector(0, 40));
-					KEY_LOCK.DOWN = false;
-				}
-				break;
-			case KEY.LEFT:
-				if(KEY_LOCK.LEFT){
-					this.speed.remove(new Vector(-40, 0));
-					KEY_LOCK.LEFT = false;
-				}
-				break;
-			case KEY.RIGHT:
-				if(KEY_LOCK.RIGHT){
-					this.speed.remove(new Vector(40, 0));
-					KEY_LOCK.RIGHT = false;
-				}
-				break;
-		}
-	});
-
-	MainApp.addEventListener(myCar, 'keydown', function(e){
-		var KEY = MainApp.INPUT.KEY;
-		switch(e.which){
-			case KEY.UP:
-				if(!KEY_LOCK.UP){
-					myCar.speed.add(new Vector(0, -40));
-					KEY_LOCK.UP = true;
-				}
-				break;
-			case KEY.DOWN:
-				if(!KEY_LOCK.DOWN){
-					myCar.speed.add(new Vector(0, 40));
-					KEY_LOCK.DOWN = true;
-				}
-				break;
-			case KEY.LEFT:
-				if(!KEY_LOCK.LEFT){
-					myCar.speed.add(new Vector(-40, 0));
-					KEY_LOCK.LEFT = true;
-				}
-				break;
-			case KEY.RIGHT:
-				if(!KEY_LOCK.RIGHT){
-					myCar.speed.add(new Vector(40, 0));
-					KEY_LOCK.RIGHT = true;
-				}
-				break;
-		}
-	});
+	carKey(myCar);
 	MainApp.addEventListener(myCar, 'hit', function(e){//弹框不能撞击其他车辆
 		MainApp.stopRun();
     hitTip(function() {
@@ -599,35 +471,7 @@ function lineGame(){
 		ScreenObjPool.add(newCar);
 	});
 		ScreenObjPool.add(myCar);
-		var speedUp = new staticImg(resourceLoader.get('up'), new Vector(365*gnfx/400, 500*gnfy/710), 30*gnfx/400, 45*gnfy/710);
-	  var speedDown = new staticImg(resourceLoader.get('down'), new Vector(365*gnfx/400, 600*gnfy/710), 30*gnfx/400, 45*gnfy/710);
-	  var speedRight = new staticImg(resourceLoader.get('right'), new Vector(3*gnfx/400, 600*gnfy/710), 30*gnfx/400, 45*gnfy/710);
-	  var speedLeft = new staticImg(resourceLoader.get('left'), new Vector(3*gnfx/400, 500*gnfy/710), 30*gnfx/400, 45*gnfy/710);
 
-		MainApp.addEventListener(speedUp,'touchstart',function(e){
-				myCar.speed.add(new Vector(0, -20));
-		});
-		MainApp.addEventListener(speedDown,'touchstart',function(e){
-				myCar.speed.add(new Vector(0, 20));
-		});
-    MainApp.addEventListener(speedLeft,'touchstart',function(e){
-    	if(myCar.position.x<126*gnfx/400)
-    	{
-    		return;
-    	}
-		myCar.position.x-=71*gnfx/400;
-    });
-    MainApp.addEventListener(speedRight,'touchstart',function(e){
-    	if(myCar.position.x>268*gnfx/400)
-    	{
-    		return;
-    	}
-		myCar.position.x+=71*gnfx/400;
-    });
-	ScreenObjPool.add(speedUp);
-	ScreenObjPool.add(speedDown);
-	ScreenObjPool.add(speedLeft);
-	ScreenObjPool.add(speedRight);
 }
 //倒数第二个逻辑，避让行人
 function avoidGame(){
@@ -668,65 +512,9 @@ function avoidGame(){
 
 	var myCar = new Car(new Vector(271*gnfx/400, 500*gnfy/710), window.util.randomColor(), resourceLoader.resources.car_p, new Vector(0, 0));
 	myCar.setCollisionMap(cMap);
-	MainApp.addEventListener(myCar, 'keyup', function(e){
-		var KEY = MainApp.INPUT.KEY;
-		switch(e.which){
-			case KEY.UP:
-				if(KEY_LOCK.UP){
-					this.speed.remove(new Vector(0, -200));
-					KEY_LOCK.UP = false;
-				}
-				break;
-			case KEY.DOWN:
-				if(KEY_LOCK.DOWN){
-					this.speed.remove(new Vector(0, 200));
-					KEY_LOCK.DOWN = false;
-				}
-				break;
-			case KEY.LEFT:
-				if(KEY_LOCK.LEFT){
-					this.speed.remove(new Vector(-200, 0));
-					KEY_LOCK.LEFT = false;
-				}
-				break;
-			case KEY.RIGHT:
-				if(KEY_LOCK.RIGHT){
-					this.speed.remove(new Vector(200, 0));
-					KEY_LOCK.RIGHT = false;
-				}
-				break;
-		}
-	});
+	carKey(myCar);
 
-	MainApp.addEventListener(myCar, 'keydown', function(e){
-		var KEY = MainApp.INPUT.KEY;
-		switch(e.which){
-			case KEY.UP:
-				if(!KEY_LOCK.UP){
-					myCar.speed.add(new Vector(0, -200));
-					KEY_LOCK.UP = true;
-				}
-				break;
-			case KEY.DOWN:
-				if(!KEY_LOCK.DOWN){
-					myCar.speed.add(new Vector(0, 200));
-					KEY_LOCK.DOWN = true;
-				}
-				break;
-			case KEY.LEFT:
-				if(!KEY_LOCK.LEFT){
-					myCar.speed.add(new Vector(-200, 0));
-					KEY_LOCK.LEFT = true;
-				}
-				break;
-			case KEY.RIGHT:
-				if(!KEY_LOCK.RIGHT){
-					myCar.speed.add(new Vector(200, 0));
-					KEY_LOCK.RIGHT = true;
-				}
-				break;
-		}
-	});
+
 	MainApp.addEventListener(myCar, 'hit', function(e){//弹框，不能撞击行人
 		MainApp.stopRun();
     hitTip(function() {
@@ -766,37 +554,9 @@ function avoidGame(){
 		//endGame(score.score);
 	});
 		ScreenObjPool.add(myCar);
-		var speedUp = new staticImg(resourceLoader.get('up'), new Vector(365*gnfx/400, 500*gnfy/710), 30*gnfx/400, 45*gnfy/710);
-	  var speedDown = new staticImg(resourceLoader.get('down'), new Vector(365*gnfx/400, 600*gnfy/710), 30*gnfx/400, 45*gnfy/710);
-	  var speedRight = new staticImg(resourceLoader.get('right'), new Vector(3*gnfx/400, 600*gnfy/710), 30*gnfx/400, 45*gnfy/710);
-	  var speedLeft = new staticImg(resourceLoader.get('left'), new Vector(3*gnfx/400, 500*gnfy/710), 30*gnfx/400, 45*gnfy/710);
 
 
-	MainApp.addEventListener(speedUp,'touchstart',function(e){
-		myCar.speed.add(new Vector(0, -20));
-    });
-    MainApp.addEventListener(speedDown,'touchstart',function(e){
-		myCar.speed.add(new Vector(0, 20));
-    });
-    MainApp.addEventListener(speedLeft,'touchstart',function(e){
-    	if(myCar.position.x<126*gnfx/400)
-    	{
-    		return;
-    	}
-		myCar.position.x-=71*gnfx/400;
-    });
-    MainApp.addEventListener(speedRight,'touchstart',function(e){
-    	if(myCar.position.x>268*gnfx/400)
-    	{
-    		return;
-    	}
-		myCar.position.x+=71*gnfx/400;
-    });
 
-	ScreenObjPool.add(speedUp);
-	ScreenObjPool.add(speedDown);
-	ScreenObjPool.add(speedLeft);
-	ScreenObjPool.add(speedRight);
 }
 //在高架上时的背景车道，只是要变道逻辑时
 function background(){
@@ -841,67 +601,7 @@ function background(){
 
 	var myCar = new Car(new Vector(200*gnfx/400, 600*gnfy/710), window.util.randomColor(), resourceLoader.resources.car_p, new Vector(0, 0));
 	myCar.setCollisionMap(cMap);
-	MainApp.addEventListener(myCar, 'keyup', function(e){
-		var KEY = MainApp.INPUT.KEY;
-		switch(e.which){
-			case KEY.UP:
-				if(KEY_LOCK.UP){
-					this.speed.remove(new Vector(0, -40));
-					KEY_LOCK.UP = false;
-				}
-				break;
-			case KEY.DOWN:
-				if(KEY_LOCK.DOWN){
-					this.speed.remove(new Vector(0, 40));
-					KEY_LOCK.DOWN = false;
-				}
-				break;
-			case KEY.LEFT:
-				if(KEY_LOCK.LEFT){
-					this.speed.remove(new Vector(-40, 0));
-					KEY_LOCK.LEFT = false;
-				}
-				break;
-			case KEY.RIGHT:
-				if(KEY_LOCK.RIGHT){
-					this.speed.remove(new Vector(40, 0));
-					KEY_LOCK.RIGHT = false;
-				}
-				break;
-		}
-	});
-
-	MainApp.addEventListener(myCar, 'keydown', function(e){
-		var KEY = MainApp.INPUT.KEY;
-		switch(e.which){
-			case KEY.UP:
-				if(!KEY_LOCK.UP){
-					myCar.speed.add(new Vector(0, -40));
-					KEY_LOCK.UP = true;
-				}
-				break;
-			case KEY.DOWN:
-				if(!KEY_LOCK.DOWN){
-					myCar.speed.add(new Vector(0, 40));
-					KEY_LOCK.DOWN = true;
-				}
-				break;
-			case KEY.LEFT:
-				if(!KEY_LOCK.LEFT){
-					myCar.speed.add(new Vector(-40, 0));
-					KEY_LOCK.LEFT = true;
-				}
-				break;
-			case KEY.RIGHT:
-				if(!KEY_LOCK.RIGHT){
-					myCar.speed.add(new Vector(40, 0));
-					KEY_LOCK.RIGHT = true;
-				}
-				break;
-		}
-
-	});
-
+	carKey(myCar);
 	MainApp.addEventListener(myCar, 'hit', function(e){
 		KEY_LOCK = {
 			LEFT: false,
@@ -976,34 +676,7 @@ function background(){
 		},2000);
 	});
 	ScreenObjPool.add(myCar);
-	var speedUp = new staticImg(resourceLoader.get('up'), new Vector(365*gnfx/400, 500*gnfy/710), 30*gnfx/400, 45*gnfy/710);
-  var speedDown = new staticImg(resourceLoader.get('down'), new Vector(365*gnfx/400, 600*gnfy/710), 30*gnfx/400, 45*gnfy/710);
-  var speedRight = new staticImg(resourceLoader.get('right'), new Vector(3*gnfx/400, 600*gnfy/710), 30*gnfx/400, 45*gnfy/710);
-  var speedLeft = new staticImg(resourceLoader.get('left'), new Vector(3*gnfx/400, 500*gnfy/710), 30*gnfx/400, 45*gnfy/710);
-	MainApp.addEventListener(speedUp,'touchstart',function(e){
-				myCar.speed.add(new Vector(0, -20));
-    });
-    MainApp.addEventListener(speedDown,'touchstart',function(e){
-				myCar.speed.add(new Vector(0, 20));
-    });
-    MainApp.addEventListener(speedLeft,'touchstart',function(e){
-    	if(myCar.position.x<126*gnfx/400)
-    	{
-    		return;
-    	}
-		myCar.position.x-=71*gnfx/400;
-    });
-    MainApp.addEventListener(speedRight,'touchstart',function(e){
-    	if(myCar.position.x>268*gnfx/400)
-    	{
-    		return;
-    	}
-		myCar.position.x+=71*gnfx/400;
-    });
-	ScreenObjPool.add(speedUp);
-	ScreenObjPool.add(speedDown);
-	ScreenObjPool.add(speedLeft);
-	ScreenObjPool.add(speedRight);
+
 }
 
 function stop_coin_music(){

@@ -275,3 +275,96 @@ function newEnd() {
   ScreenObjPool.add(text1);
   ScreenObjPool.add(text2);
 }
+function carKey(car) {
+  var myCar=car;
+  MainApp.addEventListener(myCar, 'keyup', function(e){
+		var KEY = MainApp.INPUT.KEY;
+		switch(e.which){
+			case KEY.UP:
+				if(KEY_LOCK.UP){
+					this.speed.remove(new Vector(0, -20));
+					KEY_LOCK.UP = false;
+				}
+				break;
+			case KEY.DOWN:
+				if(KEY_LOCK.DOWN){
+					this.speed.remove(new Vector(0, 20));
+					KEY_LOCK.DOWN = false;
+				}
+				break;
+			case KEY.LEFT:
+				if(KEY_LOCK.LEFT){
+					this.speed.remove(new Vector(-20, 0));
+					KEY_LOCK.LEFT = false;
+				}
+				break;
+			case KEY.RIGHT:
+				if(KEY_LOCK.RIGHT){
+					this.speed.remove(new Vector(20, 0));
+					KEY_LOCK.RIGHT = false;
+				}
+				break;
+		}
+	});
+
+	MainApp.addEventListener(myCar, 'keydown', function(e){
+		var KEY = MainApp.INPUT.KEY;
+		switch(e.which){
+			case KEY.UP:
+				if(!KEY_LOCK.UP){
+					myCar.speed.add(new Vector(0, -20));
+					KEY_LOCK.UP = true;
+				}
+				break;
+			case KEY.DOWN:
+				if(!KEY_LOCK.DOWN){
+					myCar.speed.add(new Vector(0, 20));
+					KEY_LOCK.DOWN = true;
+				}
+				break;
+			case KEY.LEFT:
+				if(!KEY_LOCK.LEFT){
+					myCar.speed.add(new Vector(-20, 0));
+					KEY_LOCK.LEFT = true;
+				}
+				break;
+			case KEY.RIGHT:
+				if(!KEY_LOCK.RIGHT){
+					myCar.speed.add(new Vector(20, 0));
+					KEY_LOCK.RIGHT = true;
+				}
+				break;
+		}
+
+	});
+
+  var speedUp = new staticImg(resourceLoader.get('up'), new Vector(365*gnfx/400, 500*gnfy/710), 30*gnfx/400, 45*gnfy/710);
+  var speedDown = new staticImg(resourceLoader.get('down'), new Vector(365*gnfx/400, 600*gnfy/710), 30*gnfx/400, 45*gnfy/710);
+  var speedRight = new staticImg(resourceLoader.get('right'), new Vector(3*gnfx/400, 600*gnfy/710), 30*gnfx/400, 45*gnfy/710);
+  var speedLeft = new staticImg(resourceLoader.get('left'), new Vector(3*gnfx/400, 500*gnfy/710), 30*gnfx/400, 45*gnfy/710);
+
+  MainApp.addEventListener(speedUp,'touchstart',function(e){
+      myCar.speed.add(new Vector(0, -20));
+  });
+  MainApp.addEventListener(speedDown,'touchstart',function(e){
+      myCar.speed.add(new Vector(0, 20));
+  });
+  MainApp.addEventListener(speedLeft,'touchstart',function(e){
+    if(myCar.position.x<126*gnfx/400)
+    {
+      return;
+    }
+  myCar.position.x-=71*gnfx/400;
+  });
+  MainApp.addEventListener(speedRight,'touchstart',function(e){
+    if(myCar.position.x>268*gnfx/400)
+    {
+      return;
+    }
+  myCar.position.x+=71*gnfx/400;
+  });
+ScreenObjPool.add(speedUp);
+ScreenObjPool.add(speedDown);
+ScreenObjPool.add(speedLeft);
+ScreenObjPool.add(speedRight);
+}
