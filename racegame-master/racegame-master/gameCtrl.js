@@ -1,8 +1,6 @@
 
 
 function gameJieshao() {
-  console.log('gameJieshao');
-	console.log(ScreenObjPool);
   var title = new TextEntityObject('背景介绍', new Vector(100*gnfx/400, 100*gnfy/710), {fillStyle: '#900', font: 'bold '+60*gnfx/400+'px 微软雅黑', 'textBaseline': 'top'}, 200*gnfx/400, 35*gnfy/710);
 
 	ScreenObjPool.add(title);
@@ -29,7 +27,6 @@ function gameJieshao() {
 }
 
 function gameSafe() {
-  console.log('gameSafe');
   var title = new TextEntityObject('马上就要驾驶了！', new Vector(110*gnfx/400, 150*gnfy/710), {fillStyle: '#900', font: 'bold '+34*gnfx/400+'px 微软雅黑', 'textBaseline': 'top'}, 200*gnfx/400, 35*gnfy/710);
   var question = new TextEntityObject('是否系安全带?', new Vector(105*gnfx/400, 300*gnfy/710), {fillStyle: '#900', font: 'bold '+34*gnfx/400+'px 微软雅黑', 'textBaseline': 'top'}, 200*gnfx/400, 35*gnfy/710);
 	ScreenObjPool.add(title);
@@ -85,7 +82,6 @@ function gameSafe() {
 }
 var stoRwo;
 function runWithOther() {
-  console.log('runWithOther');
   stoRwo=setTimeout('phoneRwo()',5000);
 
 
@@ -94,10 +90,6 @@ function runWithOther() {
 
 }
 function schoolCar() {
-  var schoolBus = new Car(new Vector(200*gnfx/400, 700*gnfy/710), window.util.randomColor(), resourceLoader.resources.schoolBus, new Vector(0, 0));
-  schoolBus.checkBus=true;
-  schoolBus.hitable=true;
-
   var road = new ImageEntityObject(resourceLoader.get('roadG1'), new Vector(0, -710*gnfy/710), 400*gnfx/400, 1420*gnfy/710, new Vector(0,100));
   ScreenObjPool.add(road);
   var leftC = new CollisionEntityObject(new Vector(0, 0), 40*gnfx/400, 710*gnfy/710);
@@ -109,20 +101,19 @@ function schoolCar() {
   cMap.add(rightC);
   cMap.add(topC);
   cMap.add(bottomC);
-
-  var myCar = new Car(new Vector(275*gnfx/400, 600*gnfy/710), window.util.randomColor(), resourceLoader.resources.car_p, new Vector(0, 0));
+  var schoolBus = new Car(new Vector(200*gnfx/400, 550*gnfy/710), window.util.randomColor(), resourceLoader.resources.schoolBus, new Vector(0, 0));
+  schoolBus.checkBus=true;
+  schoolBus.hitable=true;
+  schoolBus.speed.add(new Vector(0, -40));
+  ScreenObjPool.add(schoolBus);
+  var myCar = new Car(new Vector(275*gnfx/400, 500*gnfy/710), window.util.randomColor(), resourceLoader.resources.car_p, new Vector(0, 0));
   myCar.setCollisionMap(cMap);
   MainApp.addEventListener(myCar, 'hit', function(e){//弹框  不能撞击其他车辆
     MainApp.stopRun();
     hitschool(function() {
       ScreenObjPool.empty();
   		MainApp.emptyEventsPool();
-  		KEY_LOCK = {
-  			LEFT: false,
-  			RIGHT: false,
-  			UP: false,
-  			DOWN: false
-  		};
+      console.log(ScreenObjPool);
       MainApp.keepRun();
       schoolCar();
     });
@@ -132,55 +123,34 @@ function schoolCar() {
   var speedDown = new staticImg(resourceLoader.get('down'), new Vector(365*gnfx/400, 600*gnfy/710), 30*gnfx/400, 45*gnfy/710);
   var speedRight = new staticImg(resourceLoader.get('right'), new Vector(3*gnfx/400, 600*gnfy/710), 30*gnfx/400, 45*gnfy/710);
   var speedLeft = new staticImg(resourceLoader.get('left'), new Vector(3*gnfx/400, 500*gnfy/710), 30*gnfx/400, 45*gnfy/710);
-  MainApp.addEventListener(speedUp,'mousedown',function(e){
-      myCar.speed.add(new Vector(0, -20));
-  });
-  MainApp.addEventListener(speedUp,'mouseup',function(e){
-      myCar.speed.remove(new Vector(0, -20));
-  });
-  MainApp.addEventListener(speedDown,'mousedown',function(e){
-      myCar.speed.add(new Vector(0, 40));
-      schoolBus.speed.add(new Vector(15,0));
-  });
-   MainApp.addEventListener(speedDown,'mouseup',function(e){
-      myCar.speed.remove(new Vector(0, 40));
-      schoolBus.speed.remove(new Vector(15,0));
-  });
-  MainApp.addEventListener(speedLeft,'mousedown',function(e){
-      myCar.position.x-=71*gnfx/400;
-  });
-   MainApp.addEventListener(speedLeft,'mouseup',function(e){
-  });
-  MainApp.addEventListener(speedRight,'mousedown',function(e){
-    myCar.position.x+=71*gnfx/400;
-  });
-  MainApp.addEventListener(speedRight,'mouseup',function(e){
-  });
+
 
   MainApp.addEventListener(speedUp,'touchstart',function(e){
       myCar.speed.add(new Vector(0, -20));
   });
   MainApp.addEventListener(speedDown,'touchstart',function(e){
       myCar.speed.add(new Vector(0, 40));
-      schoolBus.speed.add(new Vector(15,0));
+      schoolBus.speed.add(new Vector(20,0));
   });
-  MainApp.addEventListener(speedLeft,'touchstart',function(e){
-      myCar.position.x-=71*gnfx/400;
-  });
-  MainApp.addEventListener(speedRight,'touchstart',function(e){
+    MainApp.addEventListener(speedLeft,'touchstart',function(e){
+      if(myCar.position.x<126*gnfx/400)
+      {
+        return;
+      }
+    myCar.position.x-=71*gnfx/400;
+    });
+    MainApp.addEventListener(speedRight,'touchstart',function(e){
+      if(myCar.position.x>268*gnfx/400)
+      {
+        return;
+      }
     myCar.position.x+=71*gnfx/400;
-  });
+    });
 
   ScreenObjPool.add(speedUp);
   ScreenObjPool.add(speedDown);
   ScreenObjPool.add(speedLeft);
   ScreenObjPool.add(speedRight);
-  //图片点击
-  setTimeout(function functionName() {
-    ScreenObjPool.add(schoolBus);
-    schoolBus.speed.add(new Vector(0, -25));
-    myCar.speed.add(new Vector(0, -15));
-  },3000);
 }
 
 
@@ -190,7 +160,6 @@ function schoolCar() {
 
 
 function phoneRwo() {
-  console.log('phoneRwo');
   MainApp.stopRun();
   $('.mask').fadeIn(100);
   $('#phone').slideDown(200);

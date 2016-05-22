@@ -237,7 +237,7 @@ resourceLoader.onProgress = function(e){
 
 resourceLoader.onComplete = function(){
 	ScreenObjPool.remove(loadScreen);
-	showWelcome();
+	//showWelcome();
 	//gameJieshao();
 	//lineGame();
 	//avoidGame();
@@ -245,7 +245,7 @@ resourceLoader.onComplete = function(){
 	//gameSafe();
 	//runWithOther();
 	//startGame();
-	//schoolCar();
+	schoolCar();
 	//biandao();
 };
 var loadScreen = new LoadScreen();
@@ -407,44 +407,28 @@ function startGame(){
   var speedDown = new staticImg(resourceLoader.get('down'), new Vector(365*gnfx/400, 600*gnfy/710), 30*gnfx/400, 45*gnfy/710);
   var speedRight = new staticImg(resourceLoader.get('right'), new Vector(3*gnfx/400, 600*gnfy/710), 30*gnfx/400, 45*gnfy/710);
   var speedLeft = new staticImg(resourceLoader.get('left'), new Vector(3*gnfx/400, 500*gnfy/710), 30*gnfx/400, 45*gnfy/710);
-  MainApp.addEventListener(speedUp,'mousedown',function(e){
-      myCar.speed.add(new Vector(0, -20));
-  });
-   MainApp.addEventListener(speedUp,'mouseup',function(e){
-      myCar.speed.remove(new Vector(0, -20));
-  });
-  MainApp.addEventListener(speedDown,'mousedown',function(e){
-      myCar.speed.add(new Vector(0, 20));
-      //schoolBus.speed.add(new Vector(15,0));
-  });
-   MainApp.addEventListener(speedDown,'mouseup',function(e){
-      myCar.speed.remove(new Vector(0, 20));
-      //schoolBus.speed.remove(new Vector(15,0));
-  });
-  MainApp.addEventListener(speedLeft,'mousedown',function(e){
-      myCar.position.x-=71*gnfx/400;
-  });
-   MainApp.addEventListener(speedLeft,'mouseup',function(e){
-  });
-  MainApp.addEventListener(speedRight,'mousedown',function(e){
-    myCar.position.x+=71*gnfx/400;
-  });
-   MainApp.addEventListener(speedRight,'mouseup',function(e){
-  });
+
 
 	MainApp.addEventListener(speedUp,'touchstart',function(e){
 			myCar.speed.add(new Vector(0, -20));
 	});
 	MainApp.addEventListener(speedDown,'touchstart',function(e){
 			myCar.speed.add(new Vector(0, 20));
-			//schoolBus.speed.add(new Vector(15,0));
 	});
-	MainApp.addEventListener(speedLeft,'touchstart',function(e){
-			myCar.position.x-=71*gnfx/400;
-	});
-	MainApp.addEventListener(speedRight,'touchstart',function(e){
+    MainApp.addEventListener(speedLeft,'touchstart',function(e){
+    	if(myCar.position.x<126*gnfx/400)
+    	{
+    		return;
+    	}
+		myCar.position.x-=71*gnfx/400;
+    });
+    MainApp.addEventListener(speedRight,'touchstart',function(e){
+    	if(myCar.position.x>268*gnfx/400)
+    	{
+    		return;
+    	}
 		myCar.position.x+=71*gnfx/400;
-	});
+    });
 	ScreenObjPool.add(speedUp);
   ScreenObjPool.add(speedDown);
   ScreenObjPool.add(speedLeft);
@@ -622,24 +606,24 @@ function lineGame(){
 	  var speedDown = new staticImg(resourceLoader.get('down'), new Vector(365*gnfx/400, 600*gnfy/710), 30*gnfx/400, 45*gnfy/710);
 	  var speedRight = new staticImg(resourceLoader.get('right'), new Vector(3*gnfx/400, 600*gnfy/710), 30*gnfx/400, 45*gnfy/710);
 	  var speedLeft = new staticImg(resourceLoader.get('left'), new Vector(3*gnfx/400, 500*gnfy/710), 30*gnfx/400, 45*gnfy/710);
-    MainApp.addEventListener(speedUp,'mousedown',function(e){
-				myCar.speed.add(new Vector(0, -20));
-    });
-    MainApp.addEventListener(speedUp,'mouseup',function(e){
-        myCar.speed.remove(new Vector(0, -20));
-    });
-    MainApp.addEventListener(speedDown,'mousedown',function(e){
-				myCar.speed.add(new Vector(0, 20));
-    });
-    MainApp.addEventListener(speedDown,'mouseup',function(e){
-        myCar.speed.remove(new Vector(0, 20));
-    });
-    MainApp.addEventListener(speedLeft,'mousedown',function(e){
-				myCar.position.x-=71*gnfx/400;
-    });
-    MainApp.addEventListener(speedRight,'mousedown',function(e){
-				myCar.position.x+=71*gnfx/400;
-    });
+    // MainApp.addEventListener(speedUp,'mousedown',function(e){
+				// myCar.speed.add(new Vector(0, -20));
+    // });
+    // MainApp.addEventListener(speedUp,'mouseup',function(e){
+    //     myCar.speed.remove(new Vector(0, -20));
+    // });
+    // MainApp.addEventListener(speedDown,'mousedown',function(e){
+				// myCar.speed.add(new Vector(0, 20));
+    // });
+    // MainApp.addEventListener(speedDown,'mouseup',function(e){
+    //     myCar.speed.remove(new Vector(0, 20));
+    // });
+    // MainApp.addEventListener(speedLeft,'mousedown',function(e){
+				// myCar.position.x-=71*gnfx/400;
+    // });
+    // MainApp.addEventListener(speedRight,'mousedown',function(e){
+				// myCar.position.x+=71*gnfx/400;
+    // });
 
 
 		MainApp.addEventListener(speedUp,'touchstart',function(e){
@@ -648,12 +632,20 @@ function lineGame(){
 		MainApp.addEventListener(speedDown,'touchstart',function(e){
 				myCar.speed.add(new Vector(0, 20));
 		});
-		MainApp.addEventListener(speedLeft,'touchstart',function(e){
-				myCar.position.x-=71*gnfx/400;
-		});
-		MainApp.addEventListener(speedRight,'touchstart',function(e){
-				myCar.position.x+=71*gnfx/400;
-		});
+    MainApp.addEventListener(speedLeft,'touchstart',function(e){
+    	if(myCar.position.x<126*gnfx/400)
+    	{
+    		return;
+    	}
+		myCar.position.x-=71*gnfx/400;
+    });
+    MainApp.addEventListener(speedRight,'touchstart',function(e){
+    	if(myCar.position.x>268*gnfx/400)
+    	{
+    		return;
+    	}
+		myCar.position.x+=71*gnfx/400;
+    });
 	ScreenObjPool.add(speedUp);
 	ScreenObjPool.add(speedDown);
 	ScreenObjPool.add(speedLeft);
@@ -801,35 +793,26 @@ function avoidGame(){
 	  var speedDown = new staticImg(resourceLoader.get('down'), new Vector(365*gnfx/400, 600*gnfy/710), 30*gnfx/400, 45*gnfy/710);
 	  var speedRight = new staticImg(resourceLoader.get('right'), new Vector(3*gnfx/400, 600*gnfy/710), 30*gnfx/400, 45*gnfy/710);
 	  var speedLeft = new staticImg(resourceLoader.get('left'), new Vector(3*gnfx/400, 500*gnfy/710), 30*gnfx/400, 45*gnfy/710);
-    MainApp.addEventListener(speedUp,'mousedown',function(e){
-				myCar.speed.add(new Vector(0, -20));
-    });
-     MainApp.addEventListener(speedUp,'mouseup',function(e){
-        myCar.speed.remove(new Vector(0, -20));
-    });
-    MainApp.addEventListener(speedDown,'mousedown',function(e){
-				myCar.speed.add(new Vector(0, 20));
-    });
-     MainApp.addEventListener(speedDown,'mouseup',function(e){
-        myCar.speed.remove(new Vector(0, 20));
-    });
-    MainApp.addEventListener(speedLeft,'mousedown',function(e){
-				myCar.position.x-=71*gnfx/400;
-    });
-    MainApp.addEventListener(speedRight,'mousedown',function(e){
-				myCar.position.x+=71*gnfx/400;
-    });
 
-		MainApp.addEventListener(speedUp,'touchstart',function(e){
+
+	MainApp.addEventListener(speedUp,'touchstart',function(e){
 		myCar.speed.add(new Vector(0, -20));
     });
     MainApp.addEventListener(speedDown,'touchstart',function(e){
 		myCar.speed.add(new Vector(0, 20));
     });
     MainApp.addEventListener(speedLeft,'touchstart',function(e){
+    	if(myCar.position.x<126*gnfx/400)
+    	{
+    		return;
+    	}
 		myCar.position.x-=71*gnfx/400;
     });
     MainApp.addEventListener(speedRight,'touchstart',function(e){
+    	if(myCar.position.x>268*gnfx/400)
+    	{
+    		return;
+    	}
 		myCar.position.x+=71*gnfx/400;
     });
 
@@ -939,8 +922,6 @@ function background(){
 	});
 
 	MainApp.addEventListener(myCar, 'hit', function(e){
-		ScreenObjPool.empty();
-		MainApp.emptyEventsPool();
 		KEY_LOCK = {
 			LEFT: false,
 			RIGHT: false,
@@ -992,8 +973,6 @@ function background(){
 			MainApp.keepRun();
 			background();
 		});
-
-		//endGame(score.score);
 	});
 	MainApp.addEventListener(myCar, 'change', function(e){//全屏幕，正确下高架，经行下一关
 
@@ -1015,43 +994,31 @@ function background(){
 			MainApp.emptyEventsPool();
 			schoolCar();
 		},2000);
-		//endGame(score.score);
 	});
 	ScreenObjPool.add(myCar);
 	var speedUp = new staticImg(resourceLoader.get('up'), new Vector(365*gnfx/400, 500*gnfy/710), 30*gnfx/400, 45*gnfy/710);
   var speedDown = new staticImg(resourceLoader.get('down'), new Vector(365*gnfx/400, 600*gnfy/710), 30*gnfx/400, 45*gnfy/710);
   var speedRight = new staticImg(resourceLoader.get('right'), new Vector(3*gnfx/400, 600*gnfy/710), 30*gnfx/400, 45*gnfy/710);
   var speedLeft = new staticImg(resourceLoader.get('left'), new Vector(3*gnfx/400, 500*gnfy/710), 30*gnfx/400, 45*gnfy/710);
-    MainApp.addEventListener(speedUp,'mousedown',function(e){
-				myCar.speed.add(new Vector(0, -20));
-    });
-    MainApp.addEventListener(speedUp,'mouseup',function(e){
-        myCar.speed.remove(new Vector(0, -20));
-    });
-    MainApp.addEventListener(speedDown,'mousedown',function(e){
-				myCar.speed.add(new Vector(0, 20));
-    });
-     MainApp.addEventListener(speedDown,'mouseup',function(e){
-        myCar.speed.remove(new Vector(0, 20));
-    });
-    MainApp.addEventListener(speedLeft,'mousedown',function(e){
-				myCar.position.x-=71*gnfx/400;
-    });
-    MainApp.addEventListener(speedRight,'mousedown',function(e){
-				myCar.position.x+=71*gnfx/400;
-    });
-
-		MainApp.addEventListener(speedUp,'touchstart',function(e){
+	MainApp.addEventListener(speedUp,'touchstart',function(e){
 				myCar.speed.add(new Vector(0, -20));
     });
     MainApp.addEventListener(speedDown,'touchstart',function(e){
 				myCar.speed.add(new Vector(0, 20));
     });
     MainApp.addEventListener(speedLeft,'touchstart',function(e){
-				myCar.position.x-=71*gnfx/400;
+    	if(myCar.position.x<126*gnfx/400)
+    	{
+    		return;
+    	}
+		myCar.position.x-=71*gnfx/400;
     });
     MainApp.addEventListener(speedRight,'touchstart',function(e){
-				myCar.position.x+=71*gnfx/400;
+    	if(myCar.position.x>268*gnfx/400)
+    	{
+    		return;
+    	}
+		myCar.position.x+=71*gnfx/400;
     });
 	ScreenObjPool.add(speedUp);
 	ScreenObjPool.add(speedDown);

@@ -28,19 +28,17 @@ var Car = function(v, style, img, speed,road){
 				this.position = oldPos;
 			}
 		}
-		//this.position.y += (MainApp.nowTime - MainApp.startTime) * this.speed.y / 1000;
-		//this.position.x += (MainApp.nowTime - MainApp.startTime) * this.speed.x / 1000;
 
 		if(this.position.y > 710*gnfy/710){
 			var temp=util.random(0,this.road);
-			this.position.x=temp * 74*gnfx/400 + 51;
+			this.position.x=(temp * 74 + 55)*gnfx/400;
 			this.position.y = window.util.random(-710*gnfy/710, 0);
 			this.speed = new Vector(0, 80);
 		}
 	 };
 
 	this._draw = function(context){
-		if (this.checkBus&&this.position.x>260*gnfx/400) {
+		if (this.checkBus&&this.position.x>240*gnfx/400) {
 			ScreenObjPool.empty();
   		MainApp.emptyEventsPool();
   		KEY_LOCK = {
