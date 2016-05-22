@@ -427,18 +427,6 @@ var MainApp = {
 		this.nowTime = new Date().getTime();
 		this.context.clearRect(0, 0, gnfx, gnfy);
 		this.diffTime = this.nowTime - this.startTime;
-	// 	var temp=util.random(1, 5);
-	// 	for(var i = 0; i < temp; i++){
-	// 	var img =  images[util.random(0, images.length - 1)];
-	// 	console.log(images);
-	// 	var newCar = new Car(new Vector(i * 60 + 50, window.util.random(-480, -80)), window.util.randomColor(), img);
-	// 	newCar.hitable = true;
-	// 	ScreenObjPool.add(newCar);
-	// }
-	// if(images!=null)
-	// {
-	// 	console.log(images);
-	// }
 		ScreenObjPool.foreach(this.context);
 
 		this.startTime = this.nowTime;

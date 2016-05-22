@@ -113,7 +113,6 @@ function schoolCar() {
     hitschool(function() {
       ScreenObjPool.empty();
   		MainApp.emptyEventsPool();
-      console.log(ScreenObjPool);
       MainApp.keepRun();
       schoolCar();
     });
@@ -220,15 +219,12 @@ function phoneRwo() {
 
       },2000);
     },5000);
-    //biandao();
   });
 
 
   rwo=false;
 }
 function hitTip(callback) {
-  console.log(callback);
-  console.log('hitTip');
   $('.mask').fadeIn(100);
   $('#hitTip').slideDown(200);
   $('#know').on('click',function () {

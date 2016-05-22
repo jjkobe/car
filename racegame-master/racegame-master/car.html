@@ -202,7 +202,6 @@ BODY, HTML
 <script type="text/javascript">
 var gnfx=document.documentElement.clientWidth;
 var gnfy=document.documentElement.clientHeight;
-//$('.onmask').attr('width',0.8*gnfx+'px');
 var rwo=true;
 var screenObjects = [];
 var startTime = null;
@@ -215,8 +214,6 @@ var resources = [
 	{'name': 'car4', src: 'images/car4.png', type: 'images'},
 	{'name': 'car5', src: 'images/car5.png', type: 'images'},
 	{'name': 'car_p', src: 'images/car_p.png', type: 'images'},
-	{'name': 'saint', src: 'images/saint.png', type: 'images'},
-	{'name': 'soldier', src: 'images/soldier.png', type: 'images'},
 	{'name': 'schoolBus', src: 'images/2.png', type: 'images'},
 	{'name': 'roadD', src: 'images/5.png', type: 'images'},
 	{'name': 'roadG1', src: 'images/9.png', type: 'images'},
@@ -260,7 +257,6 @@ resourceLoader.load(resources);
 
 document.getElementById("sence").width=gnfx;
 document.getElementById("sence").height=gnfy;
-console.log(gnfx,gnfy);
 function showWelcome(){
 	var logo = new TextEntityObject('CAR RACE', new Vector(100*gnfx/400, 150*gnfy/710), {fillStyle: '#900', font: 'bold '+100*gnfx/400+'px 微软雅黑', 'textBaseline': 'top'}, 200*gnfx/400, 35*gnfy/710);
 
@@ -294,13 +290,19 @@ function startGame(){
 	images.push(resourceLoader.resources.car3);
 	images.push(resourceLoader.resources.car4);
 	images.push(resourceLoader.resources.car5);
-	for(var i = 0; i < 3; i++){
-		var img =  images[util.random(0, images.length - 1)];
-		var temp=util.random(0,3);
-		var newCar = new Car(new Vector((temp * 74 + 55)*gnfx/400, window.util.random(-480, -80)*gnfy/710), window.util.randomColor(), img);
-		newCar.hitable = true;
-		ScreenObjPool.add(newCar);
-	}
+	var img =  resourceLoader.resources.car5;
+	var newCar = new Car(new Vector((0 * 74 + 55)*gnfx/400, window.util.random(-480, -80)*gnfy/710), window.util.randomColor(), img);
+	newCar.hitable = true;
+	ScreenObjPool.add(newCar);
+	var img =  resourceLoader.resources.car4;
+	var newCar = new Car(new Vector((1 * 74 + 55)*gnfx/400, window.util.random(-480, -80)*gnfy/710), window.util.randomColor(), img);
+	newCar.hitable = true;
+	ScreenObjPool.add(newCar);
+	var img =  resourceLoader.resources.car3;
+	var newCar = new Car(new Vector((2 * 74 + 55)*gnfx/400, window.util.random(-480, -80)*gnfy/710), window.util.randomColor(), img);
+	newCar.hitable = true;
+	ScreenObjPool.add(newCar);
+
 	var scorePre = new TextEntityObject('Score: ', new Vector(50, 5), {fillStyle: '#fff', font: 'bold 32px 微软雅黑', 'textBaseline': 'top'}, 100, 35);
 	ScreenObjPool.add(scorePre);
 	//var score = new TextEntityObject('0', new Vector(160, 5), {fillStyle: '#fff', font: 'bold 32px 微软雅黑', 'textBaseline': 'top'}, 100, 35);
@@ -355,7 +357,6 @@ function startGame(){
 			case KEY.UP:
 				if(!KEY_LOCK.UP){
 					myCar.speed.add(new Vector(0, -20));
-					console.log(myCar.speed);
 					KEY_LOCK.UP = true;
 				}
 				break;
@@ -385,7 +386,6 @@ function startGame(){
 		clearTimeout(stoRwo);
 		MainApp.stopRun();
 		hitTip(function() {
-			console.log("388");
 			ScreenObjPool.empty();
 			MainApp.emptyEventsPool();
 			KEY_LOCK = {
@@ -394,8 +394,6 @@ function startGame(){
 				UP: false,
 				DOWN: false
 			};
-
-			console.log('keepRun');
 			MainApp.keepRun();
 			startGame();
 		});
@@ -542,7 +540,6 @@ function lineGame(){
 	MainApp.addEventListener(myCar, 'hit', function(e){//弹框不能撞击其他车辆
 		MainApp.stopRun();
     hitTip(function() {
-			console.log("561");
       ScreenObjPool.empty();
   		MainApp.emptyEventsPool();
   		KEY_LOCK = {
@@ -596,35 +593,12 @@ function lineGame(){
 		var newCar = new Car(new Vector(200*gnfx/400, 700*gnfy/710), window.util.randomColor(), img, new Vector(0, -20*gnfy/710));
 		newCar.hitable = true;
 		ScreenObjPool.add(newCar);
-		// var img =  resourceLoader.resources.car5;
-		// var newCar = new Car(new Vector(200*gnfx/400, 700*gnfy/710), window.util.randomColor(), img, new Vector(0, -20*gnfy/710));
-		// newCar.hitable = true;
-		// ScreenObjPool.add(newCar);
 	});
 		ScreenObjPool.add(myCar);
 		var speedUp = new staticImg(resourceLoader.get('up'), new Vector(365*gnfx/400, 500*gnfy/710), 30*gnfx/400, 45*gnfy/710);
 	  var speedDown = new staticImg(resourceLoader.get('down'), new Vector(365*gnfx/400, 600*gnfy/710), 30*gnfx/400, 45*gnfy/710);
 	  var speedRight = new staticImg(resourceLoader.get('right'), new Vector(3*gnfx/400, 600*gnfy/710), 30*gnfx/400, 45*gnfy/710);
 	  var speedLeft = new staticImg(resourceLoader.get('left'), new Vector(3*gnfx/400, 500*gnfy/710), 30*gnfx/400, 45*gnfy/710);
-    // MainApp.addEventListener(speedUp,'mousedown',function(e){
-				// myCar.speed.add(new Vector(0, -20));
-    // });
-    // MainApp.addEventListener(speedUp,'mouseup',function(e){
-    //     myCar.speed.remove(new Vector(0, -20));
-    // });
-    // MainApp.addEventListener(speedDown,'mousedown',function(e){
-				// myCar.speed.add(new Vector(0, 20));
-    // });
-    // MainApp.addEventListener(speedDown,'mouseup',function(e){
-    //     myCar.speed.remove(new Vector(0, 20));
-    // });
-    // MainApp.addEventListener(speedLeft,'mousedown',function(e){
-				// myCar.position.x-=71*gnfx/400;
-    // });
-    // MainApp.addEventListener(speedRight,'mousedown',function(e){
-				// myCar.position.x+=71*gnfx/400;
-    // });
-
 
 		MainApp.addEventListener(speedUp,'touchstart',function(e){
 				myCar.speed.add(new Vector(0, -20));
@@ -752,7 +726,6 @@ function avoidGame(){
 	MainApp.addEventListener(myCar, 'hit', function(e){//弹框，不能撞击行人
 		MainApp.stopRun();
     hitTip(function() {
-			console.log("763");
       ScreenObjPool.empty();
   		MainApp.emptyEventsPool();
   		KEY_LOCK = {
@@ -834,13 +807,18 @@ function background(){
 	images.push(resourceLoader.resources.car3);
 	images.push(resourceLoader.resources.car4);
 	images.push(resourceLoader.resources.car5);
-	for(var i = 0; i < 3; i++){
-		var img =  images[util.random(0, images.length - 1)];
-		var temp=util.random(0,1);
-		var newCar = new Car(new Vector((temp * 74 + 55)*gnfx/400, window.util.random(-480, -80)*gnfy/710), window.util.randomColor(), img,new Vector(0, 130),2);
-		newCar.hitable = true;
-		ScreenObjPool.add(newCar);
-	}
+	var img =  resourceLoader.resources.car1;
+	var newCar = new Car(new Vector((0 * 74 + 55)*gnfx/400, window.util.random(-480, -80)*gnfy/710), window.util.randomColor(), img);
+	newCar.hitable = true;
+	ScreenObjPool.add(newCar);
+	var img =  resourceLoader.resources.car2;
+	var newCar = new Car(new Vector((1 * 74 + 55)*gnfx/400, window.util.random(-480, -80)*gnfy/710), window.util.randomColor(), img);
+	newCar.hitable = true;
+	ScreenObjPool.add(newCar);
+	var img =  resourceLoader.resources.car3;
+	var newCar = new Car(new Vector((2 * 74 + 55)*gnfx/400, window.util.random(-480, -80)*gnfy/710), window.util.randomColor(), img);
+	newCar.hitable = true;
+	ScreenObjPool.add(newCar);
 	var scorePre = new TextEntityObject('Score: ', new Vector(50, 5), {fillStyle: '#fff', font: 'bold 32px 微软雅黑', 'textBaseline': 'top'}, 100, 35);
 	ScreenObjPool.add(scorePre);
 	//var score = new TextEntityObject('0', new Vector(160, 5), {fillStyle: '#fff', font: 'bold 32px 微软雅黑', 'textBaseline': 'top'}, 100, 35);
@@ -895,7 +873,6 @@ function background(){
 			case KEY.UP:
 				if(!KEY_LOCK.UP){
 					myCar.speed.add(new Vector(0, -40));
-					console.log(myCar.speed);
 					KEY_LOCK.UP = true;
 				}
 				break;
@@ -930,7 +907,6 @@ function background(){
 		}
 		MainApp.stopRun();
 		hitTip(function() {
-			console.log("952");
 			MainApp.keepRun();
 			background();
 		});

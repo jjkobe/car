@@ -30,8 +30,6 @@ var Car = function(v, style, img, speed,road){
 		}
 
 		if(this.position.y > 710*gnfy/710){
-			var temp=util.random(0,this.road);
-			this.position.x=(temp * 74 + 55)*gnfx/400;
 			this.position.y = window.util.random(-710*gnfy/710, 0);
 			this.speed = new Vector(0, 80);
 		}
@@ -48,11 +46,7 @@ var Car = function(v, style, img, speed,road){
   			DOWN: false
   		};
 			busToAvoid();
-			
-			//MainApp.stopRun();
-			//alert('sss');
 		}
-		//context.strokeRect(this.position.x, this.position.y, this.width, this.height);
 		context.drawImage(this.img, this.position.x - 3, this.position.y - 3,this.width,this.height);
 	};
 
@@ -99,55 +93,6 @@ var ConverseCar = function(v, style, img, speed){
 		context.drawImage(this.img, this.position.x - 3, this.position.y - 3,this.width,this.height);
 	};
 };
-
-
-
-
-var Magic = function(v, img, animType, split, speed){
-
-	this.img = img;
-	this.animType = animType;
-	if(animType === Magic.ANIM_TYPE.VERTICAL){
-		this.width = img.width;
-		this.height = split;
-		this.frames = ~~(img.height / split);
-	}else if(animType === Magic.ANIM_TYPE.HORIZONTAL){
-		this.width = split;
-		this.height = img.height;
-		this.frames = ~~(img.width / split);
-	}
-
-	!!speed ? (this.speed = speed) : (this.speed = new Vector(0, 0));
-
-
-	this.currFrame = 0;
-
-	RectEntityObject.call(this, v, this.width, this.height, {});
-
-	this._update = function(){
-		this.currFrame += (MainApp.nowTime - MainApp.startTime) * 10 / 1000;
-		this.currFrame %= this.frames;
-
-		this.position.x += (MainApp.nowTime - MainApp.startTime) * this.speed.x / 1000;
-		if(this.position.x > 640){
-			this.position.x = 0;
-		}
-	};
-
-	this._draw = function(context){
-		var f = ~~this.currFrame;
-		if(this.animType === Magic.ANIM_TYPE.VERTICAL){
-			context.drawImage(img, 0,  f * this.height , this.width, this.height, this.position.x, this.position.y, this.width, this.height);
-		}else if(this.animType === Magic.ANIM_TYPE.HORIZONTAL){
-			context.drawImage(img, f * this.width, 0 , this.width, this.height, this.position.x, this.position.y, this.width, this.height);
-		}
-	}
-};
-
-Magic.ANIM_TYPE = {
-	VERTICAL: 1,
-	HORIZONTAL: 2
-}
 
 
 var GameScore = function(s, p){

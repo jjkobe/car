@@ -51,7 +51,6 @@ var Rect = function(v, width, height){
 	};
 
 	this.checkMiss = function(rect){
-		console.log(this.position);
 		if((rect.position.y  > -600*gnfy/710) && ((this.position.x-this.width/2<220*gnfx/400) || (this.position.y-this.width/2<120*gnfy/710))){
 			return true;
 		}
@@ -59,7 +58,6 @@ var Rect = function(v, width, height){
 	};
 
 	this.checkChange = function(rect){
-		console.log(this.position);
 		if((rect.position.y  > -600*gnfy/710) && (this.position.x-this.width/2>220*gnfx/400) && (this.position.y-this.width/2>120*gnfy/710)){
 			return true;
 		}
