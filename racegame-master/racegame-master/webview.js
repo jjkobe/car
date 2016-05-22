@@ -16,7 +16,7 @@ function setHtmlSize(){
   document.getElementById('tipline').style.width=0.8*windowWidth+'px';
   document.getElementById('tipmiss').style.height=0.25*windowHeight+'px';
   document.getElementById('tipcline').style.height=0.25*windowHeight+'px';
-  document.getElementById('tipline').style.height=0.25*windowHeight+'px';
+  document.getElementById('tipline').style.height=0.35*windowHeight+'px';
   document.getElementById('hitschool').style.width=0.8*windowWidth+'px';
   document.getElementById('hitschool').style.height=0.3*windowHeight+'px';
   if(windowWidth > 800){

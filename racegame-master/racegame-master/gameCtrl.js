@@ -162,6 +162,8 @@ function phoneRwo() {
   MainApp.stopRun();
   $('.mask').fadeIn(100);
   $('#phone').slideDown(200);
+  play_coin_music();
+  setTimeout('stop_coin_music()',2000);
   $('#jie').on('click',function() {
     $('#text').text('司机开车打电话要扣分并处罚款哦！');
     setTimeout(function() {
