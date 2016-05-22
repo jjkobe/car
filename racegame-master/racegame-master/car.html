@@ -226,7 +226,7 @@ var resources = [
 	{'name':'down',src:'images/down.png',type:'images'},
 	{'name':'left',src:'images/left.png',type:'images'},
 	{'name':'right',src:'images/right.png',type:'images'},
-
+	{'name':'logo',src:'images/logo.jpg',type:'images'}
 ];
 resourceLoader.onProgress = function(e){
 	loadScreen.setProgress(e.loadedCount / e.totalCount);
@@ -234,7 +234,7 @@ resourceLoader.onProgress = function(e){
 
 resourceLoader.onComplete = function(){
 	ScreenObjPool.remove(loadScreen);
-	//showWelcome();
+	showWelcome();
 	//gameJieshao();
 	//lineGame();
 	//avoidGame();
@@ -242,8 +242,9 @@ resourceLoader.onComplete = function(){
 	//gameSafe();
 	//runWithOther();
 	//startGame();
-	schoolCar();
+	//schoolCar();
 	//biandao();
+	//newEnd();
 };
 var loadScreen = new LoadScreen();
 
@@ -258,9 +259,11 @@ resourceLoader.load(resources);
 document.getElementById("sence").width=gnfx;
 document.getElementById("sence").height=gnfy;
 function showWelcome(){
-	var logo = new TextEntityObject('CAR RACE', new Vector(100*gnfx/400, 150*gnfy/710), {fillStyle: '#900', font: 'bold '+100*gnfx/400+'px 微软雅黑', 'textBaseline': 'top'}, 200*gnfx/400, 35*gnfy/710);
+	var logo = new staticImg(resourceLoader.get('logo'), new Vector(50*gnfx/400, 100*gnfy/710), 300*gnfx/400, 400*gnfy/710);
+  ScreenObjPool.add(logo);
+	//var logo = new TextEntityObject('CAR RACE', new Vector(100*gnfx/400, 350*gnfy/710), {fillStyle: '#900', font: 'bold '+100*gnfx/400+'px 微软雅黑', 'textBaseline': 'top'}, 200*gnfx/400, 35*gnfy/710);
 
-	welcome = new TextEntityObject('点击开始', new Vector(140*gnfx/400, 350*gnfy/710), {fillStyle: '#333', font: 'bold '+24*gnfx/400+'px 微软雅黑', 'textBaseline': 'top'}, 100*gnfx/400, 35*gnfy/710);
+	welcome = new TextEntityObject('点击开始', new Vector(140*gnfx/400, 550*gnfy/710), {fillStyle: '#333', font: 'bold '+30*gnfx/400+'px 微软雅黑', 'textBaseline': 'top'}, 100*gnfx/400, 35*gnfy/710);
 	MainApp.addEventListener(welcome, 'mouseover', function(e){
 		welcome.setStyle({fillStyle: '#999'});
 	});
@@ -274,7 +277,7 @@ function showWelcome(){
 		ScreenObjPool.remove(welcome);
 		gameJieshao();
 	});
-	ScreenObjPool.add(logo);
+	//ScreenObjPool.add(logo);
 	ScreenObjPool.add(welcome);
 
 }
@@ -585,6 +588,7 @@ function lineGame(){
 			UP: false,
 			DOWN: false
 		}
+		newEnd();
 	});
 	myCar.addcar=true;
 	MainApp.addEventListener(myCar, 'addcar', function(e){

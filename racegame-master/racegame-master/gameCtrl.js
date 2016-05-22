@@ -265,3 +265,13 @@ function busToAvoid() {
     avoidGame();
   },3000);
 }
+function newEnd() {
+  var logo = new staticImg(resourceLoader.get('logo'), new Vector(100*gnfx/400, 200*gnfy/710), 200*gnfx/400, 300*gnfy/710);
+  ScreenObjPool.add(logo);
+	var text2 = new TextEntityObject('遵守交通法规从我做起', new Vector(100*gnfx/400, 100*gnfy/710), {fillStyle: '#900', font: 'bold '+40*gnfx/400+'px 微软雅黑', 'textBaseline': 'top'}, 220*gnfx/400, 10*gnfy/710);
+
+	var text1 = new TextEntityObject('点击右上角分享到朋友圈', new Vector(140*gnfx/400, 550*gnfy/710), {fillStyle: '#333', font: 'bold '+20*gnfx/400+'px 微软雅黑', 'textBaseline': 'top'}, 100*gnfx/400, 15*gnfy/710);
+  ScreenObjPool.add(logo);
+  ScreenObjPool.add(text1);
+  ScreenObjPool.add(text2);
+}
