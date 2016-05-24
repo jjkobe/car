@@ -153,6 +153,19 @@ BODY, HTML
 		</center>
 	</div>
 
+	<div class="onmask" id="hitPerson" style="background-color:white">
+		<div class="" style="float:left;width:20%">
+			<img src="images/tip.png" width="50%" alt="" style="margin-left:25%;margin-top:20%"/>
+		</div>
+		<div class="">
+			<h2>汽车在路面上行驶追尾前车的话，一般是追尾着全责哦！</h2>
+		</div>
+
+		<center>
+			<button type="button" name="button" id='konwPerson'>我知道了，重新开始</button>
+		</center>
+	</div>
+
 	<div class="onmask" id="hitLine" style="background-color:white">
 		<div class="" style="float:left;width:20%">
 			<img src="images/tip.png" width="50%" alt="" style="margin-left:25%;margin-top:20%"/>
@@ -589,9 +602,9 @@ function avoidGame(){
 	carKey(myCar);
 
 	MainApp.addEventListener(myCar, 'person', function(e){//弹框，不能撞击行人
-		alert("person");
+		//alert("person");
 		MainApp.stopRun();
-    hitAvoid(function() {
+    hitPerson(function() {
       ScreenObjPool.empty();
   		MainApp.emptyEventsPool();
   		KEY_LOCK = {

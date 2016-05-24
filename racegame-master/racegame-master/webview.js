@@ -25,6 +25,8 @@ function setHtmlSize(){
   document.getElementById('tipline').style.height=0.35*windowHeight+'px';
   document.getElementById('hitschool').style.width=0.8*windowWidth+'px';
   document.getElementById('hitschool').style.height=0.3*windowHeight+'px';
+   document.getElementById('hitPerson').style.width=0.8*windowWidth+'px';
+  document.getElementById('hitPerson').style.height=0.3*windowHeight+'px';
   if(windowWidth > 800){
 
     document.getElementsByTagName("html")[0].style.fontSize = 16 + "px";

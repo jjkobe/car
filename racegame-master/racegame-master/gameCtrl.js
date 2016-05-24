@@ -282,6 +282,21 @@ function hitAvoid(callback) {
 }
 }
 
+function hitPerson(callback) {
+  $('.mask').fadeIn(100);
+  $('#hitPerson').slideDown(200);
+  if(hitPersonControl){
+    hitAvoidControl=false;
+  $('#konwPerson').on('click',function () {
+    $('.mask').fadeOut(100);
+    $('#hitPerson').slideUp(200);
+    if (callback) {
+      callback();
+    }
+  })
+}
+}
+
 function hitLine(callback) {
   $('.mask').fadeIn(100);
   $('#hitLine').slideDown(200);
