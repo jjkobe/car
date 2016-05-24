@@ -83,7 +83,7 @@ function gameSafe() {
 var stoRwo;
 function runWithOther() {
   stoRwo=setTimeout('phoneRwo()',5000);
-
+  console.log(stoRwo);
 
 
 
@@ -101,10 +101,11 @@ function schoolCar() {
   cMap.add(rightC);
   cMap.add(topC);
   cMap.add(bottomC);
-  var schoolBus = new Car(new Vector(200*gnfx/400, 550*gnfy/710), window.util.randomColor(), resourceLoader.resources.schoolBus, new Vector(0, 0));
+  var schoolBus = new Car(new Vector(200*gnfx/400, 500*gnfy/710), window.util.randomColor(), resourceLoader.resources.schoolBus, new Vector(0, 0));
   schoolBus.checkBus=true;
   schoolBus.hitable=true;
-  schoolBus.speed.add(new Vector(0, -40));
+  schoolBus.speed.add(new Vector(0, 0));
+  schoolBus.speed.add(new Vector(10,0));
   ScreenObjPool.add(schoolBus);
   var myCar = new Car(new Vector(275*gnfx/400, 500*gnfy/710), window.util.randomColor(), resourceLoader.resources.car_p, new Vector(0, 0));
   myCar.setCollisionMap(cMap);
@@ -129,7 +130,6 @@ function schoolCar() {
   });
   MainApp.addEventListener(speedDown,'touchstart',function(e){
       myCar.speed.add(new Vector(0, 40));
-      schoolBus.speed.add(new Vector(20,0));
   });
     MainApp.addEventListener(speedLeft,'touchstart',function(e){
       if(myCar.position.x<126*gnfx/400)
@@ -229,6 +229,8 @@ function phoneRwo() {
 function hitTip(callback) {
   $('.mask').fadeIn(100);
   $('#hitTip').slideDown(200);
+  if(hitTipControl){
+    hitTipControl=false;
   $('#know').on('click',function () {
     $('.mask').fadeOut(100);
     $('#hitTip').slideUp(200);
@@ -236,11 +238,61 @@ function hitTip(callback) {
       callback();
     }
   })
-
 }
+}
+
+
+function hitAvoid(callback) {
+  $('.mask').fadeIn(100);
+  $('#hitAvoid').slideDown(200);
+  if(hitAvoidControl){
+    hitAvoidControl=false;
+  $('#knowAvoid').on('click',function () {
+    $('.mask').fadeOut(100);
+    $('#hitAvoid').slideUp(200);
+    if (callback) {
+      callback();
+    }
+  })
+}
+}
+
+function hitLine(callback) {
+  $('.mask').fadeIn(100);
+  $('#hitLine').slideDown(200);
+  if(hitLineControl){
+    hitLineControl=false;
+  $('#knowLine').on('click',function () {
+    $('.mask').fadeOut(100);
+    $('#hitLine').slideUp(200);
+    if (callback) {
+      callback();
+    }
+  })
+}
+}
+
+function hitBack(callback) {
+  $('.mask').fadeIn(100);
+  $('#hitBack').slideDown(200);
+  if(hitBackControl){
+    hitBackControl=false;
+  $('#knowBack').on('click',function () {
+    $('.mask').fadeOut(100);
+    $('#hitBack').slideUp(200);
+    if (callback) {
+      callback();
+    }
+  })
+}
+}
+
+
 function hitschool(callback) {
   $('.mask').fadeIn(100);
   $('#hitschool').slideDown(200);
+  if(hitSchoolControl){
+    hitSchoolControl=false;
   $('#schoolknow').on('click',function () {
     $('.mask').fadeOut(100);
     $('#hitschool').slideUp(200);
@@ -248,7 +300,7 @@ function hitschool(callback) {
       callback();
     }
   })
-
+}
 }
 function busToAvoid() {
   next = new TextEntityObject('成功给校车让道，下一关:', new Vector(80*gnfx/400, 200*gnfy/710), {fillStyle: '#900', font: 'bold '+40*gnfx/400+'px 微软雅黑', 'textBaseline': 'top'}, 200*gnfx/400, 35*gnfy/710);

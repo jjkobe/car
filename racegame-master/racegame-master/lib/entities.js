@@ -224,9 +224,9 @@ var staticImg = function(img, v, width, height){
 
 var LoadScreen = function(){
 	EntityObject.call(this);
-	var backgroundRect = new RectEntityObject(new Vector(267, 210), 106, 10, {border: {color: '#ccc', width: '2'}});
-	var forgroundRect = new RectEntityObject(new Vector(270, 213), 0, 4, {fill: '#999'});
-	var text = new TextEntityObject('正在为您载入', new Vector(281, 190), {fillStyle: '#000', font: 'bold 12px 微软雅黑', 'textBaseline': 'top'});
+	var backgroundRect = new RectEntityObject(new Vector(167*gnfx/400, 210*gnfy/710), 106, 10, {border: {color: '#ccc', width: '2'}});
+	var forgroundRect = new RectEntityObject(new Vector(170*gnfx/400, 213*gnfy/710), 0, 4, {fill: '#999'});
+	var text = new TextEntityObject('正在为您载入', new Vector(181*gnfx/400, 190*gnfy/710), {fillStyle: '#000', font: 'bold 12px 微软雅黑', 'textBaseline': 'top'});
 	this._draw = function(context){
 		backgroundRect.draw(context);
 		forgroundRect.draw(context);
