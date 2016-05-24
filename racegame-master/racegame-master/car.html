@@ -294,10 +294,10 @@ resourceLoader.onComplete = function(){
 	images.push(resourceLoader.resources.car4);
 	images.push(resourceLoader.resources.car5);
 	ScreenObjPool.remove(loadScreen);
-	//showWelcome();
+	showWelcome();
 	//gameJieshao();
 	//lineGame();
-	avoidGame();
+	//avoidGame();
 	//background();
 	//gameSafe();
 	//runWithOther();
@@ -333,13 +333,23 @@ function showWelcome(){
 	});
 
 	MainApp.addEventListener(welcome, 'click', function(e){
-		ScreenObjPool.remove(logo);
-		ScreenObjPool.remove(welcome);
+		// ScreenObjPool.remove(logo);
+		// ScreenObjPool.remove(welcome);
+		ScreenObjPool.empty();
+		MainApp.emptyEventsPool();
 		gameJieshao();
 	});
 	//ScreenObjPool.add(logo);
 	ScreenObjPool.add(welcome);
-
+	carKey();
+	upText = new TextEntityObject('--加速', new Vector(40*gnfx/400, 513*gnfy/710), {fillStyle: '#333', font: 'bold '+15*gnfx/400+'px 微软雅黑', 'textBaseline': 'top'}, 50*gnfx/400, 35*gnfy/710);
+	downText = new TextEntityObject('--减速', new Vector(40*gnfx/400, 613*gnfy/710), {fillStyle: '#333', font: 'bold '+15*gnfx/400+'px 微软雅黑', 'textBaseline': 'top'}, 50*gnfx/400, 35*gnfy/710);
+	leftText = new TextEntityObject('向左--', new Vector(320*gnfx/400, 513*gnfy/710), {fillStyle: '#333', font: 'bold '+15*gnfx/400+'px 微软雅黑', 'textBaseline': 'top'}, 50*gnfx/400, 35*gnfy/710);
+	rightText = new TextEntityObject('向右--', new Vector(320*gnfx/400, 613*gnfy/710), {fillStyle: '#333', font: 'bold '+15*gnfx/400+'px 微软雅黑', 'textBaseline': 'top'}, 50*gnfx/400, 35*gnfy/710);
+	ScreenObjPool.add(upText);
+	ScreenObjPool.add(downText);
+	ScreenObjPool.add(leftText);
+	ScreenObjPool.add(rightText);
 }
 //var SCORE = 0;
 var hitTipControl=true;
