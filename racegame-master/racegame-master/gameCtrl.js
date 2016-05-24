@@ -82,7 +82,7 @@ function gameSafe() {
 }
 var stoRwo;
 function runWithOther() {
-  stoRwo=setTimeout('phoneRwo()',5000);
+  stoRwo=setTimeout('phoneRwo()',20000);
   console.log(stoRwo);
 
 
@@ -92,6 +92,31 @@ function runWithOther() {
 function schoolCar() {
   var road = new ImageEntityObject(resourceLoader.get('roadG1'), new Vector(0, -710*gnfy/710), 400*gnfx/400, 1420*gnfy/710, new Vector(0,100));
   ScreenObjPool.add(road);
+  var carNum=window.util.random(0,4);
+  var img =  images[carNum];
+  var newCar = new SpeedCar(new Vector((0 * 74 + 55)*gnfx/400, window.util.random(710, 630)*gnfy/710), window.util.randomColor(), img,new Vector(0,window.util.random(-80,-150)));
+  newCar.hitable = true;
+  ScreenObjPool.add(newCar);
+  var carNum=window.util.random(0,4);
+  var img =  images[carNum];
+  var newCar = new SpeedCar(new Vector((1 * 74 + 55)*gnfx/400, window.util.random(710, 630)*gnfy/710), window.util.randomColor(), img,new Vector(0,window.util.random(-80,-150)));
+  newCar.hitable = true;
+  ScreenObjPool.add(newCar);
+  var carNum=window.util.random(0,4);
+  var img =  images[carNum];
+  var newCar = new SpeedCar(new Vector((0 * 74 + 55)*gnfx/400, window.util.random(300, 110)*gnfy/710), window.util.randomColor(), img,new Vector(0,window.util.random(-80,-150)));
+  newCar.hitable = true;
+  ScreenObjPool.add(newCar);
+  var carNum=window.util.random(0,4);
+  var img =  images[carNum];
+  var newCar = new SpeedCar(new Vector((1 * 74 + 55)*gnfx/400, window.util.random(300, 110)*gnfy/710), window.util.randomColor(), img,new Vector(0,window.util.random(-80,-150)));
+  newCar.hitable = true;
+  ScreenObjPool.add(newCar);
+  var carNum=window.util.random(0,4);
+  var img =  images[carNum];
+  var newCar = new SpeedCar(new Vector((3 * 74 + 55)*gnfx/400, 100*gnfy/710), window.util.randomColor(), img,new Vector(0,20));
+  newCar.hitable = true;
+  ScreenObjPool.add(newCar);
   var leftC = new CollisionEntityObject(new Vector(0, 0), 40*gnfx/400, 710*gnfy/710);
   var rightC = new CollisionEntityObject(new Vector(325*gnfx/400, 0), 75*gnfx/400, 710*gnfy/710);
   var topC = new CollisionEntityObject(new Vector(0, 0), 400*gnfx/400, 20*gnfy/710);

@@ -30,8 +30,10 @@ var Car = function(v, style, img, speed,road){
 		}
 
 		if(this.position.y > 710*gnfy/710){
+		    var carNum=window.util.random(0,4);
+	        this.img =  images[carNum];
 			this.position.y = window.util.random(-710*gnfy/710, 0);
-			this.speed = new Vector(0, 80);
+			this.speed = new Vector(0, window.util.random(80, 200));
 		}
 	 };
 
@@ -80,8 +82,54 @@ var ConverseCar = function(v, style, img, speed){
 		//this.position.x += (MainApp.nowTime - MainApp.startTime) * this.speed.x / 1000;
 
 		if(this.position.y > 710*gnfy/710){
-			this.position.y = window.util.random(-20, 0);
-			this.speed = new Vector(0, window.util.random(80,180));
+		    var carNum=window.util.random(0,4);
+	        this.img =  images[carNum];
+			this.position.y = window.util.random(-300*gnfy/710, 0);
+			this.speed = new Vector(0, window.util.random(120,200));
+		}
+	 };
+
+
+	this._draw = function(context){
+
+
+		//context.strokeRect(this.position.x, this.position.y, this.width, this.height);
+		context.drawImage(this.img, this.position.x - 3, this.position.y - 3,this.width,this.height);
+	};
+};
+
+var SpeedCar = function(v, style, img, speed){
+	this.img = img;
+	this.width = img.width*gnfx/400;
+	this.height = img.height*gnfy/710;
+	if(speed){
+		this.speed = speed;
+	}else{
+		this.speed = new Vector(0, 130);
+	}
+
+	RectEntityObject.call(this, v, this.width - 6, this.height - 6, {});
+
+	this._update = function(){
+		var oldPos = this.position.clone();
+		var diffY = MainApp.diffTime * this.speed.y / 1000;
+		var diffX = MainApp.diffTime * this.speed.x / 1000;
+		this.position.x += diffX;
+		this.position.y += diffY;
+
+		if(this.collisionMap){
+			if(this.collisionMap.checkCollide(this)){
+				this.position = oldPos;
+			}
+		}
+		//this.position.y += (MainApp.nowTime - MainApp.startTime) * this.speed.y / 1000;
+		//this.position.x += (MainApp.nowTime - MainApp.startTime) * this.speed.x / 1000;
+
+		if(this.position.y < 0){
+		    var carNum=window.util.random(0,4);
+	        this.img =  images[carNum];
+			this.position.y = window.util.random(710, 730);
+			this.speed = new Vector(0, window.util.random(-80,-150));
 		}
 	 };
 

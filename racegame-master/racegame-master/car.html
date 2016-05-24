@@ -286,13 +286,18 @@ var resources = [
 resourceLoader.onProgress = function(e){
 	loadScreen.setProgress(e.loadedCount / e.totalCount);
 };
-
+	var images = [];
 resourceLoader.onComplete = function(){
+	images.push(resourceLoader.resources.car1);
+	images.push(resourceLoader.resources.car2);
+	images.push(resourceLoader.resources.car3);
+	images.push(resourceLoader.resources.car4);
+	images.push(resourceLoader.resources.car5);
 	ScreenObjPool.remove(loadScreen);
-	showWelcome();
+	//showWelcome();
 	//gameJieshao();
 	//lineGame();
-	//avoidGame();
+	avoidGame();
 	//background();
 	//gameSafe();
 	//runWithOther();
@@ -350,22 +355,24 @@ function startGame(){
     var road = new ImageEntityObject(resourceLoader.get('roadG1'), new Vector(0, -710*gnfy/710), 400*gnfx/400, 1420*gnfy/710, new Vector(0,100));
 	ScreenObjPool.add(road);
 
-	var images = [];
-	images.push(resourceLoader.resources.car1);
-	images.push(resourceLoader.resources.car2);
-	images.push(resourceLoader.resources.car3);
-	images.push(resourceLoader.resources.car4);
-	images.push(resourceLoader.resources.car5);
-	var img =  resourceLoader.resources.car5;
-	var newCar = new Car(new Vector((0 * 74 + 55)*gnfx/400, window.util.random(-480, -80)*gnfy/710), window.util.randomColor(), img);
+    var carNum=window.util.random(0,4);
+	var img =  images[carNum];
+	var newCar = new Car(new Vector((0 * 74 + 55)*gnfx/400, window.util.random(-480, -80)*gnfy/710), window.util.randomColor(), img,new Vector(0,window.util.random(80,200)));
 	newCar.hitable = true;
 	ScreenObjPool.add(newCar);
-	var img =  resourceLoader.resources.car4;
-	var newCar = new Car(new Vector((1 * 74 + 55)*gnfx/400, window.util.random(-480, -80)*gnfy/710), window.util.randomColor(), img);
+	var carNum=window.util.random(0,4);
+	var img =  images[carNum];
+	var newCar = new Car(new Vector((1 * 74 + 55)*gnfx/400, window.util.random(-480, -80)*gnfy/710), window.util.randomColor(), img,new Vector(0,window.util.random(80,200)));
 	newCar.hitable = true;
 	ScreenObjPool.add(newCar);
-	var img =  resourceLoader.resources.car3;
-	var newCar = new Car(new Vector((2 * 74 + 55)*gnfx/400, window.util.random(-480, -80)*gnfy/710), window.util.randomColor(), img);
+	var carNum=window.util.random(0,4);
+	var img =  images[carNum];
+	var newCar = new Car(new Vector((2 * 74 + 55)*gnfx/400, window.util.random(-480, -80)*gnfy/710), window.util.randomColor(), img,new Vector(0,window.util.random(80,200)));
+	newCar.hitable = true;
+	ScreenObjPool.add(newCar);
+	var carNum=window.util.random(0,4);
+	var img =  images[carNum];
+	var newCar = new Car(new Vector((3 * 74 + 55)*gnfx/400, window.util.random(-480, -80)*gnfy/710), window.util.randomColor(), img,new Vector(0,window.util.random(80,200)));
 	newCar.hitable = true;
 	ScreenObjPool.add(newCar);
 
@@ -415,29 +422,39 @@ function startGame(){
 function lineGame(){
 	var road = new ImageEntityObject(resourceLoader.get('roadD'), new Vector(0, -710*gnfy/710), 400*gnfx/400, 1420*gnfy/710, new Vector(0,100));
     ScreenObjPool.add(road);
-	var img =  resourceLoader.resources.car5;
+	var carNum=window.util.random(0,4);
+	var img =  images[carNum];
 	var newCar = new Car(new Vector(200*gnfx/400, 0*gnfy/710), window.util.randomColor(), img, new Vector(0, -20*gnfy/710));
 	newCar.hitable = true;
 	ScreenObjPool.add(newCar);
-	var img =  resourceLoader.resources.car1;
+    var carNum=window.util.random(0,4);
+	var img =  images[carNum];
 	var newCar = new Car(new Vector(200*gnfx/400, 100*gnfy/710), window.util.randomColor(), img, new Vector(0, -20*gnfy/710));
 	newCar.hitable = true;
 	ScreenObjPool.add(newCar);
-	var img =  resourceLoader.resources.car2;
+    var carNum=window.util.random(0,4);
+	var img =  images[carNum];
 	var newCar = new Car(new Vector(200*gnfx/400, 200*gnfy/710), window.util.randomColor(), img, new Vector(0, -20*gnfy/710));
 	newCar.hitable = true;
 	ScreenObjPool.add(newCar);
-	var img =  resourceLoader.resources.car3;
+    var carNum=window.util.random(0,4);
+	var img =  images[carNum];
 	var newCar = new Car(new Vector(200*gnfx/400, 300*gnfy/710), window.util.randomColor(), img, new Vector(0, -20*gnfy/710));
 	newCar.hitable = true;
 	ScreenObjPool.add(newCar);
-	var img =  resourceLoader.resources.car2;
+    var carNum=window.util.random(0,4);
+	var img =  images[carNum];
 	var newCar = new Car(new Vector(200*gnfx/400, 620*gnfy/710), window.util.randomColor(), img, new Vector(0, -20*gnfy/710));
 	newCar.hitable = true;
 	ScreenObjPool.add(newCar);
-
-	var img =  resourceLoader.resources.car4;
-	var newCar = new ConverseCar(new Vector(125*gnfx/400, 20*gnfy/710), window.util.randomColor(), img, new Vector(0, 200*gnfy/710));
+    var carNum=window.util.random(0,4);
+	var img =  images[carNum];
+	var newCar = new ConverseCar(new Vector(125*gnfx/400, 20*gnfy/710), window.util.randomColor(), img, new Vector(0,window.util.random(120,200)));
+	newCar.hitable = true;
+	ScreenObjPool.add(newCar);
+    var carNum=window.util.random(0,4);
+	var img =  images[carNum];
+	var newCar = new ConverseCar(new Vector(71*gnfx/400, 20*gnfy/710), window.util.randomColor(), img, new Vector(0,window.util.random(120,200)));
 	newCar.hitable = true;
 	ScreenObjPool.add(newCar);
 
@@ -485,7 +502,7 @@ function lineGame(){
 			MainApp.keepRun();
 			lineGame();
 		});
-}
+            }
 	});
 	myCar.end=true;
 	MainApp.addEventListener(myCar, 'end', function(e){//全屏幕，游戏结束（最后做）
@@ -516,25 +533,34 @@ function avoidGame(){
     var road = new ImageEntityObject(resourceLoader.get('roadG1'), new Vector(0, -710*gnfy/710), 400*gnfx/400, 1420*gnfy/710, new Vector(0,100));
 	ScreenObjPool.add(road);
 	var img =  resourceLoader.resources.person;
-	var newCar = new Car(new Vector(320*gnfx/400, 240*gnfy/710), window.util.randomColor(), img, new Vector(-10,100));
-	newCar.hitable = true;
+	var newCar = new Car(new Vector(320*gnfx/400, 100*gnfy/710), window.util.randomColor(), img, new Vector(-10,100));
+	newCar.person = true;
 	newCar.avoid=true;
 	ScreenObjPool.add(newCar);
 
-	var img =  resourceLoader.resources.car5;
-	var newCar = new Car(new Vector(271*gnfx/400, 0*gnfy/710), window.util.randomColor(), img, new Vector(0, 20*gnfy/710));
+	var carNum=window.util.random(0,4);
+	var img =  images[carNum];
+	var newCar = new Car(new Vector(271*gnfx/400, window.util.random(0,100)*gnfy/710), window.util.randomColor(), img, new Vector(0,window.util.random(-80,-200)*gnfy/710));
 	newCar.hitable = true;
 	ScreenObjPool.add(newCar);
-	var img =  resourceLoader.resources.car1;
-	var newCar = new Car(new Vector(129*gnfx/400, 100*gnfy/710), window.util.randomColor(), img, new Vector(0, -20*gnfy/710));
+	var carNum=window.util.random(0,4);
+	var img =  images[carNum];
+	var newCar = new Car(new Vector(199*gnfx/400, window.util.random(80,200)*gnfy/710), window.util.randomColor(), img, new Vector(0, window.util.random(100,200)*gnfy/710));
 	newCar.hitable = true;
 	ScreenObjPool.add(newCar);
-	var img =  resourceLoader.resources.car2;
-	var newCar = new Car(new Vector(129*gnfx/400, 300*gnfy/710), window.util.randomColor(), img, new Vector(0, 20*gnfy/710));
+	var carNum=window.util.random(0,4);
+	var img =  images[carNum];
+	var newCar = new Car(new Vector(129*gnfx/400, window.util.random(0,710)*gnfy/710), window.util.randomColor(), img, new Vector(0, window.util.random(-80,-100)*gnfy/710));
 	newCar.hitable = true;
 	ScreenObjPool.add(newCar);
-	var img =  resourceLoader.resources.car3;
-	var newCar = new Car(new Vector(57*gnfx/400, 400*gnfy/710), window.util.randomColor(), img, new Vector(0, -20*gnfy/710));
+	var carNum=window.util.random(0,4);
+	var img =  images[carNum];
+	var newCar = new Car(new Vector(129*gnfx/400, window.util.random(0,100)*gnfy/710), window.util.randomColor(), img, new Vector(0, window.util.random(-100,-200)*gnfy/710));
+	newCar.hitable = true;
+	ScreenObjPool.add(newCar);
+	var carNum=window.util.random(0,4);
+	var img =  images[carNum];
+	var newCar = new Car(new Vector(57*gnfx/400, window.util.random(0,710)*gnfy/710), window.util.randomColor(), img, new Vector(0, -100*gnfy/710));
 	newCar.hitable = true;
 	ScreenObjPool.add(newCar);
 
@@ -552,6 +578,22 @@ function avoidGame(){
 	myCar.setCollisionMap(cMap);
 	carKey(myCar);
 
+	MainApp.addEventListener(myCar, 'person', function(e){//弹框，不能撞击行人
+		alert("person");
+		MainApp.stopRun();
+    hitAvoid(function() {
+      ScreenObjPool.empty();
+  		MainApp.emptyEventsPool();
+  		KEY_LOCK = {
+  			LEFT: false,
+  			RIGHT: false,
+  			UP: false,
+  			DOWN: false
+  		};
+      MainApp.keepRun();
+      avoidGame();
+    });
+});
 
 	MainApp.addEventListener(myCar, 'hit', function(e){//弹框，不能撞击行人
 		MainApp.stopRun();
@@ -603,18 +645,19 @@ function background(){
 	road.change=true;
 	road.cline=true;
 	ScreenObjPool.add(road);
-	var images = [];
-	images.push(resourceLoader.resources.car1);
-	images.push(resourceLoader.resources.car2);
-	images.push(resourceLoader.resources.car3);
-	images.push(resourceLoader.resources.car4);
-	images.push(resourceLoader.resources.car5);
-	var img =  resourceLoader.resources.car1;
-	var newCar = new Car(new Vector((0 * 74 + 55)*gnfx/400, window.util.random(-480, -80)*gnfy/710), window.util.randomColor(), img);
+	var carNum=window.util.random(0,4);
+	var img =  images[carNum];
+	var newCar = new Car(new Vector((0 * 74 + 55)*gnfx/400, window.util.random(-480, -80)*gnfy/710), window.util.randomColor(), img,new Vector(0,window.util.random(80,200)));
 	newCar.hitable = true;
 	ScreenObjPool.add(newCar);
-	var img =  resourceLoader.resources.car2;
-	var newCar = new Car(new Vector((1 * 74 + 55)*gnfx/400, window.util.random(-480, -80)*gnfy/710), window.util.randomColor(), img);
+	var carNum=window.util.random(0,4);
+	var img =  images[carNum];
+	var newCar = new Car(new Vector((1 * 74 + 55)*gnfx/400, window.util.random(-480, -80)*gnfy/710), window.util.randomColor(), img,new Vector(0,window.util.random(150,200)));
+	newCar.hitable = true;
+	ScreenObjPool.add(newCar);
+	var carNum=window.util.random(0,4);
+	var img =  images[carNum];
+	var newCar = new SpeedCar(new Vector((3 * 74 + 55)*gnfx/400, window.util.random(710, 630)*gnfy/710), window.util.randomColor(), img,new Vector(0,window.util.random(-80,-150)));
 	newCar.hitable = true;
 	ScreenObjPool.add(newCar);
 	//var scorePre = new TextEntityObject('Score: ', new Vector(50, 5), {fillStyle: '#fff', font: 'bold 32px 微软雅黑', 'textBaseline': 'top'}, 100, 35);
@@ -632,8 +675,9 @@ function background(){
 	cMap.add(rightC);
 	cMap.add(topC);
 	cMap.add(bottomC);
-	var img =  resourceLoader.resources.car4;
-	var newCar = new Car(new Vector(200*gnfx/400, 480*gnfy/710), window.util.randomColor(), img,new Vector(0,0));
+	var carNum=window.util.random(0,4);
+	var img =  images[carNum];
+	var newCar = new Car(new Vector(200*gnfx/400, 450*gnfy/710), window.util.randomColor(), img,new Vector(0,10));
 	newCar.hitable = true;
 	ScreenObjPool.add(newCar);
 	var myCar = new Car(new Vector(200*gnfx/400, 600*gnfy/710), window.util.randomColor(), resourceLoader.resources.car_p, new Vector(0, 0));

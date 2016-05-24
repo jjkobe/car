@@ -35,6 +35,9 @@ var ScreenObjPool = {
 			if(o.hitable){
 				MainApp.checkHit(o);
 			}
+			if(o.person){
+				MainApp.checkPerson(o);
+			}
 			if(o.avoid){
 				MainApp.checkAvoid(o);
 			}
@@ -135,6 +138,7 @@ var MainApp = {
 		mouseout: [],
 		collide: [],
 		hit: [],
+		person:[],
 		avoid:[],
 		line:[],
 		cline:[],
@@ -158,6 +162,7 @@ var MainApp = {
 			mouseout: [],
 			collide: [],
 			hit: [],
+			person:[],
 			avoid:[],
 			line:[],
 			cline:[],
@@ -319,6 +324,20 @@ var MainApp = {
 			}
 		}
 	},
+
+	checkPerson: function(target){
+		for(var i = 0, len = MainApp.eventsPool.person.length; i < len; i++){
+			var event = MainApp.eventsPool.person[i];
+			if(event.target.guid === target.guid){
+				continue;
+			}
+
+			if(event.target.checkPerson(target)){
+				event.callback.call(event.target, {relatedTarget: target});
+			}
+		}
+	},
+
 	checkAvoid: function(target){
 		for(var i = 0, len = MainApp.eventsPool.avoid.length; i < len; i++){
 			var event = MainApp.eventsPool.avoid[i];

@@ -29,6 +29,13 @@ var Rect = function(v, width, height){
 		return false;
 	};
 
+	this.checkPerson = function(rect){
+		if(Math.abs((this.position.x + this.width / 2) - (rect.position.x + rect.width / 2)) < (this.width + rect.width) / 2 && Math.abs((this.position.y + this.height / 2) - (rect.position.y + rect.height / 2)) < (this.height + rect.height) / 2){
+			return true;
+		}
+		return false;
+	};
+
 	this.checkAvoid = function(rect){
 		if(((this.position.y + this.height / 2) - (rect.position.y - rect.height/2))<-40*gnfy/710){
 			return true;
@@ -44,7 +51,7 @@ var Rect = function(v, width, height){
 	};
 
 	this.checkCline = function(rect){
-		if((rect.position.y < -2130*gnfy/710)  && ((this.position.x - this.width / 2)  > 220*gnfx/400)){
+		if((rect.position.y < -1500*gnfy/710)  && ((this.position.x - this.width / 2)  > 220*gnfx/400)){
 			return true;
 		}
 		return false;
@@ -95,6 +102,7 @@ var EntityObject = function(){
 	this.avoid=false;
 	this.lineable=false;
 	this.cline=false;
+	this.person=false;
 	this.miss=false;
 	this.change=false;
 	this.end=false;
